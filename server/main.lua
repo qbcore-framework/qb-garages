@@ -55,7 +55,7 @@ end)
 QBCore.Functions.CreateCallback("qb-garage:server:GetVehicleProperties", function(source, cb, plate)
     local src = source
     local properties = {}
-    QBCore.Functions.ExecuteSql(false, "SELECT `mods` FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
+    QBCore.Functions.ExecuteSql(false, {['a']=plate}, "SELECT `mods` FROM `player_vehicles` WHERE `plate` = @a", function(result)
         if result[1] ~= nil then
             properties = json.decode(result[1].mods)
         end
@@ -67,7 +67,7 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetDepotVehicles", function(so
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
 
-    exports['ghmattimysql']:execute('SELECT * FROM player_vehicles WHERE citizenid = @citizenid AND state = @state', {['@citizenid'] = pData.PlayerData.citizenid, ['@state'] = 0}, function(result)
+    QBCore.Functions.ExecuteSql(false, {['@citizenid'] = pData.PlayerData.citizenid, ['@state'] = 0}, "SELECT * FROM player_vehicles WHERE citizenid = @citizenid AND state = @state", function(result)
         if result[1] ~= nil then
             cb(result)
         else
