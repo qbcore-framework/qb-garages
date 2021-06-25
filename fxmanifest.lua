@@ -5,12 +5,22 @@ description 'QB-Garages'
 version '1.0.0'
 
 client_scripts {
-    'client/main.lua',
+   'config.lua',
+   'locale.lua',
+   'locales/*.lua',
+     'client/main.lua',
     'client/gui.lua',
     'SharedConfig.lua',
+   
+   
 }
 
 server_scripts {
+   
+    'config.lua',
+    'locale.lua',
+	'locales/*.lua',
     'server/main.lua',
     'SharedConfig.lua',
+   
 }
