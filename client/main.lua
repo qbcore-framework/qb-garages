@@ -347,6 +347,7 @@ function VehicleList()
                 end
 
                 if v.vehicle ~= "yFiat595ssB" then
+                    
                     Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutVehicle", v, v.state, _U("client_main_motor", enginePercent), _U("client_main_body", bodyPercent),_U("client_main_fuel",currentFuel))
                 else
                     Menu.addButton("Sydney Mobile", "TakeOutVehicle", v, v.state, _U("client_main_motor", enginePercent), _U("client_main_body", bodyPercent),_U("client_main_fuel",currentFuel))
