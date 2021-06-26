@@ -1,3 +1,3 @@
 Config = Config or {}
 
-Config.Locale = "it"
+Locales = Locales or {}

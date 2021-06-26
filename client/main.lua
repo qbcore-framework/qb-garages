@@ -87,7 +87,7 @@ AddEventHandler('qb-garages:client:takeOutDepot', function(vehicle)
                         SetEntityAsMissionEntity(veh, true, true)
                         doCarDamage(veh, vehicle)
                         TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
-                        QBCore.Functions.Notify(_U("client_main_event_takeOutDepot_notify_1", enginePercent,bodyPercent,currentFuel ), "primary", 4500)
+                        QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_event_takeOutDepot_notify_1", enginePercent,bodyPercent,currentFuel ), "primary", 4500)
                         TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
                         closeMenuFull()
                         SetVehicleEngineOn(veh, true, true)
@@ -120,7 +120,7 @@ AddEventHandler('qb-garages:client:takeOutDepot', function(vehicle)
                     SetEntityAsMissionEntity(veh, true, true)
                     doCarDamage(veh, vehicle)
                     TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
-                    QBCore.Functions.Notify(_U("client_main_event_takeOutDepot_notify_2", enginePercent, bodyPercent, currentFuel), "primary", 4500)
+                    QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_event_takeOutDepot_notify_2", enginePercent, bodyPercent, currentFuel), "primary", 4500)
                     TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
                     closeMenuFull()
                     SetVehicleEngineOn(veh, true, true)
@@ -151,7 +151,7 @@ AddEventHandler('qb-garages:client:takeOutDepot', function(vehicle)
                 SetEntityAsMissionEntity(veh, true, true)
                 doCarDamage(veh, vehicle)
                 TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
-                QBCore.Functions.Notify(_U("client_main_event_takeOutDepot_notify_3",enginePercent,bodyPercent,currentFuel), "primary", 4500)
+                QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_event_takeOutDepot_notify_3",enginePercent,bodyPercent,currentFuel), "primary", 4500)
                 TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
                 closeMenuFull()
                 SetVehicleEngineOn(veh, true, true)
@@ -213,42 +213,42 @@ function MenuGarage()
     ped = PlayerPedId();
     MenuTitle = "Garage"
     ClearMenu()
-    Menu.addButton(_U("MyVehicles"), "VehicleList", nil)
-    Menu.addButton(_U("CloseMenu"), "close", nil)
+    Menu.addButton(QBCore.Shared._U(Locales, "MyVehicles"), "VehicleList", nil)
+    Menu.addButton(QBCore.Shared._U(Locales, "CloseMenu"), "close", nil)
 end
 
 function GangMenuGarage()
     ped = PlayerPedId();
     MenuTitle = "Garage"
     ClearMenu()
-    Menu.addButton(_U("MyVehicles"), "GangVehicleList", nil)
-    Menu.addButton(_U("CloseMenu"), "close", nil)
+    Menu.addButton(QBCore.Shared._U(Locales, "MyVehicles"), "GangVehicleList", nil)
+    Menu.addButton(QBCore.Shared._U(Locales, "CloseMenu"), "close", nil)
 end
 
 function MenuDepot()
     ped = PlayerPedId();
     MenuTitle = "Impound"
     ClearMenu()
-    Menu.addButton(_U("DepotVehicles"), "DepotList", nil)
-    Menu.addButton(_U("CloseMenu"), "close", nil)
+    Menu.addButton(QBCore.Shared._U(Locales, "DepotVehicles"), "DepotList", nil)
+    Menu.addButton(QBCore.Shared._U(Locales, "CloseMenu"), "close", nil)
 end
 
 function MenuHouseGarage(house)
     ped = PlayerPedId();
     MenuTitle = HouseGarages[house].label
     ClearMenu()
-    Menu.addButton(_U("MyVehicles"), "HouseGarage", house)
-    Menu.addButton(_U("CloseMenu"), "close", nil)
+    Menu.addButton(QBCore.Shared._U(Locales, "MyVehicles"), "HouseGarage", house)
+    Menu.addButton(QBCore.Shared._U(Locales, "CloseMenu"), "close", nil)
 end
 
 function HouseGarage(house)
     QBCore.Functions.TriggerCallback("qb-garage:server:GetHouseVehicles", function(result)
         ped = PlayerPedId();
-        MenuTitle = _U("DepotVehicles").." :"
+        MenuTitle = QBCore.Shared._U(Locales, "DepotVehicles").." :"
         ClearMenu()
 
         if result == nil then
-            QBCore.Functions.Notify(_U("client_main_function_HouseGarage_notify_1"), "error", 5000)
+            QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_function_HouseGarage_notify_1"), "error", 5000)
             closeMenuFull()
         else
             Menu.addButton(HouseGarages[house].label, "HouseGarage", HouseGarages[house].label)
@@ -268,14 +268,14 @@ function HouseGarage(house)
                 end
 
                 if v.vehicle ~= "yFiat595ssB" then
-                    Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutGarageVehicle", v, v.state, _U("client_main_motor", enginePercent), _U("client_main_body", bodyPercent),_U("client_main_fuel",currentFuel))
+                    Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutGarageVehicle", v, v.state, QBCore.Shared._U(Locales, "client_main_motor", enginePercent), QBCore.Shared._U(Locales, "client_main_body", bodyPercent),QBCore.Shared._U(Locales, "client_main_fuel",currentFuel))
                 else
-                    Menu.addButton("Sydney Mobile", "TakeOutGarageVehicle", v, v.state, _U("client_main_motor", enginePercent), _U("client_main_body", bodyPercent),_U("client_main_fuel",currentFuel))
+                    Menu.addButton("Sydney Mobile", "TakeOutGarageVehicle", v, v.state, QBCore.Shared._U(Locales, "client_main_motor", enginePercent), QBCore.Shared._U(Locales, "client_main_body", bodyPercent),QBCore.Shared._U(Locales, "client_main_fuel",currentFuel))
                 end
             end
         end
 
-        Menu.addButton(_U("Back"), "MenuHouseGarage", house)
+        Menu.addButton(QBCore.Shared._U(Locales, "Back"), "MenuHouseGarage", house)
     end, house)
 end
 
@@ -288,11 +288,11 @@ end
 function DepotList()
     QBCore.Functions.TriggerCallback("qb-garage:server:GetDepotVehicles", function(result)
         ped = PlayerPedId();
-        MenuTitle = _U("client_main_function_DepotList_menutitle") 
+        MenuTitle = QBCore.Shared._U(Locales, "client_main_function_DepotList_menutitle") 
         ClearMenu()
 
         if result == nil then
-            QBCore.Functions.Notify(_U("client_main_function_DepotList_notify_1"), "error", 5000)
+            QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_function_DepotList_notify_1"), "error", 5000)
             closeMenuFull()
         else
             Menu.addButton(Depots[currentGarage].label, "DepotList", Depots[currentGarage].label)
@@ -308,25 +308,25 @@ function DepotList()
                 end
 
                 if v.vehicle ~= "yFiat595ssB" then
-                    Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutDepotVehicle", v, v.state .. " ($"..v.depotprice..",-)", _U("client_main_motor", enginePercent), _U("client_main_body", bodyPercent),_U("client_main_fuel",currentFuel))
+                    Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutDepotVehicle", v, v.state .. " ($"..v.depotprice..",-)", QBCore.Shared._U(Locales, "client_main_motor", enginePercent), QBCore.Shared._U(Locales, "client_main_body", bodyPercent),QBCore.Shared._U(Locales, "client_main_fuel",currentFuel))
                 else
-                    Menu.addButton("Sydney Mobile", "TakeOutDepotVehicle", v, v.state, _U("client_main_motor", enginePercent), _U("client_main_body", bodyPercent),_U("client_main_fuel",currentFuel))
+                    Menu.addButton("Sydney Mobile", "TakeOutDepotVehicle", v, v.state, QBCore.Shared._U(Locales, "client_main_motor", enginePercent), QBCore.Shared._U(Locales, "client_main_body", bodyPercent),QBCore.Shared._U(Locales, "client_main_fuel",currentFuel))
                 end
             end
         end
 
-        Menu.addButton(_U("Back"), "MenuDepot",nil)
+        Menu.addButton(QBCore.Shared._U(Locales, "Back"), "MenuDepot",nil)
     end)
 end
 
 function VehicleList()
     QBCore.Functions.TriggerCallback("qb-garage:server:GetUserVehicles", function(result)
         ped = PlayerPedId();
-        MenuTitle = _U("MyVehicles")
+        MenuTitle = QBCore.Shared._U(Locales, "MyVehicles")
         ClearMenu()
 
         if result == nil then
-            QBCore.Functions.Notify(_U("client_main_function_VehicleList_notify_1"), "error", 5000)
+            QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_function_VehicleList_notify_1"), "error", 5000)
             closeMenuFull()
         else
             Menu.addButton(Garages[currentGarage].label, "VehicleList", Garages[currentGarage].label)
@@ -348,14 +348,14 @@ function VehicleList()
 
                 if v.vehicle ~= "yFiat595ssB" then
                     
-                    Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutVehicle", v, v.state, _U("client_main_motor", enginePercent), _U("client_main_body", bodyPercent),_U("client_main_fuel",currentFuel))
+                    Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutVehicle", v, v.state, QBCore.Shared._U(Locales, "client_main_motor", enginePercent), QBCore.Shared._U(Locales, "client_main_body", bodyPercent),QBCore.Shared._U(Locales, "client_main_fuel",currentFuel))
                 else
-                    Menu.addButton("Sydney Mobile", "TakeOutVehicle", v, v.state, _U("client_main_motor", enginePercent), _U("client_main_body", bodyPercent),_U("client_main_fuel",currentFuel))
+                    Menu.addButton("Sydney Mobile", "TakeOutVehicle", v, v.state, QBCore.Shared._U(Locales, "client_main_motor", enginePercent), QBCore.Shared._U(Locales, "client_main_body", bodyPercent),QBCore.Shared._U(Locales, "client_main_fuel",currentFuel))
                 end
             end
         end
 
-        Menu.addButton(_U("Back"), "MenuGarage",nil)
+        Menu.addButton(QBCore.Shared._U(Locales, "Back"), "MenuGarage",nil)
     end, currentGarage)
 end
 
@@ -366,7 +366,7 @@ function GangVehicleList()
         ClearMenu()
 
         if result == nil then
-            QBCore.Functions.Notify(_U("client_main_function_GangVehicleList_notify_1"), "error", 5000)
+            QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_function_GangVehicleList_notify_1"), "error", 5000)
             closeMenuFull()
         else
             Menu.addButton(GangGarages[currentGarage].label, "GangVehicleList", GangGarages[currentGarage].label)
@@ -388,14 +388,14 @@ function GangVehicleList()
                 end
 
                 if v.vehicle ~= "yFiat595ssB" then
-                    Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutGangVehicle", v, v.state, _U("client_main_motor", enginePercent), _U("client_main_body", bodyPercent),_U("client_main_fuel",currentFuel))
+                    Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutGangVehicle", v, v.state, QBCore.Shared._U(Locales, "client_main_motor", enginePercent), QBCore.Shared._U(Locales, "client_main_body", bodyPercent),QBCore.Shared._U(Locales, "client_main_fuel",currentFuel))
                 else
-                    Menu.addButton("Sydney Mobile", "TakeOutGangVehicle", v, v.state,_U("client_main_motor", enginePercent), _U("client_main_body", bodyPercent),_U("client_main_fuel",currentFuel))
+                    Menu.addButton("Sydney Mobile", "TakeOutGangVehicle", v, v.state,QBCore.Shared._U(Locales, "client_main_motor", enginePercent), QBCore.Shared._U(Locales, "client_main_body", bodyPercent),QBCore.Shared._U(Locales, "client_main_fuel",currentFuel))
                 end
             end
         end
 
-        Menu.addButton(_U("Back"), "MenuGarage",nil)
+        Menu.addButton(QBCore.Shared._U(Locales, "Back"), "MenuGarage",nil)
     end, currentGarage)
 end
 
@@ -431,7 +431,7 @@ function TakeOutVehicle(vehicle)
                 doCarDamage(veh, vehicle)
                 SetEntityAsMissionEntity(veh, true, true)
                 TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
-                QBCore.Functions.Notify(_U("client_main_function_TakeOutVehicle_notify_1",enginePercent,bodyPercent,currentFuel) , "primary", 4500)
+                QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_function_TakeOutVehicle_notify_1",enginePercent,bodyPercent,currentFuel) , "primary", 4500)
                 closeMenuFull()
                 TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
                 TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
@@ -440,9 +440,9 @@ function TakeOutVehicle(vehicle)
 
         end, Garages[currentGarage].spawnPoint, true)
     elseif vehicle.state == "Out" then
-        QBCore.Functions.Notify(_U("client_main_function_TakeOutVehicle_notify_2"), "error", 2500)
+        QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_function_TakeOutVehicle_notify_2"), "error", 2500)
     elseif vehicle.state == "Impound" then
-        QBCore.Functions.Notify(_U("client_main_function_TakeOutVehicle_notify3"), "error", 4000)
+        QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_function_TakeOutVehicle_notify3"), "error", 4000)
     end
 end
 
@@ -492,7 +492,7 @@ function TakeOutGangVehicle(vehicle)
                 doCarDamage(veh, vehicle)
                 SetEntityAsMissionEntity(veh, true, true)
                 TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
-                QBCore.Functions.Notify(_U("client_main_function_TakeOutVehicle_notify_1",enginePercent,bodyPercent,currentFuel), "primary", 4500)
+                QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_function_TakeOutVehicle_notify_1",enginePercent,bodyPercent,currentFuel), "primary", 4500)
                 closeMenuFull()
                 TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
                 TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
@@ -501,9 +501,9 @@ function TakeOutGangVehicle(vehicle)
 
         end, GangGarages[currentGarage].spawnPoint, true)
     elseif vehicle.state == "Out" then
-        QBCore.Functions.Notify(_U("client_main_function_TakeOutVehicle_notify_2"), "error", 2500)
+        QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_function_TakeOutVehicle_notify_2"), "error", 2500)
     elseif vehicle.state == "Impound" then
-        QBCore.Functions.Notify(_U("client_main_function_TakeOutVehicle_notify3"), "error", 4000)
+        QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_function_TakeOutVehicle_notify3"), "error", 4000)
     end
 end
 
@@ -534,7 +534,7 @@ function TakeOutGarageVehicle(vehicle)
                 SetEntityAsMissionEntity(veh, true, true)
                 doCarDamage(veh, vehicle)
                 TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
-                QBCore.Functions.Notify(_U("client_main_function_TakeOutVehicle_notify_1",enginePercent,bodyPercent,currentFuel), "primary", 4500)
+                QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_function_TakeOutVehicle_notify_1",enginePercent,bodyPercent,currentFuel), "primary", 4500)
                 closeMenuFull()
                 TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
                 SetVehicleEngineOn(veh, true, true)
@@ -657,7 +657,7 @@ Citizen.CreateThread(function()
                 inGarageRange = true
                 DrawMarker(2, Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 255, 255, 255, 255, false, false, false, true, false, false, false)
                 if putDist <= 1.5 then
-                    DrawText3Ds(Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z + 0.5, _U("ParkVehicle"))
+                    DrawText3Ds(Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z + 0.5, QBCore.Shared._U(Locales, "ParkVehicle"))
                     if IsControlJustPressed(0, 38) then
                         local curVeh = GetVehiclePedIsIn(ped)
                         local plate = GetVehicleNumberPlateText(curVeh)
@@ -675,9 +675,9 @@ Citizen.CreateThread(function()
                                     OutsideVehicles[plate] = veh
                                     TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
                                 end
-                                QBCore.Functions.Notify(_U("client_main_CreateThread_notify1",Garages[k].label), "primary", 4500)
+                                QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_CreateThread_notify1",Garages[k].label), "primary", 4500)
                             else
-                                QBCore.Functions.Notify(_U("client_main_CreateThread_notify2"), "error", 3500)
+                                QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_CreateThread_notify2"), "error", 3500)
                             end
                         end, plate)
                     end
@@ -754,9 +754,9 @@ Citizen.CreateThread(function()
                                         OutsideVehicles[plate] = veh
                                         TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
                                     end
-                                    QBCore.Functions.Notify(_U("client_main_CreateThread_notify1", GangGarages["ballasgarage"].label), "primary", 4500)
+                                    QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_CreateThread_notify1", GangGarages["ballasgarage"].label), "primary", 4500)
                                 else
-                                    QBCore.Functions.Notify(_U("client_main_CreateThread_notify2"), "error", 3500)
+                                    QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_CreateThread_notify2"), "error", 3500)
                                 end
                             end, plate)
                         end
@@ -817,9 +817,9 @@ Citizen.CreateThread(function()
                                         OutsideVehicles[plate] = veh
                                         TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
                                     end
-                                    QBCore.Functions.Notify(_U("client_main_CreateThread_notify1", GangGarages["la_familiagarage"].label), "primary", 4500)
+                                    QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_CreateThread_notify1", GangGarages["la_familiagarage"].label), "primary", 4500)
                                 else
-                                    QBCore.Functions.Notify(_U("client_main_CreateThread_notify2"), "error", 3500)
+                                    QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_CreateThread_notify2"), "error", 3500)
                                 end
                             end, plate)
                         end
@@ -862,7 +862,7 @@ Citizen.CreateThread(function()
                     inGarageRange = true
                     DrawMarker(2, GangGarages["nomadsgarage"].putVehicle.x, GangGarages["nomadsgarage"].putVehicle.y, GangGarages["nomadsgarage"].putVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 255, 255, 255, 255, false, false, false, true, false, false, false)
                     if putDist <= 1.5 then
-                        DrawText3Ds(GangGarages["nomadsgarage"].putVehicle.x, GangGarages["nomadsgarage"].putVehicle.y, GangGarages["nomadsgarage"].putVehicle.z + 0.5, _U("ParkVehicle"))
+                        DrawText3Ds(GangGarages["nomadsgarage"].putVehicle.x, GangGarages["nomadsgarage"].putVehicle.y, GangGarages["nomadsgarage"].putVehicle.z + 0.5, QBCore.Shared._U(Locales, "ParkVehicle"))
                         if IsControlJustPressed(0, 38) then
                             local curVeh = GetVehiclePedIsIn(ped)
                             local plate = GetVehicleNumberPlateText(curVeh)
@@ -880,9 +880,9 @@ Citizen.CreateThread(function()
                                         OutsideVehicles[plate] = veh
                                         TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
                                     end
-                                    QBCore.Functions.Notify(_U("client_main_CreateThread_notify1",GangGarages["nomadsgarage"].label), "primary", 4500)
+                                    QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_CreateThread_notify1",GangGarages["nomadsgarage"].label), "primary", 4500)
                                 else
-                                    QBCore.Functions.Notify(_U("client_main_CreateThread_notify2"), "error", 3500)
+                                    QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_CreateThread_notify2"), "error", 3500)
                                 end
                             end, plate)
                         end
@@ -925,7 +925,7 @@ Citizen.CreateThread(function()
                     inGarageRange = true
                     DrawMarker(2, GangGarages["cartelgarage"].putVehicle.x, GangGarages["cartelgarage"].putVehicle.y, GangGarages["cartelgarage"].putVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 255, 255, 255, 255, false, false, false, true, false, false, false)
                     if putDist <= 1.5 then
-                        DrawText3Ds(GangGarages["cartelgarage"].putVehicle.x, GangGarages["cartelgarage"].putVehicle.y, GangGarages["cartelgarage"].putVehicle.z + 0.5, _U("ParkVehicle"))
+                        DrawText3Ds(GangGarages["cartelgarage"].putVehicle.x, GangGarages["cartelgarage"].putVehicle.y, GangGarages["cartelgarage"].putVehicle.z + 0.5, QBCore.Shared._U(Locales, "ParkVehicle"))
                         if IsControlJustPressed(0, 38) then
                             local curVeh = GetVehiclePedIsIn(ped)
                             local plate = GetVehicleNumberPlateText(curVeh)
@@ -943,9 +943,9 @@ Citizen.CreateThread(function()
                                         OutsideVehicles[plate] = veh
                                         TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
                                     end
-                                    QBCore.Functions.Notify(_U("client_main_CreateThread_notify1",GangGarages["cartelgarage"].label), "primary", 4500)
+                                    QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_CreateThread_notify1",GangGarages["cartelgarage"].label), "primary", 4500)
                                 else
-                                    QBCore.Functions.Notify(_U("client_main_CreateThread_notify2"), "error", 3500)
+                                    QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_CreateThread_notify2"), "error", 3500)
                                 end
                             end, plate)
                         end
@@ -1002,9 +1002,9 @@ Citizen.CreateThread(function()
                                             OutsideVehicles[plate] = veh
                                             TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
                                         end
-                                        QBCore.Functions.Notify(_U("client_main_CreateThread_notify1",HouseGarages[currentHouseGarage]), "primary", 4500)
+                                        QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_CreateThread_notify1",HouseGarages[currentHouseGarage]), "primary", 4500)
                                     else
-                                        QBCore.Functions.Notify(_U("client_main_CreateThread_notify2"), "error", 3500)
+                                        QBCore.Functions.Notify(QBCore.Shared._U(Locales, "client_main_CreateThread_notify2"), "error", 3500)
                                     end
                                 end, plate, currentHouseGarage)
                             end
