@@ -4,21 +4,16 @@ game 'gta5'
 description 'QB-Garages'
 version '1.0.0'
 
-client_scripts {
-   'config.lua',
-   'locales/*.lua',
-     'client/main.lua',
-    'client/gui.lua',
-    'SharedConfig.lua',
-   
-   
-}
-
-server_scripts {
-   
+shared_scripts { 
+	'@qb-core/import.lua',
     'config.lua',
 	'locales/*.lua',
-    'server/main.lua',
-    'SharedConfig.lua',
-   
+	'SharedConfig.lua',
 }
+
+client_scripts {
+   'client/main.lua',
+   'client/gui.lua',
+}
+
+server_script 'server/main.lua'
