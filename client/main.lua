@@ -41,7 +41,7 @@ AddEventHandler('qb-garages:client:addHouseGarage', function(house, garageInfo)
     HouseGarages[house] = garageInfo
 end)
 
--- function AddOutsideVehicle(plate, veh)
+--- function AddOutsideVehicle(plate, veh)
 --     OutsideVehicles[plate] = veh
 --     TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
 -- end
