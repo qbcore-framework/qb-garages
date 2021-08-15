@@ -11,6 +11,11 @@ AddEventHandler('qb-garages:server:UpdateOutsideVehicles', function(Vehicles)
     OutsideVehicles[CitizenId] = Vehicles
 end)
 
+RegisterServerEvent('qb-garages:server:ActivateClickS')
+AddEventHandler('qb-garages:server:ActivateClickS', function()
+    TriggerClientEvent('qb-garages:client:ActivateClick', source)
+end)
+
 QBCore.Functions.CreateCallback("qb-garage:server:checkVehicleOwner", function(source, cb, plate)
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
@@ -114,6 +119,7 @@ AddEventHandler('qb-garage:server:PayDepotPrice', function(vehicle, garage)
             if bankBalance >= result[1].depotprice then
                 Player.Functions.RemoveMoney("bank", result[1].depotprice, "paid-depot")
                 TriggerClientEvent("qb-garages:client:takeOutDepot", src, vehicle, garage)
+                TriggerClientEvent("qb-garages:client:ActivateClick", src)
             end
         end
     end)
