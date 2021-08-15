@@ -101,8 +101,7 @@ QBCore.Functions.CreateCallback("qb-garage:server:checkVehicleHouseOwner", funct
     end)
 end)
 
-RegisterServerEvent('qb-garage:server:PayDepotPrice')
-AddEventHandler('qb-garage:server:PayDepotPrice', function(vehicle)
+QBCore.Functions.CreateCallback("qb-garage:server:PayDepotFee", function(source, cb, vehicle)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local bankBalance = Player.PlayerData.money["bank"]
@@ -110,7 +109,9 @@ AddEventHandler('qb-garage:server:PayDepotPrice', function(vehicle)
         if result[1] ~= nil then
             if bankBalance >= result[1].depotprice then
                 Player.Functions.RemoveMoney("bank", result[1].depotprice, "paid-depot")
-                TriggerClientEvent("qb-garages:client:takeOutDepot", src, vehicle)
+                cb(true)
+            else
+                cb(false)
             end
         end
     end)
