@@ -53,7 +53,6 @@ AddEventHandler('qb-garages:client:takeOutDepot', function(vehicle)
             if OutsideVehicles ~= nil and next(OutsideVehicles) ~= nil then
                 if OutsideVehicles[vehicle.plate] ~= nil then
                     local Engine = GetVehicleEngineHealth(OutsideVehicles[vehicle.plate])
-                    -- if Engine <= 50.0 then
                         QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
                             QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
                                 QBCore.Functions.SetVehicleProperties(veh, properties)
@@ -84,9 +83,6 @@ AddEventHandler('qb-garages:client:takeOutDepot', function(vehicle)
                         SetTimeout(250, function()
                             TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(GetVehiclePedIsIn(PlayerPedId(), false)))
                         end)
-                    -- else
-                    --     QBCore.Functions.Notify("You cannot duplicate this vehicle")
-                    -- end
                 else
                     QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
                         QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
@@ -258,11 +254,7 @@ function HouseGarage(house)
                     v.state = "Impound"
                 end
 
-                if v.vehicle ~= "yFiat595ssB" then
-                    Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutGarageVehicle", v, v.state, " Motor: " .. enginePercent.."%", " Body: " .. bodyPercent.."%", " Fuel: "..currentFuel.."%")
-                else
-                    Menu.addButton("Sydney Mobile", "TakeOutGarageVehicle", v, v.state, " Motor: " .. enginePercent .. "%", " Body: " .. bodyPercent.. "%", " Fuel: "..currentFuel.. "%")
-                end
+                Menu.addButton("Sydney Mobile", "TakeOutGarageVehicle", v, v.state, " Motor: " .. enginePercent .. "%", " Body: " .. bodyPercent.. "%", " Fuel: "..currentFuel.. "%")
             end
         end
 
@@ -333,11 +325,7 @@ function VehicleList()
                     v.state = "Impound"
                 end
 
-                if v.vehicle ~= "yFiat595ssB" then
-                    Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutVehicle", v, v.state, " Motor: " .. enginePercent .. "%", " Body: " .. bodyPercent.. "%", " Fuel: "..currentFuel.. "%")
-                else
-                    Menu.addButton("Sydney Mobile", "TakeOutVehicle", v, v.state, " Motor: " .. enginePercent .. "%", " Body: " .. bodyPercent.. "%", " Fuel: "..currentFuel.. "%")
-                end
+                Menu.addButton("Sydney Mobile", "TakeOutVehicle", v, v.state, " Motor: " .. enginePercent .. "%", " Body: " .. bodyPercent.. "%", " Fuel: "..currentFuel.. "%")
             end
         end
 
@@ -373,11 +361,7 @@ function GangVehicleList()
                     v.state = "Impound"
                 end
 
-                if v.vehicle ~= "yFiat595ssB" then
-                    Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutGangVehicle", v, v.state, " Motor: " .. enginePercent .. "%", " Body: " .. bodyPercent.. "%", " Fuel: "..currentFuel.. "%")
-                else
-                    Menu.addButton("Sydney Mobile", "TakeOutGangVehicle", v, v.state, " Motor: " .. enginePercent .. "%", " Body: " .. bodyPercent.. "%", " Fuel: "..currentFuel.. "%")
-                end
+                Menu.addButton("Sydney Mobile", "TakeOutGangVehicle", v, v.state, " Motor: " .. enginePercent .. "%", " Body: " .. bodyPercent.. "%", " Fuel: "..currentFuel.. "%")
             end
         end
 
