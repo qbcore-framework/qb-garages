@@ -102,18 +102,15 @@ QBCore.Functions.CreateCallback("qb-garage:server:checkVehicleHouseOwner", funct
 end)
 
 RegisterServerEvent('qb-garage:server:PayDepotPrice')
-AddEventHandler('qb-garage:server:PayDepotPrice', function(vehicle, garage)
+AddEventHandler('qb-garage:server:PayDepotPrice', function(vehicle)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local bankBalance = Player.PlayerData.money["bank"]
     exports['ghmattimysql']:execute('SELECT * FROM player_vehicles WHERE plate = @plate', {['@plate'] = vehicle.plate}, function(result)
         if result[1] ~= nil then
-            -- if Player.Functions.RemoveMoney("cash", result[1].depotprice, "paid-depot") then
-            --     TriggerClientEvent("qb-garages:client:takeOutDepot", src, vehicle, garage)
-            -- else
             if bankBalance >= result[1].depotprice then
                 Player.Functions.RemoveMoney("bank", result[1].depotprice, "paid-depot")
-                TriggerClientEvent("qb-garages:client:takeOutDepot", src, vehicle, garage)
+                TriggerClientEvent("qb-garages:client:takeOutDepot", src, vehicle)
             end
         end
     end)
