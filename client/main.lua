@@ -4,17 +4,6 @@ local currentGarage = nil
 local OutsideVehicles = {}
 local PlayerGang = {}
 
--- RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
--- AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
---     QBCore.Functions.TriggerCallback('qb-garage:server:GetOutsideVehicles', function(result)
---         if result ~= nil then
---             OutsideVehicles = result
---         else
---             OutsideVehicles = {}
---         end
---     end)
--- end)
-
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     PlayerGang = QBCore.Functions.GetPlayerData().gang
@@ -40,11 +29,6 @@ RegisterNetEvent('qb-garages:client:addHouseGarage')
 AddEventHandler('qb-garages:client:addHouseGarage', function(house, garageInfo)
     HouseGarages[house] = garageInfo
 end)
-
--- function AddOutsideVehicle(plate, veh)
---     OutsideVehicles[plate] = veh
---     TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
--- end
 
 RegisterNetEvent('qb-garages:client:takeOutDepot')
 AddEventHandler('qb-garages:client:takeOutDepot', function(vehicle)
@@ -82,9 +66,6 @@ AddEventHandler('qb-garages:client:takeOutDepot', function(vehicle)
                 SetTimeout(250, function()
                     TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(GetVehiclePedIsIn(PlayerPedId(), false)))
                 end)
-            -- else
-            --     QBCore.Functions.Notify("You cannot duplicate this vehicle")
-            -- end
         else
             QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
                 QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
@@ -383,17 +364,6 @@ function GangVehicleList()
     end, currentGarage)
 end
 
--- Citizen.CreateThread(function()
---     while true do
---         if VehPlate ~= nil then
---             local veh = OutsideVehicles[VehPlate]
---             local Damage = GetVehicleBodyHealth(veh)
---         end
-
---         Citizen.Wait(1000)
---     end
--- end)
-
 function TakeOutVehicle(vehicle)
     if vehicle.state == "Garaged" then
         enginePercent = round(vehicle.engine / 10, 1)
@@ -592,7 +562,6 @@ function closeMenuFull()
 end
 
 function ClearMenu()
-	--Menu = {}
 	Menu.GUI = {}
 	Menu.buttonCount = 0
 	Menu.selection = 0
@@ -656,9 +625,7 @@ Citizen.CreateThread(function()
                               
                                 --local TaskLeaveVehicle
                                 TriggerServerEvent('qb-garage:server:updateVehicleStatus', totalFuel, engineDamage, bodyDamage, plate, k)
-                                TriggerServerEvent('qb-garage:server:updateVehicleState', 1, plate, k)
-                                --TriggerServerEvent('vehiclemod:server:saveStatus', plate)
-                              
+                                TriggerServerEvent('qb-garage:server:updateVehicleState', 1, plate, k)                              
                                 if plate ~= nil then
                                     OutsideVehicles[plate] = veh
                                     TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
