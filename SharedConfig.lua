@@ -110,7 +110,7 @@ GangGarages = {
         putVehicle = vector3(94.75, -1959.93, 20.84),
         isHouse = false,
         job = "ballas"
-        ["showblip"] = true,
+        ["showblip"] = false,
     },
     ["la_familiagarage"] = {
         label = "La Familia",
@@ -119,7 +119,7 @@ GangGarages = {
         putVehicle = vector3(-811.65, 187.49, 72.48),
         isHouse = false,
         job = "la_familia"
-        ["showblip"] = true,
+        ["showblip"] = false,
     },
     ["the_lostgarage"] = {
         label = "Lost MC",
@@ -128,7 +128,7 @@ GangGarages = {
         putVehicle = vector3(950.47, -122.05, 74.36),
         isHouse = false,
         job = "the_lost"
-        ["showblip"] = true,
+        ["showblip"] = false,
     },
     ["cartelgarage"] = {
         label = "Cartel",
@@ -137,7 +137,7 @@ GangGarages = {
         putVehicle = vector3(1407.18, 1118.04, 114.84),
         isHouse = false,
         job = "cartel"
-        ["showblip"] = true,
+        ["showblip"] = false,
     },
 }
 
@@ -149,7 +149,7 @@ JobGarages = {
         putVehicle = vector3(442.8, -1025.99, 28.71),
         isHouse = false,
         job = "police"
-        ["showblip"] = true,
+        ["showblip"] = false,
     },
 }
 
@@ -157,6 +157,6 @@ Depots = {
     ["hayesdepot"] = {
         label = "Hayes Depot",
         takeVehicle = vector4(491.0, -1314.69, 29.25, 304.5)
-        ["showblip"] = true,
+        ["showblip"] = false,
     }
 }
