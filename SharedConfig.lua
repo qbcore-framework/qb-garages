@@ -1,3 +1,6 @@
+UsedJobGarages = true
+UsedGangsGarages = true
+
 Garages = {
     ["motelgarage"] = {
         label = "Motel Parking",
