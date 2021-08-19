@@ -157,20 +157,23 @@ end
 
 Citizen.CreateThread(function()
     for k, v in pairs(Garages) do
-        Garage = AddBlipForCoord(Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z)
+	if Garages[k]["showblip"] then
+		Garage = AddBlipForCoord(Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z)
 
-        SetBlipSprite (Garage, 357)
-        SetBlipDisplay(Garage, 4)
-        SetBlipScale  (Garage, 0.65)
-        SetBlipAsShortRange(Garage, true)
-        SetBlipColour(Garage, 3)
+		SetBlipSprite (Garage, 357)
+		SetBlipDisplay(Garage, 4)
+		SetBlipScale  (Garage, 0.65)
+		SetBlipAsShortRange(Garage, true)
+		SetBlipColour(Garage, 3)
 
-        BeginTextCommandSetBlipName("STRING")
-        AddTextComponentSubstringPlayerName(Garages[k].label)
-        EndTextCommandSetBlipName(Garage)
+		BeginTextCommandSetBlipName("STRING")
+		AddTextComponentSubstringPlayerName(Garages[k].label)
+		EndTextCommandSetBlipName(Garage)
+	end
     end
 
     for k, v in pairs(Depots) do
+	if Depots[k]["showblip"] then
         Depot = AddBlipForCoord(Depots[k].takeVehicle.x, Depots[k].takeVehicle.y, Depots[k].takeVehicle.z)
 
         SetBlipSprite (Depot, 68)
@@ -182,7 +185,40 @@ Citizen.CreateThread(function()
         BeginTextCommandSetBlipName("STRING")
         AddTextComponentSubstringPlayerName(Depots[k].label)
         EndTextCommandSetBlipName(Depot)
+	end
     end
+		
+    for k, v in pairs(GangGarages) do
+	if GangGarages[k]["showblip"] then
+		Garage = AddBlipForCoord(Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z)
+
+		SetBlipSprite (Garage, 357)
+		SetBlipDisplay(Garage, 4)
+		SetBlipScale  (Garage, 0.65)
+		SetBlipAsShortRange(Garage, true)
+		SetBlipColour(Garage, 3)
+
+		BeginTextCommandSetBlipName("STRING")
+		AddTextComponentSubstringPlayerName(Garages[k].label)
+		EndTextCommandSetBlipName(Garage)
+	end
+    end		
+
+	for k, v in pairs(JobGarages) do
+	if JobGarages[k]["showblip"] then
+		Garage = AddBlipForCoord(Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z)
+
+		SetBlipSprite (Garage, 357)
+		SetBlipDisplay(Garage, 4)
+		SetBlipScale  (Garage, 0.65)
+		SetBlipAsShortRange(Garage, true)
+		SetBlipColour(Garage, 3)
+
+		BeginTextCommandSetBlipName("STRING")
+		AddTextComponentSubstringPlayerName(Garages[k].label)
+		EndTextCommandSetBlipName(Garage)
+	end
+    end		
 end)
 
 function MenuGarage()
