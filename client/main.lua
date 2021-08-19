@@ -190,7 +190,7 @@ Citizen.CreateThread(function()
 		
     for k, v in pairs(GangGarages) do
 	if GangGarages[k]["showblip"] then
-		Garage = AddBlipForCoord(GangGarages[k].takeVehicle.x, GangGarages[k].takeVehicle.y, GangGarages[k].takeVehicle.z)
+		Garage = AddBlipForCoord(Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z)
 
 		SetBlipSprite (Garage, 357)
 		SetBlipDisplay(Garage, 4)
@@ -199,14 +199,14 @@ Citizen.CreateThread(function()
 		SetBlipColour(Garage, 3)
 
 		BeginTextCommandSetBlipName("STRING")
-		AddTextComponentSubstringPlayerName(GangGarages[k].label)
+		AddTextComponentSubstringPlayerName(Garages[k].label)
 		EndTextCommandSetBlipName(Garage)
 	end
     end		
 
 	for k, v in pairs(JobGarages) do
 	if JobGarages[k]["showblip"] then
-		Garage = AddBlipForCoord(JobGarages[k].takeVehicle.x, JobGarages[k].takeVehicle.y, JobGarages[k].takeVehicle.z)
+		Garage = AddBlipForCoord(Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z)
 
 		SetBlipSprite (Garage, 357)
 		SetBlipDisplay(Garage, 4)
@@ -215,7 +215,7 @@ Citizen.CreateThread(function()
 		SetBlipColour(Garage, 3)
 
 		BeginTextCommandSetBlipName("STRING")
-		AddTextComponentSubstringPlayerName(JobGarages[k].label)
+		AddTextComponentSubstringPlayerName(Garages[k].label)
 		EndTextCommandSetBlipName(Garage)
 	end
     end		
@@ -799,6 +799,7 @@ Citizen.CreateThread(function()
         local ped = PlayerPedId()
         local pos = GetEntityCoords(ped)
         local inGarageRange = false
+	if UsedGangsGarages then
         if PlayerGang.name ~= nil then
         Name = PlayerGang.name.."garage"
         end
@@ -872,6 +873,7 @@ Citizen.CreateThread(function()
                 end
             end
         end
+	end
         if not inGarageRange then
             Citizen.Wait(1000)
         end
@@ -885,17 +887,18 @@ Citizen.CreateThread(function()
         local ped = PlayerPedId()
         local pos = GetEntityCoords(ped)
         local inGarageRange = false
+	if UsedJobGarages then
         if PlayerJob.name ~= nil then
         Name = PlayerJob.name.."garage"
         end
          for k, v in pairs(JobGarages) do
             
             if PlayerJob.name == JobGarages[k].job then
-                local policeDist = #(pos - vector3(JobGarages[Name].takeVehicle.x, JobGarages[Name].takeVehicle.y, JobGarages[Name].takeVehicle.z))
-                if policeDist <= 15 then
+                local ballasDist = #(pos - vector3(JobGarages[Name].takeVehicle.x, JobGarages[Name].takeVehicle.y, JobGarages[Name].takeVehicle.z))
+                if ballasDist <= 15 then
                     inGarageRange = true
                     DrawMarker(2, JobGarages[Name].takeVehicle.x, JobGarages[Name].takeVehicle.y, JobGarages[Name].takeVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
-                    if policeDist <= 1.5 then
+                    if ballasDist <= 1.5 then
                         if not IsPedInAnyVehicle(ped) then
                             DrawText3Ds(JobGarages[Name].takeVehicle.x, JobGarages[Name].takeVehicle.y, JobGarages[Name].takeVehicle.z + 0.5, '~g~E~w~ - Garage')
                             if IsControlJustPressed(1, 177) and not Menu.hidden then
@@ -914,7 +917,7 @@ Citizen.CreateThread(function()
 
                     Menu.renderGUI()
 
-                    if policeDist >= 4 and not Menu.hidden then
+                    if ballasDist >= 4 and not Menu.hidden then
                         closeMenuFull()
                     end
                 end
@@ -958,6 +961,7 @@ Citizen.CreateThread(function()
                 end
             end
         end
+	end
         if not inGarageRange then
             Citizen.Wait(1000)
         end
