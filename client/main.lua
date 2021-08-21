@@ -250,6 +250,8 @@ function HouseGarage(house)
                     v.state = "Garaged"
                 elseif v.state == 2 then
                     v.state = "Impound"
+                elseif v.state == 3 then
+                    v.state = "PoliceImpound"					
                 end
 
                 if v.vehicle ~= "yFiat595ssB" then
@@ -322,13 +324,14 @@ function VehicleList()
                 currentFuel = v.fuel
                 curGarage = Garages[v.garage].label
 
-
                 if v.state == 0 then
                     v.state = "Out"
                 elseif v.state == 1 then
                     v.state = "Garaged"
                 elseif v.state == 2 then
                     v.state = "Impound"
+                elseif v.state == 3 then
+                    v.state = "PoliceImpound"
                 end
 
                 if v.vehicle ~= "yFiat595ssB" then
@@ -361,14 +364,14 @@ function GangVehicleList()
                 currentFuel = v.fuel
                 curGarage = GangGarages[v.garage].label
 
-
-
                 if v.state == 0 then
                     v.state = "Out"
                 elseif v.state == 1 then
                     v.state = "Garaged"
                 elseif v.state == 2 then
                     v.state = "Impound"
+                elseif v.state == 3 then
+                    v.state = "PoliceImpound"
                 end
 
                 if v.vehicle ~= "yFiat595ssB" then
@@ -653,7 +656,6 @@ Citizen.CreateThread(function()
                                 local passenger = GetVehicleMaxNumberOfPassengers(curVeh)
                                 CheckPlayers(curVeh)
                                 
-                              
                                 --local TaskLeaveVehicle
                                 TriggerServerEvent('qb-garage:server:updateVehicleStatus', totalFuel, engineDamage, bodyDamage, plate, k)
                                 TriggerServerEvent('qb-garage:server:updateVehicleState', 1, plate, k)
