@@ -154,6 +154,15 @@ JobGarages = {
         job = "police",
         ["showblip"] = false,
     },
+    ["Hospial"] = {
+        label = "Police",
+        takeVehicle = vector3(295.88, -606.0, 42.73),
+        spawnPoint = vector4(294.27, -608.6, 42.74, 74.68),
+        putVehicle = vector3(290.21, -613.88, 42.81),
+        isHouse = false,
+        job = "doctor","ambulance",
+        ["showblip"] = false,
+    },
 }
 
 Depots = {
