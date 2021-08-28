@@ -39,3 +39,6 @@ ensure qb-vehiclekeys
     },
 ```
 - You can change Depot location and blip name or add another depot location under "Depots"
+
+- If you have older build of several scripts and you are not sure if they are updated check PR's in the following scripts.
+- qb-policejob & qb-vehiclesales

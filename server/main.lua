@@ -119,16 +119,16 @@ AddEventHandler('qb-garage:server:PayDepotPrice', function(vehicle, garage)
     end)
 end)
 
-RegisterServerEvent('qb-garage:server:updateVehicleState')
-AddEventHandler('qb-garage:server:updateVehicleState', function(state, plate, garage)
+RegisterServerEvent('qb-garages:server:updateVehicleState')
+AddEventHandler('qb-garages:server:updateVehicleState', function(state, plate, garage)
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
 
     exports['ghmattimysql']:execute('UPDATE player_vehicles SET state = @state, garage = @garage, depotprice = @depotprice WHERE plate = @plate', {['@state'] = state, ['@plate'] = plate, ['@depotprice'] = 0, ['@citizenid'] = pData.PlayerData.citizenid, ['@garage'] = garage})
 end)
 
-RegisterServerEvent('qb-garage:server:updateVehicleStatus')
-AddEventHandler('qb-garage:server:updateVehicleStatus', function(fuel, engine, body, plate, garage)
+RegisterServerEvent('qb-garages:server:updateVehicleStatus')
+AddEventHandler('qb-garages:server:updateVehicleStatus', function(fuel, engine, body, plate, garage)
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
 
