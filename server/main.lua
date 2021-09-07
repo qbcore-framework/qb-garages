@@ -128,7 +128,7 @@ AddEventHandler('qb-garage:server:updateVehicleState', function(state, plate, ga
 end)
 
 RegisterServerEvent('qb-garage:server:updateVehicleStatus')
-AddEventHandler('qb-garage:server:updateVehicleStatus', function(fuel, engine, body, plate, garage)
+AddEventHandler('qb-garage:server:updateVehicleStatus', function(mods, fuel, engine, body, plate, garage)
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
 
@@ -140,7 +140,8 @@ AddEventHandler('qb-garage:server:updateVehicleStatus', function(fuel, engine, b
         body = body / 1000
     end
 
-    exports['ghmattimysql']:execute('UPDATE player_vehicles SET fuel = @fuel, engine = @engine, body = @body WHERE plate = @plate AND citizenid = @citizenid AND garage = @garage', {
+    exports['ghmattimysql']:execute('UPDATE player_vehicles SET mods = @mods, fuel = @fuel, engine = @engine, body = @body WHERE plate = @plate AND citizenid = @citizenid AND garage = @garage', {
+        ['@mods'] = json.encode(mods),
         ['@fuel'] = fuel, 
         ['@engine'] = engine, 
         ['@body'] = body,
