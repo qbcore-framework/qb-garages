@@ -445,7 +445,7 @@ function TakeOutGarageVehicle(vehicle)
                 end
 
                 SetVehicleNumberPlateText(veh, vehicle.plate)
-                SetEntityHeading(veh, HouseGarages[currentHouseGarage].takeVehicle.w)
+                SetEntityHeading(veh, HouseGarages[currentHouseGarage].takeVehicle.h)
                 TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
                 exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
                 SetEntityAsMissionEntity(veh, true, true)
@@ -711,7 +711,7 @@ CreateThread(function()
         local ped = PlayerPedId()
         local pos = GetEntityCoords(ped)
         local inGarageRange = false
-        if HouseGarages and currentHouseGarage then
+        if HouseGarages and currentHouseGarage and pos then
             if hasGarageKey and HouseGarages[currentHouseGarage] and HouseGarages[currentHouseGarage].takeVehicle and HouseGarages[currentHouseGarage].takeVehicle.x then
                 local takeDist = #(pos - vector3(HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z))
                 if takeDist <= 15 then
