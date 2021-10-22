@@ -132,6 +132,15 @@ GangGarages = {
     },
 }
 
+JobGarages = {
+    ["policegarage"] = {
+        label = "Police",
+        takeVehicle = vector3(454.28, -1025.31, 28.43),
+        spawnPoint = vector4(454.28, -1025.31, 28.43, 93.57),
+        putVehicle = vector3(454.56, -1015.58, 28.43),
+        job = "police"
+    },
+}
 
 Depots = {
     ["hayesdepot"] = {
