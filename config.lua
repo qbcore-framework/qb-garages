@@ -134,7 +134,7 @@ GangGarages = {
 
 JobGarages = {
     ["police"] = {
-        label = "Police",
+        label = "Police Department",
         takeVehicle = vector3(454.6, -1017.4, 28.4),
         spawnPoint = vector4(438.4, -1018.3, 27.7, 90.0),
         putVehicle = vector3(454.6, -1017.4, 28.4),
