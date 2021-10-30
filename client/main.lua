@@ -370,7 +370,7 @@ RegisterNetEvent("qb-garages:client:HouseGarage", function(house)
                 end
 
                 MenuHouseGarageOptions[#MenuHouseGarageOptions+1] = {
-                    header = vname.." ["..v.depotprice.."]",
+                    header = v.name.." ["..v.depotprice.."]",
                     txt = "Plate: "..v.plate.."<br>Fuel: "..currentFuel.." | Engine: "..enginePercent.." | Body: "..bodyPercent,
                     params = {
                         event = "qb-garages:client:TakeOutHouseGarage",
