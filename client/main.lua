@@ -6,6 +6,7 @@ local OutsideVehicles = {}
 local PlayerData = {}
 local PlayerGang = {}
 local PlayerJob = {}
+local DamageVeh = {}
 
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     PlayerData = QBCore.Functions.GetPlayerData()
@@ -171,6 +172,69 @@ local function MenuHouseGarage(house)
     })
 end
 
+-- https://github.com/renzuzu/renzu_garage BIG thanks to RENZU for let me grab this code
+local function GetVehicleDamage(vehicle, plate)
+    if not DamageVeh[plate] then
+        DamageVeh[plate] = {
+            wheel_tires = {},
+            vehicle_doors = {},
+            vehicle_window = {}
+        }
+    end
+    for tireid = 1, 7 do
+        local normal = IsVehicleTyreBurst(vehicle, tireid, true)
+        local completely = IsVehicleTyreBurst(vehicle, tireid, false)
+        if normal or completely then
+            DamageVeh[plate].wheel_tires[tireid] = true
+        else
+            DamageVeh[plate].wheel_tires[tireid] = false
+        end
+    end
+    Wait(100)
+    for doorid = 0, 5 do
+        DamageVeh[plate].vehicle_doors[#DamageVeh[plate].vehicle_doors + 1] = IsVehicleDoorDamaged(vehicle, doorid)
+    end
+    Wait(500)
+    for windowid = 0, 7 do
+        DamageVeh[plate].vehicle_window[#DamageVeh[plate].vehicle_window + 1] = IsVehicleWindowIntact(vehicle, windowid)
+    end
+end
+
+local function SetVehicleDamage(vehicle, plate)
+    if not DamageVeh[plate] then
+        DamageVeh[plate] = {
+            wheel_tires = {},
+            vehicle_doors = {},
+            vehicle_window = {}
+        }
+    end
+    Wait(200)
+    if DamageVeh[plate].wheel_tires then
+        for tireid = 1, 7 do
+            if DamageVeh[plate].wheel_tires[tireid] then
+                SetVehicleTyreBurst(vehicle, tireid, true, 1000)
+            end
+        end
+    end
+    if DamageVeh[plate].vehicle_window then
+        for windowid = 0, 5, 1 do
+            if DamageVeh[plate].vehicle_window[windowid] then
+                RemoveVehicleWindow(vehicle, windowid)
+            end
+        end
+    end
+    if DamageVeh[plate].vehicle_doors then
+        for doorid = 0, 5, 1 do
+            if DamageVeh[plate].vehicle_doors[doorid] then
+                SetVehicleDoorBroken(vehicle, doorid - 1, true)
+            end
+        end
+    end
+    Wait(500)
+    DamageVeh[plate] = nil
+end
+
+
 local function ClearMenu()
 	TriggerEvent("qb-menu:closeMenu")
 end
@@ -270,7 +334,8 @@ RegisterNetEvent('qb-garages:client:takeOutDepot', function(vehicle)
                     TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
                     exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
                     SetEntityAsMissionEntity(veh, true, true)
-                    doCarDamage(veh, vehicle)
+		    SetVehicleDamage(veh, vehicle.plate)
+                  --  doCarDamage(veh, vehicle)
                     TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
                     TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
                     closeMenuFull()
@@ -299,7 +364,8 @@ RegisterNetEvent('qb-garages:client:takeOutDepot', function(vehicle)
                     TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
                     exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
                     SetEntityAsMissionEntity(veh, true, true)
-                    doCarDamage(veh, vehicle)
+		    SetVehicleDamage(veh, vehicle.plate)
+                   -- doCarDamage(veh, vehicle)
                     TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
                     TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
                     closeMenuFull()
@@ -329,7 +395,8 @@ RegisterNetEvent('qb-garages:client:takeOutDepot', function(vehicle)
                 TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
                 exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
                 SetEntityAsMissionEntity(veh, true, true)
-                doCarDamage(veh, vehicle)
+		SetVehicleDamage(veh, vehicle.plate)
+               --doCarDamage(veh, vehicle)
                 TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
                 TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
                 closeMenuFull()
@@ -597,7 +664,8 @@ RegisterNetEvent('qb-garages:client:takeOutPublicGarage', function(vehicle)
                 SetVehicleNumberPlateText(veh, vehicle.plate)
                 SetEntityHeading(veh, Garages[currentGarage].spawnPoint.w)
                 exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
-                doCarDamage(veh, vehicle)
+		SetVehicleDamage(veh, vehicle.plate)
+              --  doCarDamage(veh, vehicle)
                 SetEntityAsMissionEntity(veh, true, true)
                 TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
                 closeMenuFull()
@@ -632,7 +700,8 @@ RegisterNetEvent('qb-garages:client:takeOutGangGarage', function(vehicle)
                 SetVehicleNumberPlateText(veh, vehicle.plate)
                 SetEntityHeading(veh, GangGarages[currentGarage].spawnPoint.w)
                 exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
-                doCarDamage(veh, vehicle)
+		SetVehicleDamage(veh, vehicle.plate)
+              --  doCarDamage(veh, vehicle)
                 SetEntityAsMissionEntity(veh, true, true)
                 TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
                 closeMenuFull()
@@ -664,7 +733,8 @@ RegisterNetEvent('qb-garages:client:takeOutJobGarage', function(vehicle)
                 SetVehicleNumberPlateText(veh, vehicle.plate)
                 SetEntityHeading(veh, JobGarages[currentGarage].spawnPoint.w)
                 exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
-                doCarDamage(veh, vehicle)
+		SetVehicleDamage(veh, vehicle.plate)
+               -- doCarDamage(veh, vehicle)
                 SetEntityAsMissionEntity(veh, true, true)
                 TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
                 closeMenuFull()
@@ -706,7 +776,8 @@ RegisterNetEvent('qb-garages:client:TakeOutHouseGarage', function(vehicle)
                 TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
                 exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
                 SetEntityAsMissionEntity(veh, true, true)
-                doCarDamage(veh, vehicle)
+		SetVehicleDamage(veh, vehicle.plate)
+               -- doCarDamage(veh, vehicle)
                 TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
                 closeMenuFull()
                 TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
@@ -756,6 +827,7 @@ CreateThread(function()
                         local plate = GetVehicleNumberPlateText(curVeh)
                         QBCore.Functions.TriggerCallback('qb-garage:server:checkVehicleOwner', function(owned)
                             if owned then
+				GetVehicleDamage(curVeh, plate)
                                 local bodyDamage = math.ceil(GetVehicleBodyHealth(curVeh))
                                 local engineDamage = math.ceil(GetVehicleEngineHealth(curVeh))
                                 local totalFuel = exports['LegacyFuel']:GetFuel(curVeh)
@@ -823,6 +895,7 @@ CreateThread(function()
                             local plate = GetVehicleNumberPlateText(curVeh)
                             QBCore.Functions.TriggerCallback('qb-garage:server:checkVehicleOwner', function(owned)
                                 if owned then
+					GetVehicleDamage(curVeh, plate)
                                     local bodyDamage = math.ceil(GetVehicleBodyHealth(curVeh))
                                     local engineDamage = math.ceil(GetVehicleEngineHealth(curVeh))
                                     local totalFuel = exports['LegacyFuel']:GetFuel(curVeh)
@@ -896,6 +969,7 @@ CreateThread(function()
                             local plate = GetVehicleNumberPlateText(curVeh)
                             QBCore.Functions.TriggerCallback('qb-garage:server:checkVehicleOwner', function(owned)
                                 if owned then
+					GetVehicleDamage(curVeh, plate)
                                     local bodyDamage = math.ceil(GetVehicleBodyHealth(curVeh))
                                     local engineDamage = math.ceil(GetVehicleEngineHealth(curVeh))
                                     local totalFuel = exports['LegacyFuel']:GetFuel(curVeh)
@@ -957,6 +1031,7 @@ CreateThread(function()
                                     local plate = GetVehicleNumberPlateText(curVeh)
                                     QBCore.Functions.TriggerCallback('qb-garage:server:checkVehicleHouseOwner', function(owned)
                                         if owned then
+					GetVehicleDamage(curVeh, plate)
                                             local bodyDamage = round(GetVehicleBodyHealth(curVeh), 1)
                                             local engineDamage = round(GetVehicleEngineHealth(curVeh), 1)
                                             local totalFuel = exports['LegacyFuel']:GetFuel(curVeh)
