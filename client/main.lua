@@ -198,6 +198,7 @@ local function GetVehicleDamage(vehicle, plate)
     for windowid = 0, 7 do
         DamageVeh[plate].vehicle_window[#DamageVeh[plate].vehicle_window + 1] = IsVehicleWindowIntact(vehicle, windowid)
     end
+	 SetResourceKvp(plate, json.encode(DamageVeh[plate])) 
 end
 
 local function SetVehicleDamage(vehicle, plate)
@@ -207,6 +208,12 @@ local function SetVehicleDamage(vehicle, plate)
             vehicle_doors = {},
             vehicle_window = {}
         }
+	local Data = json.decode(GetResourceKvpString(plate))
+        if Data then
+            DamageVeh[plate].wheel_tires = Data.wheel_tires
+            DamageVeh[plate].vehicle_doors = Data.vehicle_doors
+            DamageVeh[plate].vehicle_window = Data.vehicle_window
+        end
     end
     Wait(200)
     if DamageVeh[plate].wheel_tires then
@@ -216,6 +223,7 @@ local function SetVehicleDamage(vehicle, plate)
             end
         end
     end
+	Wait(200)
     if DamageVeh[plate].vehicle_window then
         for windowid = 0, 5, 1 do
             if DamageVeh[plate].vehicle_window[windowid] then
@@ -223,6 +231,7 @@ local function SetVehicleDamage(vehicle, plate)
             end
         end
     end
+	Wait(200)
     if DamageVeh[plate].vehicle_doors then
         for doorid = 0, 5, 1 do
             if DamageVeh[plate].vehicle_doors[doorid] then
@@ -232,6 +241,7 @@ local function SetVehicleDamage(vehicle, plate)
     end
     Wait(500)
     DamageVeh[plate] = nil
+    SetResourceKvp(plate, '') 
 end
 
 
