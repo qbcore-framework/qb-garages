@@ -7,6 +7,8 @@ local PlayerData = {}
 local PlayerGang = {}
 local PlayerJob = {}
 local DamageVeh = {}
+local UsingKVP = true -- Set to true to use KVP and store locally the info
+
 
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     PlayerData = QBCore.Functions.GetPlayerData()
@@ -198,24 +200,30 @@ local function GetVehicleDamage(vehicle, plate)
     for windowid = 0, 7 do
         DamageVeh[plate].vehicle_window[#DamageVeh[plate].vehicle_window + 1] = IsVehicleWindowIntact(vehicle, windowid)
     end
+    if UsingKVP then
 	 SetResourceKvp(plate, json.encode(DamageVeh[plate])) 
+    end
 end
 
 local function SetVehicleDamage(vehicle, plate)
+    local Data = json.decode(GetResourceKvpString(plate)) or {}
     if not DamageVeh[plate] then
-        DamageVeh[plate] = {
-            wheel_tires = {},
-            vehicle_doors = {},
-            vehicle_window = {}
+        DamageVeh[plate] = { -- if for some reason there isn't any information on the table, just assign the default values
+            wheel_tires = {false,false,false,false,false,false,false},
+            vehicle_doors = {false,false,false,false,false,false},
+            vehicle_window = {false,false,false,false,false}
         }
-	local Data = json.decode(GetResourceKvpString(plate))
-        if Data then
-            DamageVeh[plate].wheel_tires = Data.wheel_tires
-            DamageVeh[plate].vehicle_doors = Data.vehicle_doors
-            DamageVeh[plate].vehicle_window = Data.vehicle_window
-        end
     end
-    Wait(200)
+    if UsingKVP then
+    if Data then
+        DamageVeh[plate].wheel_tires = Data.wheel_tires
+        DamageVeh[plate].vehicle_doors = Data.vehicle_doors
+        DamageVeh[plate].vehicle_window = Data.vehicle_window
+    else
+        return
+    end
+    end
+    Wait(350)
     if DamageVeh[plate].wheel_tires then
         for tireid = 1, 7 do
             if DamageVeh[plate].wheel_tires[tireid] then
@@ -241,7 +249,9 @@ local function SetVehicleDamage(vehicle, plate)
     end
     Wait(500)
     DamageVeh[plate] = nil
-    SetResourceKvp(plate, '') 
+    if UsingKVP then
+        SetResourceKvp(plate, '')  -- Reset the info
+    end
 end
 
 
