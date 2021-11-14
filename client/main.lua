@@ -716,10 +716,21 @@ RegisterNetEvent('qb-garages:client:TakeOutHouseGarage', function(vehicle)
     end
 end)
 
+RegisterNetEvent('qb-garages:client:openMenu', function(data)
+    local ped = PlayerPedId()
+    local pos = GetEntityCoords(ped)
+    local takeDist = #(pos - vector3(Garages[data.currentGarage].takeVehicle.x, Garages[data.currentGarage].takeVehicle.y, Garages[data.currentGarage].takeVehicle.z))
+    if takeDist<= 1.5 then
+        MenuGarage()
+        currentGarage = data.currentGarage
+    end
+end)
+
 -- Threads
 
 CreateThread(function()
     Wait(1000)
+    local drawnHeader = false
     while true do
         Wait(5)
         local ped = PlayerPedId()
@@ -732,16 +743,31 @@ CreateThread(function()
                 DrawMarker(2, Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
                 if takeDist <= 1.5 then
                     if not IsPedInAnyVehicle(ped) then
-                        DrawText3Ds(Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z + 0.5, '~g~E~w~ - Garage')
-                        if IsControlJustPressed(0, 38) then
-                            MenuGarage()
-                            currentGarage = k
+
+                        if not drawnHeader then
+                            drawnHeader = true
+                            exports['qb-menu']:showHeader({
+                                {
+                                    header = Garages[k].label,
+                                    txt = "Open Garage",
+                                    params = {
+                                        event = 'qb-garages:client:openMenu',
+                                        args = {
+                                            currentGarage = k,
+                                        }
+                                    }
+                                }
+                            })
                         end
                     else
                         DrawText3Ds(Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z, Garages[k].label)
                     end
                 end
                 if takeDist >= 4 then
+                    if drawnHeader then
+                        drawnHeader = false
+                        exports['qb-menu']:closeMenu()
+                    end
                     closeMenuFull()
                 end
             end
