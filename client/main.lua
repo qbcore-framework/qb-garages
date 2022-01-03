@@ -171,15 +171,6 @@ local function MenuHouseGarage(house)
     })
 end
 
-local function ClearMenu()
-	TriggerEvent("qb-menu:closeMenu")
-end
-
-local function closeMenuFull()
-    currentGarage = nil
-    ClearMenu()
-end
-
 local function doCarDamage(currentVehicle, veh)
 	smash = false
 	damageOutside = false
@@ -275,7 +266,7 @@ RegisterNetEvent('qb-garages:client:takeOutDepot', function(vehicle)
                         doCarDamage(veh, vehicle)
                         TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
                         TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
-                        closeMenuFull()
+                        currentGarage = nil
                         SetVehicleEngineOn(veh, true, true)
                     end, vehicle.plate)
                     TriggerEvent("vehiclekeys:client:SetOwner", vehicle.plate)
@@ -304,7 +295,7 @@ RegisterNetEvent('qb-garages:client:takeOutDepot', function(vehicle)
                         doCarDamage(veh, vehicle)
                         TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
                         TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
-                        closeMenuFull()
+                        currentGarage = nil
                         SetVehicleEngineOn(veh, true, true)
                     end, vehicle.plate)
                     TriggerEvent("vehiclekeys:client:SetOwner", vehicle.plate)
@@ -334,7 +325,7 @@ RegisterNetEvent('qb-garages:client:takeOutDepot', function(vehicle)
                     doCarDamage(veh, vehicle)
                     TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
                     TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
-                    closeMenuFull()
+                    currentGarage = nil
                     SetVehicleEngineOn(veh, true, true)
                 end, vehicle.plate)
                 TriggerEvent("vehiclekeys:client:SetOwner", vehicle.plate)
@@ -605,7 +596,7 @@ RegisterNetEvent('qb-garages:client:takeOutPublicGarage', function(vehicle)
                 doCarDamage(veh, vehicle)
                 SetEntityAsMissionEntity(veh, true, true)
                 TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
-                closeMenuFull()
+                currentGarage = nil
                 TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
                 TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
                 SetVehicleEngineOn(veh, true, true)
@@ -640,7 +631,7 @@ RegisterNetEvent('qb-garages:client:takeOutGangGarage', function(vehicle)
                 doCarDamage(veh, vehicle)
                 SetEntityAsMissionEntity(veh, true, true)
                 TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
-                closeMenuFull()
+                currentGarage = nil
                 TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
                 TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
                 SetVehicleEngineOn(veh, true, true)
@@ -672,7 +663,7 @@ RegisterNetEvent('qb-garages:client:takeOutJobGarage', function(vehicle)
                 doCarDamage(veh, vehicle)
                 SetEntityAsMissionEntity(veh, true, true)
                 TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
-                closeMenuFull()
+                currentGarage = nil
                 TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
                 TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
                 SetVehicleEngineOn(veh, true, true)
@@ -713,7 +704,7 @@ RegisterNetEvent('qb-garages:client:TakeOutHouseGarage', function(vehicle)
                 SetEntityAsMissionEntity(veh, true, true)
                 doCarDamage(veh, vehicle)
                 TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
-                closeMenuFull()
+                currentGarage = nil
                 TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
                 SetVehicleEngineOn(veh, true, true)
             end, vehicle.plate)
@@ -747,7 +738,7 @@ CreateThread(function()
                     end
                 end
                 if takeDist >= 4 then
-                    closeMenuFull()
+                    currentGarage = nil
                 end
             end
             local putDist = #(pos - vector3(Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z))
@@ -814,7 +805,7 @@ CreateThread(function()
                         end
                     end
                     if takeDist >= 4 then
-                        closeMenuFull()
+                        currentGarage = nil
                     end
                 end
                 local putDist = #(pos - vector3(GangGarages[Name].putVehicle.x, GangGarages[Name].putVehicle.y, GangGarages[Name].putVehicle.z))
@@ -887,7 +878,7 @@ CreateThread(function()
                         end
                     end
                     if takeDist >= 4 then
-                        closeMenuFull()
+                        currentGarage = nil
                     end
                 end
                 local putDist = #(pos - vector3(JobGarages[Name].putVehicle.x, JobGarages[Name].putVehicle.y, JobGarages[Name].putVehicle.z))
@@ -989,7 +980,7 @@ CreateThread(function()
                             end
                         end
                         if takehouseDist > 1.99 then
-                            closeMenuFull()
+                            currentGarage = nil
                         end
                     end
                 end
@@ -1021,7 +1012,7 @@ CreateThread(function()
                     end
                 end
                 if depottakeDist >= 4 then
-                    closeMenuFull()
+                    currentGarage = nil
                 end
             end
         end
