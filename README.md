@@ -27,7 +27,7 @@
 **Common Error Messages**
 * "Vehicle not owned" - You can only parks vehicles that you own (needs to be in the database). 
 
-**OPTIONAL** qb-target by Berkie - https://github.com/BerkieBb/qb-targe
+**OPTIONAL** qb-target by Berkie - https://github.com/BerkieBb/qb-target
 * If using qb-target, here's some triggers you can use to open the public garage and depot. (Make sure to add the following code to client.lua)
 
 
