@@ -33,7 +33,7 @@ RegisterNetEvent('qb-garage:server:PayDepotPrice', function(vehicle, garage)
                 Player.Functions.RemoveMoney("bank", result[1].depotprice, "paid-depot")
                 TriggerClientEvent("qb-garages:client:takeOutDepot", src, vehicle, garage)
             else
-                TriggerClientEvent('QBCore:Notify', src, Lang:t("error.not_enough"), 'error')
+                TriggerClientEvent('QBCore:Notify', src, Lang:t("error.not_enough_money"), 'error')
             end
         end
     end)
@@ -85,7 +85,7 @@ end)
 QBCore.Functions.CreateCallback("qb-garage:server:GetUserVehicles", function(source, cb, garage)
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
-    MySQL.Async.fetchAll('SELECT * FROM player_vehicles WHERE citizenid = ? AND garage = ?', {pData.PlayerData.citizenid, garage}, function(result)
+    MySQL.Async.fetchAll('SELECT * FROM player_vehicles WHERE citizenid = ?', {pData.PlayerData.citizenid}, function(result)
         if result[1] then
             cb(result)
         else
@@ -126,6 +126,27 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetHouseVehicles", function(so
             cb(nil)
         end
     end)
+end)
+
+QBCore.Functions.CreateCallback("qb-garage:server:TransferVehicle", function(source, cb, garage, plate)
+    local src = source
+    local pData = QBCore.Functions.GetPlayer(src)
+    local bankBalance = pData.PlayerData.money["bank"]
+
+    if (bankBalance >= TransferPrice) then
+        pData.Functions.RemoveMoney('bank', TransferPrice, "transfer-vehicle")
+
+        local result = MySQL.Async.execute('UPDATE player_vehicles SET garage = ? WHERE citizenid = ? AND plate = ?',{garage, pData.PlayerData.citizenid, plate}, function(result)
+            if result then
+                cb(result)
+            else
+                cb(nil)
+            end
+        end)
+    else
+        TriggerClientEvent('QBCore:Notify', src, Lang:t("error.not_enough_money"), "error")
+        cb(nil)
+    end
 end)
 
 QBCore.Functions.CreateCallback("qb-garage:server:checkVehicleHouseOwner", function(source, cb, plate, house)

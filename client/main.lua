@@ -350,9 +350,7 @@ end)
 
 RegisterNetEvent("qb-garages:client:HouseGarage", function(house)
     QBCore.Functions.TriggerCallback("qb-garage:server:GetHouseVehicles", function(result)
-        if result == nil then
-            QBCore.Functions.Notify(Lang:t("error.no_vehicles"), "error", 5000)
-        else
+        if result then
             local MenuHouseGarageOptions = {
                 {
                     header = Lang:t('info.garage', {value = HouseGarages[house].label}),
@@ -364,7 +362,7 @@ RegisterNetEvent("qb-garages:client:HouseGarage", function(house)
                 enginePercent = round(v.engine / 10, 0)
                 bodyPercent = round(v.body / 10, 0)
                 currentFuel = v.fuel
-                curGarage = HouseGarages[house].label
+                --curGarage = HouseGarages[house].label
                 vname = QBCore.Shared.Vehicles[v.vehicle].name
 
                 if v.state == 0 then
@@ -393,15 +391,15 @@ RegisterNetEvent("qb-garages:client:HouseGarage", function(house)
                 }
             }
             exports['qb-menu']:openMenu(MenuHouseGarageOptions)
+        else
+            QBCore.Functions.Notify(Lang:t("error.no_vehicles"), "error", 5000)
         end
     end, house)
 end)
 
 RegisterNetEvent("qb-garages:client:DepotList", function()
     QBCore.Functions.TriggerCallback("qb-garage:server:GetDepotVehicles", function(result)
-        if result == nil then
-            QBCore.Functions.Notify(Lang:t("error.no_vehicles_impounded"), "error", 5000)
-        else
+        if result then
             local MenuDepotOptions = {
                 {
                     header = Lang:t('info.depot', {value = Depots[currentGarage].label}),
@@ -436,15 +434,15 @@ RegisterNetEvent("qb-garages:client:DepotList", function()
                 }
             }
             exports['qb-menu']:openMenu(MenuDepotOptions)
+        else
+            QBCore.Functions.Notify(Lang:t("error.no_vehicles_impounded"), "error", 5000)
         end
     end)
 end)
 
 RegisterNetEvent("qb-garages:client:VehicleList", function()
     QBCore.Functions.TriggerCallback("qb-garage:server:GetUserVehicles", function(result)
-        if result == nil then
-            QBCore.Functions.Notify(Lang:t("error.no_vehicles"), "error", 5000)
-        else
+        if result then
             local MenuPublicGarageOptions = {
                 {
                     header = Lang:t('info.garage', {value = Garages[currentGarage].label}),
@@ -455,7 +453,7 @@ RegisterNetEvent("qb-garages:client:VehicleList", function()
                 enginePercent = round(v.engine / 10, 0)
                 bodyPercent = round(v.body / 10, 0)
                 currentFuel = v.fuel
-                curGarage = Garages[v.garage].label
+                --curGarage = Garages[v.garage].label
                 vname = QBCore.Shared.Vehicles[v.vehicle].name
 
                 if v.state == 0 then
@@ -470,7 +468,7 @@ RegisterNetEvent("qb-garages:client:VehicleList", function()
                     header = vname.." ["..v.plate.."]",
                     txt = Lang:t('info.garage_line', {value = v.state, value2 = currentFuel, value3 = enginePercent, value4 = bodyPercent}),
                     params = {
-                        event = "qb-garages:client:takeOutPublicGarage",
+                        event = "qb-menu:client:VehicleList2",
                         args = v,
                     }
                 }
@@ -484,15 +482,41 @@ RegisterNetEvent("qb-garages:client:VehicleList", function()
                 }
             }
             exports['qb-menu']:openMenu(MenuPublicGarageOptions)
+        else
+            QBCore.Functions.Notify(Lang:t("error.no_vehicles"), "error", 5000)
         end
     end, currentGarage)
 end)
 
+RegisterNetEvent('qb-menu:client:VehicleList2', function(v)
+    local transferMenu = {}
+
+    transferMenu = {
+        {
+            header = Lang:t("menu.goBack"),
+        },
+        {
+            header = Lang:t("menu.spawn"),
+            params = {
+                event = "qb-garages:client:takeOutPublicGarage",
+                args = v,
+            }
+        },
+        {
+            header = Lang:t("menu.transfer"),
+            params = {
+                event = "qb-garages:client:transferGarage",
+                args = v,
+            }
+        }
+    }
+
+    exports['qb-menu']:openMenu(transferMenu)
+end)
+
 RegisterNetEvent("qb-garages:client:GangVehicleList", function()
     QBCore.Functions.TriggerCallback("qb-garage:server:GetUserVehicles", function(result)
-        if result == nil then
-            QBCore.Functions.Notify(Lang:t("error.no_vehicles"), "error", 5000)
-        else
+        if result then
             local MenuGangGarageOptions = {
                 {
                     header = Lang:t('info.garage', {value = GangGarages[currentGarage].label}),
@@ -503,7 +527,7 @@ RegisterNetEvent("qb-garages:client:GangVehicleList", function()
                 enginePercent = round(v.engine / 10, 0)
                 bodyPercent = round(v.body / 10, 0)
                 currentFuel = v.fuel
-                curGarage = GangGarages[v.garage].label
+                --curGarage = GangGarages[v.garage].label
                 vname = QBCore.Shared.Vehicles[v.vehicle].name
 
                 if v.state == 0 then
@@ -532,15 +556,15 @@ RegisterNetEvent("qb-garages:client:GangVehicleList", function()
                 }
             }
             exports['qb-menu']:openMenu(MenuGangGarageOptions)
+        else
+            QBCore.Functions.Notify(Lang:t("error.no_vehicles"), "error", 5000)
         end
     end, currentGarage)
 end)
 
 RegisterNetEvent("qb-garages:client:JobVehicleList", function()
     QBCore.Functions.TriggerCallback("qb-garage:server:GetUserVehicles", function(result)
-        if result == nil then
-            QBCore.Functions.Notify(Lang:t("error.no_vehicles"), "error", 5000)
-        else
+        if result then
             local MenuJobGarageOptions = {
                 {
                     header = Lang:t('info.garage', {value = JobGarages[currentGarage].label}),
@@ -551,7 +575,7 @@ RegisterNetEvent("qb-garages:client:JobVehicleList", function()
                 enginePercent = round(v.engine / 10, 0)
                 bodyPercent = round(v.body / 10, 0)
                 currentFuel = v.fuel
-                curGarage = JobGarages[v.garage].label
+                --curGarage = JobGarages[v.garage].label
                 vname = QBCore.Shared.Vehicles[v.vehicle].name
 
                 if v.state == 0 then
@@ -580,38 +604,44 @@ RegisterNetEvent("qb-garages:client:JobVehicleList", function()
                 }
             }
             exports['qb-menu']:openMenu(MenuJobGarageOptions)
+        else
+            QBCore.Functions.Notify(Lang:t("error.no_vehicles"), "error", 5000)
         end
     end, currentGarage)
 end)
 
 RegisterNetEvent('qb-garages:client:takeOutPublicGarage', function(vehicle)
     if vehicle.state == Lang:t("info.garaged") then
-        enginePercent = round(vehicle.engine / 10, 1)
-        bodyPercent = round(vehicle.body / 10, 1)
-        currentFuel = vehicle.fuel
+        if vehicle.garage == currentGarage then
+            enginePercent = round(vehicle.engine / 10, 1)
+            bodyPercent = round(vehicle.body / 10, 1)
+            currentFuel = vehicle.fuel
 
-        QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
-            QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
+            QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
+                QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
 
-                if vehicle.plate then
-                    OutsideVehicles[vehicle.plate] = veh
-                    TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
-                end
+                    if vehicle.plate then
+                        OutsideVehicles[vehicle.plate] = veh
+                        TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
+                    end
 
-                QBCore.Functions.SetVehicleProperties(veh, properties)
-                SetVehicleNumberPlateText(veh, vehicle.plate)
-                SetEntityHeading(veh, Garages[currentGarage].spawnPoint.w)
-                exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
-                doCarDamage(veh, vehicle)
-                SetEntityAsMissionEntity(veh, true, true)
-                TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
-                closeMenuFull()
-                TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
-                TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
-                SetVehicleEngineOn(veh, true, true)
-            end, vehicle.plate)
+                    QBCore.Functions.SetVehicleProperties(veh, properties)
+                    SetVehicleNumberPlateText(veh, vehicle.plate)
+                    SetEntityHeading(veh, Garages[currentGarage].spawnPoint.w)
+                    exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
+                    doCarDamage(veh, vehicle)
+                    SetEntityAsMissionEntity(veh, true, true)
+                    TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
+                    closeMenuFull()
+                    TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
+                    TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
+                    SetVehicleEngineOn(veh, true, true)
+                end, vehicle.plate)
 
-        end, Garages[currentGarage].spawnPoint, true)
+            end, Garages[currentGarage].spawnPoint, true)
+        else
+            QBCore.Functions.Notify(Lang:t("error.no_vehicle_this_garage"), "error", 2500)
+        end
     elseif vehicle.state == Lang:t("info.out") then
         QBCore.Functions.Notify(Lang:t("error.vehicle_at_depot"), "error", 2500)
     elseif vehicle.state == Lang:t("info.impounded") then
@@ -718,6 +748,26 @@ RegisterNetEvent('qb-garages:client:TakeOutHouseGarage', function(vehicle)
                 SetVehicleEngineOn(veh, true, true)
             end, vehicle.plate)
         end, HouseGarages[currentHouseGarage].takeVehicle, true)
+    end
+end)
+
+RegisterNetEvent('qb-garages:client:transferGarage', function(vehicle)
+    if vehicle.state == Lang:t("info.garaged") then
+        if currentGarage ~= vehicle.garage then
+            QBCore.Functions.TriggerCallback('qb-garage:server:TransferVehicle', function(result)
+                if result then
+                    QBCore.Functions.Notify(Lang:t("success.vehicle_transfered"), "primary", 5000)
+                else
+                    QBCore.Functions.Notify(Lang:t("error.vehicle_not_transfered"), "error", 5000)
+                end
+            end, currentGarage, vehicle.plate)
+        else
+            QBCore.Functions.Notify(Lang:t("error.vehicle_at_same_garage"), "error", 2500)
+        end
+    elseif vehicle.state == Lang:t("info.out") then
+        QBCore.Functions.Notify(Lang:t("error.vehicle_at_depot"), "error", 2500)
+    elseif vehicle.state == Lang:t("info.impounded") then
+        QBCore.Functions.Notify(Lang:t("error.impounded_by_police"), "error", 4000)
     end
 end)
 
