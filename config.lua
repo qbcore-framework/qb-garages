@@ -125,9 +125,9 @@ GangGarages = {
     },
     ["cartel"] = {
         label = "Cartel",
-        takeVehicle = vector3(-1535.28, 84.2, 56.78),
-        spawnPoint = vector4(-1525.09, 95.99, 56.64, 224.28),
-        putVehicle = vector3(-1525.09, 95.99, 56.64),
+        takeVehicle = vector3(1407.18, 1118.04, 114.84),
+        spawnPoint = vector4(1407.18, 1118.04, 114.84, 88.34),
+        putVehicle = vector3(1407.18, 1118.04, 114.84),
         job = "cartel"
     },
 }
@@ -145,7 +145,7 @@ JobGarages = {
 Depots = {
     ["hayesdepot"] = {
         label = "Hayes Depot",
-        takeVehicle = vector4(-209.05, -1169.06, 23.04, 93.12),
+        takeVehicle = vector4(491.0, -1314.69, 29.25, 304.5),
         showBlip = true
     }
 }
