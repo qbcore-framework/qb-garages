@@ -453,20 +453,22 @@ RegisterNetEvent("qb-garages:client:VehicleList", function()
                 enginePercent = round(v.engine / 10, 0)
                 bodyPercent = round(v.body / 10, 0)
                 currentFuel = v.fuel
-                --curGarage = Garages[v.garage].label
                 vname = QBCore.Shared.Vehicles[v.vehicle].name
 
-                if v.state == 0 then
+		if v.state == 0 then
                     v.state = Lang:t("info.out")
+                    vehState = v.state
                 elseif v.state == 1 then
                     v.state = Lang:t("info.garaged")
+                    vehState = v.state .. " (" .. Garages[v.garage].label .. ")"
                 elseif v.state == 2 then
                     v.state = Lang:t("info.impounded")
+                    vehState = v.state
                 end
 
                 MenuPublicGarageOptions[#MenuPublicGarageOptions+1] = {
                     header = vname.." ["..v.plate.."]",
-                    txt = Lang:t('info.garage_line', {value = v.state, value2 = currentFuel, value3 = enginePercent, value4 = bodyPercent}),
+                    txt = Lang:t('info.garage_line', {value = vehState, value2 = currentFuel, value3 = enginePercent, value4 = bodyPercent}),
                     params = {
                         event = "qb-menu:client:VehicleList2",
                         args = v,
