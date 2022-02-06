@@ -362,7 +362,7 @@ RegisterNetEvent("qb-garages:client:HouseGarage", function(house)
                 enginePercent = round(v.engine / 10, 0)
                 bodyPercent = round(v.body / 10, 0)
                 currentFuel = v.fuel
-                --curGarage = HouseGarages[house].label
+                curGarage = HouseGarages[house].label
                 vname = QBCore.Shared.Vehicles[v.vehicle].name
 
                 if v.state == 0 then
@@ -453,14 +453,15 @@ RegisterNetEvent("qb-garages:client:VehicleList", function()
                 enginePercent = round(v.engine / 10, 0)
                 bodyPercent = round(v.body / 10, 0)
                 currentFuel = v.fuel
+                curGarage = Garages[v.garage].label
                 vname = QBCore.Shared.Vehicles[v.vehicle].name
 
-		if v.state == 0 then
+                if v.state == 0 then
                     v.state = Lang:t("info.out")
                     vehState = v.state
                 elseif v.state == 1 then
                     v.state = Lang:t("info.garaged")
-                    vehState = v.state .. " (" .. Garages[v.garage].label .. ")"
+                    vehState = v.state .. " (" .. curGarage .. ")"
                 elseif v.state == 2 then
                     v.state = Lang:t("info.impounded")
                     vehState = v.state
@@ -529,7 +530,7 @@ RegisterNetEvent("qb-garages:client:GangVehicleList", function()
                 enginePercent = round(v.engine / 10, 0)
                 bodyPercent = round(v.body / 10, 0)
                 currentFuel = v.fuel
-                --curGarage = GangGarages[v.garage].label
+                curGarage = GangGarages[v.garage].label
                 vname = QBCore.Shared.Vehicles[v.vehicle].name
 
                 if v.state == 0 then
@@ -577,7 +578,7 @@ RegisterNetEvent("qb-garages:client:JobVehicleList", function()
                 enginePercent = round(v.engine / 10, 0)
                 bodyPercent = round(v.body / 10, 0)
                 currentFuel = v.fuel
-                --curGarage = JobGarages[v.garage].label
+                curGarage = JobGarages[v.garage].label
                 vname = QBCore.Shared.Vehicles[v.vehicle].name
 
                 if v.state == 0 then
