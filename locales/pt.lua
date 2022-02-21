@@ -1,36 +1,56 @@
 local Translations = {
     error = {
-        not_enough = "Dinheiro insuficiente",
+        no_vehicles = "Não tens nenhum veículo nesta garagem!",
         not_impound = "O teu veículo não está nos apreendidos",
         not_owned = "Este veículo não te pertence",
-        no_vehicles = "Não tens nenhum veículo nesta garagem!",
-        no_vehicles_impounded = "Não tens nenhum veículo apreendido!",
-        vehicle_at_depot = "O teu veículo pode estar apreendido!",
-        impounded_by_police = "Este veículo foi apreendido pela polícia!",
-        someone_inside = "Veículo não guardado, certifica-te que ninguém está dentro do carro.",
+        not_correct_type = "Não podes guardar veículos deste tipo aqui",
+        not_enough = "Dinheiro insuficiente",
+        no_garage = "Nenhuma",
     },
     success = {
         vehicle_parked = "Veículo guardado",
     },
-    info = {
-        public_garage = "Garagem Pública",
-        gang_garage = "Garagem da Gang",
-        job_garage = "Garagem do Trabalho",
-        house_garage = "Garagem da Casa",
-        impound = "Apreendidos",
-        my_vehicles = "Meus Veículos",
-        view_stored = "Ver veículos guardados!",
-        leave_garage = "⬅ Sair da Garagem",
-        leave_depot = "⬅ Sair dos Apreendidos",
-        garage = "Garagem: %{value}",
-        depot = "Apreendidos: %{value}",
+    menu = {
+        header = {
+            house_car = "Garagem Particular %{value}",
+            public_car = "Garagem %{value}",
+            public_sea = "Doca %{value}",
+            public_air = "Hangar %{value}",
+            job_car = "Garagem De Emprego %{value}",
+            job_sea = "Doca De Emprego %{value}",
+            job_air = "Hangar De Emprego %{value}",
+            gang_car = "Garagem De Gang %{value}",
+            gang_sea = "Doca De Gang %{value}",
+            gang_air = "Hangar De Gang %{value}",
+            depot_car = "Apreendidos %{value}",
+            depot_sea = "Apreendidos %{value}",
+            depot_air = "Apreendidos %{value}",
+            vehicles = "Veículos Disponíveis",
+            depot = "%{value} [ $%{value2} ]",
+            garage = "%{value} [ %{value2} ]",
+        },
+        leave = {
+            car = "⬅ Sair Da Garagem",
+            sea = "⬅ Sair Da Doca",
+            air = "⬅ Sair Do Hangar",
+        },
+        text = {
+            vehicles = "Ver veículos guardados!",
+            depot = "Placa: %{value}<br>Combu: %{value2} | Motor: %{value3} | Chassi: %{value4}",
+            garage = "Estado: %{value}<br>Combu: %{value2} | Motor: %{value3} | Chassi: %{value4}",
+        }
+    },
+    status = {
         out = "Fora",
         garaged = "Guardado",
-        impounded = "Apreendido Pela Polícia",
-        garage_line = "Estado: %{value}<br>Combu: %{value2} | Motor: %{value3} | Chassi: %{value4}",
-        depot_line = "Placa: %{value}<br>Combu: %{value2} | Motor: %{value3} | Chassi: %{value4}",
-        garage_e = "~g~E~w~ - Garagem",
+        impound = "Apreendido Pela Polícia",
+    },
+    info = {
+        car_e = "~g~E~w~ - Garagem",
+        sea_e = "~g~E~w~ - Doca",
+        air_e = "~g~E~w~ - Hangar",
         park_e = "~g~E~w~ - Guardar Veículo",
+        house_garage = "Garagem Particular",
     }
 }
 
