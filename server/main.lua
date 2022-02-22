@@ -114,6 +114,19 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetVehicleProperties", functio
     cb(properties)
 end)
 
+--External Calls
+--Check if this car belongs to the player or not
+QBCore.Functions.CreateCallback("qb-garage:server:checkVehicle", function(source, cb, plate)
+    local src = source
+    MySQL.Async.fetchAll('SELECT * FROM player_vehicles WHERE plate = ?', {plate}, function(result)
+        if result[1] then
+            cb(true)
+        else
+            cb(false)
+        end
+    end)
+end)
+
 RegisterNetEvent('qb-garage:server:updateVehicle', function(state, fuel, engine, body, plate, garage)
     MySQL.Async.execute('UPDATE player_vehicles SET state = ?, garage = ?, fuel = ?, engine = ?, body = ? WHERE plate = ?',{state, garage, fuel, engine, body, plate})
 end)
