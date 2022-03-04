@@ -3,8 +3,28 @@ local PlayerData = {}
 local PlayerGang = {}
 local PlayerJob = {}
 local currentHouseGarage = nil
-local inGarageRange = false
 local OutsideVehicles = {}
+
+-- Create peds for garage locations
+
+Citizen.CreateThread(function()
+    for _,v in pairs(Garages) do
+      RequestModel(GetHashKey("ig_trafficwarden"))
+      while not HasModelLoaded(GetHashKey("ig_trafficwarden")) do
+        Wait(1)
+      end
+      RequestAnimDict("mini@strip_club@idles@bouncer@base")
+      while not HasAnimDictLoaded("mini@strip_club@idles@bouncer@base") do
+        Wait(1)
+      end
+      ped =  CreatePed(4, 0x5719786D,v.takeVehicle.x,v.takeVehicle.y,(v.takeVehicle.z - 1.0), 3374176, false, true)
+      SetEntityHeading(ped, v[4])
+      FreezeEntityPosition(ped, true)
+      SetEntityInvincible(ped, true)
+      SetBlockingOfNonTemporaryEvents(ped, true)
+      TaskPlayAnim(ped,"mini@strip_club@idles@bouncer@base","base", 8.0, 0.0, -1, 1, 0, 0, 0, 0)
+    end
+end) 
 
 --Menus
 local function MenuGarage(type, garage, indexgarage)
@@ -105,21 +125,7 @@ local function CheckPlayers(vehicle, garage)
     Wait(1500)
     QBCore.Functions.DeleteVehicle(vehicle)
 end
--- Functions
-local DrawText3Ds = function(x, y, z, text)
-	SetTextScale(0.35, 0.35)
-    SetTextFont(4)
-    SetTextProportional(1)
-    SetTextColour(255, 255, 255, 215)
-    SetTextEntry("STRING")
-    SetTextCentre(true)
-    AddTextComponentString(text)
-    SetDrawOrigin(x,y,z, 0)
-    DrawText(0.0, 0.0)
-    local factor = (string.len(text)) / 370
-    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
-    ClearDrawOrigin()
-end
+
 local function round(num, numDecimalPlaces)
     return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
 end
@@ -208,7 +214,6 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
     local type = data.type
     local vehicle = data.vehicle
     local garage = data.garage
-    local indexgarage = data.index
     local spawn = false
 
     if type == "depot" then         --If depot, check if vehicle is not already spawned on the map
@@ -223,9 +228,6 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
         spawn = true
     end
     if spawn then
-        local enginePercent = round(vehicle.engine / 10, 1)
-        local bodyPercent = round(vehicle.body / 10, 1)
-        local currentFuel = vehicle.fuel
         local location
         local heading
         if type == "house" then
@@ -261,30 +263,6 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
     end
 end)
 
---Check distances
-local function checkTakeDist(pos, loc, garage, ped, type, indexgarage)
-    local takeDist = #(pos - vector3(loc.x, loc.y, loc.z))
-    if takeDist <= 15 then
-        inGarageRange = true
-        DrawMarker(2, loc.x, loc.y, loc.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
-        if takeDist <= 1.5 then
-            if not IsPedInAnyVehicle(ped) then
-                if type == "house" then
-                    DrawText3Ds(loc.x, loc.y, loc.z + 0.5, Lang:t("info.car_e"))
-                else
-                    DrawText3Ds(loc.x, loc.y, loc.z + 0.5, Lang:t("info."..garage.vehicle.."_e"))
-                end
-                if IsControlJustPressed(0, 38) then
-                    MenuGarage(type, garage, indexgarage)
-                end
-            end
-        end
-        if takeDist >= 4 then
-            closeMenuFull()
-        end
-    end
-end
-
 local function enterVehicle(veh, indexgarage, type, garage)
     local plate = QBCore.Functions.GetPlate(veh)
     QBCore.Functions.TriggerCallback('qb-garage:server:checkOwnership', function(owned)
@@ -292,7 +270,6 @@ local function enterVehicle(veh, indexgarage, type, garage)
             local bodyDamage = math.ceil(GetVehicleBodyHealth(veh))
             local engineDamage = math.ceil(GetVehicleEngineHealth(veh))
             local totalFuel = exports['LegacyFuel']:GetFuel(veh)
-            local vehProperties = QBCore.Functions.GetVehicleProperties(veh)
             TriggerServerEvent('qb-garage:server:updateVehicle', 1, totalFuel, engineDamage, bodyDamage, plate, indexgarage)
             CheckPlayers(veh, garage)
             if plate then
@@ -305,86 +282,6 @@ local function enterVehicle(veh, indexgarage, type, garage)
         end
     end, plate, type, indexgarage, PlayerGang.name)
 end
-
-local function checkPutDist(pos, loc, garage, ped, type, indexgarage)
-    local putDist = #(pos - vector3(loc.x, loc.y, loc.z))
-    local dist
-    if putDist <= 25 and IsPedInAnyVehicle(ped) then
-        inGarageRange = true
-        DrawMarker(2, loc.x, loc.y, loc.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 255, 255, 255, 255, false, false, false, true, false, false, false)
-        if garage.vehicle == "air" then                     --Give a little more room to air vehicles to be stored
-            dist = 3.0
-        else
-            dist = 1.5
-        end
-        if putDist <= dist then
-            DrawText3Ds(loc.x, loc.y, loc.z + 0.5, Lang:t("info.park_e"))
-            DrawText3Ds(loc.x, loc.y, loc.z, garage.label)
-            if IsControlJustPressed(0, 38) then
-                local curVeh = GetVehiclePedIsIn(ped)
-                local vehClass = GetVehicleClass(curVeh)
-                --Check vehicle type for garage
-                if garage.vehicle == "car" or not garage.vehicle then
-                    if vehClass ~= 14 and vehClass ~= 15 and vehClass ~= 16 then
-                        enterVehicle(curVeh, indexgarage, type)
-                    else
-                        QBCore.Functions.Notify(Lang:t("error.not_correct_type"), "error", 3500)
-                    end
-                elseif garage.vehicle == "air" then
-                    if vehClass == 15 or vehClass == 16 then
-                        enterVehicle(curVeh, indexgarage, type)
-                    else
-                        QBCore.Functions.Notify(Lang:t("error.not_correct_type"), "error", 3500)
-                    end
-                elseif garage.vehicle == "sea" then
-                    if vehClass == 14 then
-                        enterVehicle(curVeh, indexgarage, type, garage)
-                    else
-                        QBCore.Functions.Notify(Lang:t("error.not_correct_type"), "error", 3500)
-                    end
-                end
-            end
-        end
-    end
-end
-
-CreateThread(function()
-    Wait(1000)
-    while true do
-        Wait(5)
-        local ped = PlayerPedId()
-        local pos = GetEntityCoords(ped)
-        inGarageRange = false
-        for index, garage in pairs(Garages) do
-            if garage.type == "public" then
-                checkTakeDist(pos, garage.takeVehicle, garage, ped, garage.type, index)
-                checkPutDist(pos, garage.putVehicle, garage, ped, garage.type, index)
-            elseif garage.type == "job" then
-                if PlayerJob.name == garage.job then
-                    checkTakeDist(pos, garage.takeVehicle, garage, ped, garage.type, index)
-                    checkPutDist(pos, garage.putVehicle, garage, ped, garage.type, index)
-                end
-            elseif garage.type == "gang" then
-                if PlayerGang.name == garage.job then
-                    checkTakeDist(pos, garage.takeVehicle, garage, ped, garage.type, index)
-                    checkPutDist(pos, garage.putVehicle, garage, ped, garage.type, index)
-                end
-            elseif garage.type == "depot" then
-                checkTakeDist(pos, garage.takeVehicle, garage, ped, garage.type, index)
-            end
-        end
-        if HouseGarages and currentHouseGarage then
-            if hasGarageKey and HouseGarages[currentHouseGarage] and HouseGarages[currentHouseGarage].takeVehicle and HouseGarages[currentHouseGarage].takeVehicle.x then
-                checkTakeDist(pos, HouseGarages[currentHouseGarage].takeVehicle, HouseGarages[currentHouseGarage], ped, "house", currentHouseGarage)
-                checkPutDist(pos, HouseGarages[currentHouseGarage].takeVehicle, HouseGarages[currentHouseGarage], ped, "house", currentHouseGarage)
-            end
-        end
-
-        if not inGarageRange then
-            Wait(1000)
-        end
-    end
-end)
 
 RegisterNetEvent('qb-garages:client:setHouseGarage', function(house, hasKey)
     currentHouseGarage = house
@@ -438,3 +335,73 @@ RegisterNetEvent('qb-garages:client:TakeOutDepot', function(data)
         TriggerEvent("qb-garages:client:takeOutGarage", data)
     end
 end)
+
+-- Create event for opening garage menu
+
+RegisterNetEvent('qb-garages:client:menuGarage', function()
+    local pos = GetEntityCoords(PlayerPedId())
+    for index, garage in pairs(Garages) do
+        local takeDist = #(pos - garage.takeVehicle)
+        if takeDist <= 15 then
+            MenuGarage(garage.type, garage, index)
+            currentGarage = k
+        end
+    end
+end)
+
+-- Create event for storing a car
+RegisterNetEvent('qb-garages:client:storeVehicle', function()
+    local pos = GetEntityCoords(PlayerPedId())
+    for index, garage in pairs(Garages) do
+        local putDist = #(pos - garage.takeVehicle)
+        if putDist <= 15 then
+            local ped = PlayerPedId()
+            local curVeh = GetVehiclePedIsIn(ped)
+            local vehClass = GetVehicleClass(curVeh)
+            --Check vehicle type for garage
+            if garage.vehicle == "car" or not garage.vehicle then
+                if vehClass ~= 14 and vehClass ~= 15 and vehClass ~= 16 then
+                    enterVehicle(curVeh, index, garage.type)
+                else
+                    QBCore.Functions.Notify(Lang:t("error.not_correct_type"), "error", 3500)
+                end
+            elseif garage.vehicle == "air" then
+                if vehClass == 15 or vehClass == 16 then
+                    enterVehicle(curVeh, index, garage.type)
+                else
+                    QBCore.Functions.Notify(Lang:t("error.not_correct_type"), "error", 3500)
+                end
+            elseif garage.vehicle == "sea" then
+                if vehClass == 14 then
+                    enterVehicle(curVeh, index, garage.type, garage)
+                else
+                    QBCore.Functions.Notify(Lang:t("error.not_correct_type"), "error", 3500)
+                end
+            end
+        end
+    end
+end)
+
+-- Add target for the created peds
+local GaragePeds = {
+    `ig_trafficwarden`,
+}
+exports['qb-target']:AddTargetModel(GaragePeds, {
+    options = {
+        {
+            type = "client",
+            event = "qb-garages:client:menuGarage",
+            icon = "fa-solid fa-car-rear",
+            label = "Open Garage",
+            job = "all"
+        },
+        {
+            type = "client",
+            event = "qb-garages:client:storeVehicle",
+            icon = "fa-solid fa-car-rear",
+            label = "Store Vehicle",
+            job = "all"
+        },
+    },
+    distance = 8.5,
+})
