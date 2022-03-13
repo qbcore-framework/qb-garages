@@ -4,19 +4,11 @@ local insideZones = {}
 local OutsideVehicles = {}
 local inside = false
 
---[[AddEventHandler('onResourceStart', function(resource)
-    if GetCurrentResourceName() == resource then
-        playerJob = QBCore.Functions.GetPlayerData().job
-    end
-end)]]
-
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     if inside then
         exports['qb-radialmenu']:AddOption(5)
     end
 end)
-
-
 
 for name, garage in pairs(PolyGarages) do -- foreach shop
     insideZones[name] = false  -- default to not being in a shop
@@ -54,6 +46,7 @@ local function createGarageZones(garageShape, name)
     zone:onPlayerInOut(function (isPointInside)
         if isPointInside then
             insideZones[name] = true
+            QBCore.Functions.Notify('Open Radial Menu to open Garage Menu or to put up Vehicle.', 'primary', 10000)
             CreateThread(function ()
                 while insideZones[name] do
                     inside = true

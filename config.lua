@@ -9,9 +9,36 @@ PolyGarages = {
         - Job with Car
         - Depot
     ]]
+    ['leigonsquarealley'] = {
+        ['Zone'] = {
+            ['Shape'] = {
+                vector2(69.414520263672, -849.34320068359),
+                vector2(59.563220977783, -876.13598632812),
+                vector2(53.812015533447, -873.94421386719),
+                vector2(52.552845001221, -876.92974853516),
+                vector2(58.53719329834, -879.25579833984),
+                vector2(49.19457244873, -904.89520263672),
+                vector2(12.526390075684, -891.47192382812),
+                vector2(32.711112976074, -835.94616699219),
+                vector2(43.370277404785, -840.03533935547),
+                vector2(41.773113250732, -844.49047851562),
+                vector2(44.550273895264, -845.6552734375),
+                vector2(46.358081817627, -841.06768798828)
+            },
+            ['minZ'] = 29.90,
+            ['maxZ'] = 31.10
+        },
+        label = 'Leigon Square Parking',
+        showBlip = true,
+        blipcoords = vector3(52.41, -874.53, 30.42),
+        blipName = 'Public Parking',
+        blipNumber = '357',
+        type = 'public',
+        vehicle = 'car'
+    }
     ["motelgarage"] = {
         ['Zone'] = {
-            ['Shape'] = { --polygon that surrounds the shop
+            ['Shape'] = { --polygon that surrounds the parking area
                 vector2(266.04238891602, -348.67025756836),
                 vector2(285.89639282227, -356.23840332031),
                 vector2(287.69180297852, -351.80249023438),
@@ -23,8 +50,8 @@ PolyGarages = {
                 vector2(266.080078125, -343.24353027344),
                 vector2(267.49453735352, -344.12811279297)
             },
-            ['minZ'] = 44.74,  -- min height of the shop zone
-            ['maxZ'] = 47.15,  -- max height of the shop zone
+            ['minZ'] = 44.74,  -- min height of the parking zone
+            ['maxZ'] = 47.15,  -- max height of the parking zone
         },
         label = "Motel Parking",
         showBlip = true,
@@ -36,7 +63,7 @@ PolyGarages = {
     },
     ["sapcounsel"] = {
         ['Zone'] = {
-            ['Shape'] = { --polygon that surrounds the shop
+            ['Shape'] = { --polygon that surrounds the parking area
                 vector2(-362.48254394531, -793.2802734375),
                 vector2(-362.46408081055, -730.71594238281),
                 vector2(-360.078125, -727.29187011719),
@@ -55,8 +82,8 @@ PolyGarages = {
                 vector2(-335.69149780273, -786.58020019531),
                 vector2(-345.55349731445, -791.60711669922)
             },
-            ['minZ'] = 34.00,  -- min height of the shop zone
-            ['maxZ'] = 37.00,  -- max height of the shop zone
+            ['minZ'] = 34.00,  -- min height of the parking zone
+            ['maxZ'] = 37.00,  -- max height of the parking zone
         },
         label = "San Andreas Parking",
         showBlip = true,
@@ -68,14 +95,14 @@ PolyGarages = {
     },
     ["spanishave"] = {
         ['Zone'] = {
-            ['Shape'] = { --polygon that surrounds the shop
+            ['Shape'] = { --polygon that surrounds the parking area
                 vector2(-1135.1311035156, -778.41644287109),
                 vector2(-1114.7188720703, -761.08288574219),
                 vector2(-1142.3354492188, -729.19293212891),
                 vector2(-1161.1352539062, -745.50402832031)
             },
-            ['minZ'] = 17.69,  -- min height of the shop zone
-            ['maxZ'] = 20.61,  -- max height of the shop zone
+            ['minZ'] = 17.69,  -- min height of the parking zone
+            ['maxZ'] = 20.61,  -- max height of the parking zone
         },
         label = "Spanish Ave Parking",
         showBlip = true,
@@ -87,7 +114,7 @@ PolyGarages = {
     },
     ["caears24"] = {
         ['Zone'] = {
-            ['Shape'] = { --polygon that surrounds the shop
+            ['Shape'] = { --polygon that surrounds the parking area
                 vector2(76.188446044922, 7.9120540618896),
                 vector2(81.977760314941, 23.525623321533),
                 vector2(55.219917297363, 32.982769012451),
@@ -95,8 +122,8 @@ PolyGarages = {
                 vector2(68.127639770508, 9.6578321456909),
                 vector2(68.597557067871, 10.655039787292)
             },
-            ['minZ'] = 68.70,  -- min height of the shop zone
-            ['maxZ'] = 70.45,  -- max height of the shop zone
+            ['minZ'] = 68.70,  -- min height of the parking zone
+            ['maxZ'] = 70.45,  -- max height of the parking zone
         },
         label = "Caears 24 Parking",
         showBlip = true,
@@ -108,7 +135,7 @@ PolyGarages = {
     },
     ["caears242"] = {
         ['Zone'] = {
-            ['Shape'] = { --polygon that surrounds the shop
+            ['Shape'] = { --polygon that surrounds the parking area
                 vector2(-480.87042236328, -819.84265136719),
                 vector2(-441.08392333984, -820.39178466797),
                 vector2(-440.29922485352, -795.61010742188),
@@ -116,8 +143,8 @@ PolyGarages = {
                 vector2(-450.57876586914, -792.54748535156),
                 vector2(-480.38143920898, -792.79217529297)
             },
-            ['minZ'] = 30.47,  -- min height of the shop zone
-            ['maxZ'] = 32.82,  -- max height of the shop zone
+            ['minZ'] = 30.47,  -- min height of the parking zone
+            ['maxZ'] = 32.82,  -- max height of the parking zone
         },
         label = "Caears 24 Parking",
         showBlip = true,
@@ -129,7 +156,7 @@ PolyGarages = {
     },
     ["lagunapi"] = {
         ['Zone'] = {
-            ['Shape'] = { --polygon that surrounds the shop
+            ['Shape'] = { --polygon that surrounds the parking area
                 vector2(358.69207763672, 302.30017089844),
                 vector2(351.44546508789, 277.92486572266),
                 vector2(355.01831054688, 277.03842163086),
@@ -141,8 +168,8 @@ PolyGarages = {
                 vector2(359.67681884766, 296.56146240234),
                 vector2(361.49871826172, 301.58950805664)
             },
-            ['minZ'] = 103.00,  -- min height of the shop zone
-            ['maxZ'] = 105.89,  -- max height of the shop zone
+            ['minZ'] = 103.00,  -- min height of the parking zone
+            ['maxZ'] = 105.89,  -- max height of the parking zone
         },
         label = "Laguna Parking",
         showBlip = true,
@@ -154,7 +181,7 @@ PolyGarages = {
     },
     ["airportp"] = {
         ['Zone'] = {
-            ['Shape'] = { --polygon that surrounds the shop
+            ['Shape'] = { --polygon that surrounds the parking area
                 vector2(-779.76104736328, -2023.2966308594),
                 vector2(-775.14440917969, -2019.8140869141),
                 vector2(-767.18334960938, -2012.3591308594),
@@ -212,8 +239,8 @@ PolyGarages = {
                 vector2(-751.45703125, -2073.4653320312),
                 vector2(-787.72106933594, -2037.2147216797)
             },
-            ['minZ'] = 8.85,  -- min height of the shop zone
-            ['maxZ'] = 10.10,  -- max height of the shop zone
+            ['minZ'] = 8.85,  -- min height of the parking zone
+            ['maxZ'] = 10.10,  -- max height of the parking zone
         },
         label = "Airport Parking",
         showBlip = true,
@@ -225,7 +252,7 @@ PolyGarages = {
     },
     ["beachp"] = {
         ['Zone'] = {
-            ['Shape'] = { --polygon that surrounds the shop
+            ['Shape'] = { --polygon that surrounds the parking area
                 vector2(-1177.4599609375, -1504.8297119141),
                 vector2(-1170.6567382812, -1500.1866455078),
                 vector2(-1167.892578125, -1496.4272460938),
@@ -243,8 +270,8 @@ PolyGarages = {
                 vector2(-1183.7425537109, -1507.1494140625),
                 vector2(-1182.2048339844, -1508.9814453125)
             },
-            ['minZ'] = 4.20,  -- min height of the shop zone
-            ['maxZ'] = 6.53,  -- max height of the shop zone
+            ['minZ'] = 4.20,  -- min height of the parking zone
+            ['maxZ'] = 6.53,  -- max height of the parking zone
         },
         label = "Beach Parking",
         showBlip = true,
@@ -256,7 +283,7 @@ PolyGarages = {
     },
     ["themotorhotel"] = {
         ['Zone'] = {
-            ['Shape'] = { --polygon that surrounds the shop
+            ['Shape'] = { --polygon that surrounds the parking area
                 vector2(1140.2746582031, 2644.5261230469),
                 vector2(1108.8831787109, 2644.2172851562),
                 vector2(1108.5783691406, 2660.1645507812),
@@ -266,8 +293,8 @@ PolyGarages = {
                 vector2(1133.7532958984, 2658.8393554688),
                 vector2(1140.4176025391, 2658.8898925781)
             },
-            ['minZ'] = 37.78,  -- min height of the shop zone
-            ['maxZ'] = 39.74,  -- max height of the shop zone
+            ['minZ'] = 37.78,  -- min height of the parking zone
+            ['maxZ'] = 39.74,  -- max height of the parking zone
         },
         label = "The Motor Hotel Parking",
         showBlip = true,
@@ -279,14 +306,14 @@ PolyGarages = {
     },
     ["liqourparking"] = {
         ['Zone'] = {
-            ['Shape'] = { --polygon that surrounds the shop
+            ['Shape'] = { --polygon that surrounds the parking area
                 vector2(934.54669189453, 3604.5546875),
                 vector2(954.29815673828, 3604.1672363281),
                 vector2(954.35180664062, 3626.7893066406),
                 vector2(934.75305175781, 3626.3806152344)
             },
-            ['minZ'] = 32.37,  -- min height of the shop zone
-            ['maxZ'] = 35.99,  -- max height of the shop zone
+            ['minZ'] = 32.37,  -- min height of the parking zone
+            ['maxZ'] = 35.99,  -- max height of the parking zone
         },
         label = "Liqour Parking",
         showBlip = true,
@@ -298,7 +325,7 @@ PolyGarages = {
     },
     ["haanparking"] = {
         ['Zone'] = {
-            ['Shape'] = { --polygon that surrounds the shop
+            ['Shape'] = { --polygon that surrounds the parking area
                 vector2(67.230964660645, 6414.7719726562),
                 vector2(53.828144073486, 6401.8227539062),
                 vector2(59.075645446777, 6396.736328125),
@@ -328,8 +355,8 @@ PolyGarages = {
                 vector2(68.208351135254, 6355.2939453125),
                 vector2(117.06902313232, 6378.890625)
             },
-            ['minZ'] = 31.00,  -- min height of the shop zone
-            ['maxZ'] = 33.38,  -- max height of the shop zone
+            ['minZ'] = 31.00,  -- min height of the parking zone
+            ['maxZ'] = 33.38,  -- max height of the parking zone
         },
         label = "Bell Farms Parking",
         showBlip = true,
@@ -341,7 +368,7 @@ PolyGarages = {
     },
     ["pillboxgarage"] = {
         ['Zone'] = {
-            ['Shape'] = { --polygon that surrounds the shop
+            ['Shape'] = { --polygon that surrounds the parking area
                 vector2(239.88751220703, -820.52038574219),
                 vector2(252.71513366699, -784.91027832031),
                 vector2(258.39483642578, -786.82489013672),
@@ -349,8 +376,8 @@ PolyGarages = {
                 vector2(218.69738769531, -754.69787597656),
                 vector2(200.07238769531, -805.74285888672)
             },
-            ['minZ'] = 30.07,  -- min height of the shop zone
-            ['maxZ'] = 40.0,  -- max height of the shop zone
+            ['minZ'] = 30.07,  -- min height of the parking zone
+            ['maxZ'] = 40.0,  -- max height of the parking zone
             debug = true,
         },
         label = "Pillbox Garage Parking",
@@ -363,7 +390,7 @@ PolyGarages = {
     },
     ["impoundlot"] = {
         ['Zone'] = {
-            ['Shape'] = { --polygon that surrounds the shop
+            ['Shape'] = { --polygon that surrounds the parking area
                 vector2(411.67391967773, -1619.7276611328),
                 vector2(406.13690185547, -1626.076171875),
                 vector2(403.39260864258, -1623.6715087891),
@@ -377,8 +404,8 @@ PolyGarages = {
                 vector2(423.90908813477, -1633.1248779297),
                 vector2(423.13873291016, -1628.1573486328)
             },
-            ['minZ'] = 29.25,  -- min height of the shop zone
-            ['maxZ'] = 31.31,  -- max height of the shop zone
+            ['minZ'] = 29.25,  -- min height of the parking zone
+            ['maxZ'] = 31.31,  -- max height of the parking zone
             debug = true,
         },
         label = "Impound Lot",
@@ -391,7 +418,7 @@ PolyGarages = {
     },
     ["police"] = {
         ['Zone'] = {
-            ['Shape'] = { --polygon that surrounds the shop
+            ['Shape'] = { --polygon that surrounds the parking area
                 vector2(427.85052490234, -1017.9293212891),
                 vector2(428.14498901367, -1030.7161865234),
                 vector2(459.05325317383, -1026.896484375),
@@ -402,8 +429,8 @@ PolyGarages = {
                 vector2(434.05737304688, -1013.9020996094),
                 vector2(427.95745849609, -1013.9678344727)
             },
-            ['minZ'] = 28.10,  -- min height of the shop zone
-            ['maxZ'] = 30.97,  -- max height of the shop zone
+            ['minZ'] = 28.10,  -- min height of the parking zone
+            ['maxZ'] = 30.97,  -- max height of the parking zone
             debug = true,
         },
         label = "Police",
@@ -416,7 +443,7 @@ PolyGarages = {
     },
     ['mechanic'] = {
         ['Zone'] = {
-            ['Shape'] = { --polygon that surrounds the shop
+            ['Shape'] = { --polygon that surrounds the parking area
                 vector2(-321.17425537109, -166.47213745117),
                 vector2(-335.71780395508, -160.89682006836),
                 vector2(-330.77108764648, -147.37300109863),
@@ -424,8 +451,8 @@ PolyGarages = {
                 vector2(-322.16271972656, -148.189453125),
                 vector2(-315.29968261719, -150.44552612305)
             },
-            ['minZ'] = 36.15,  -- min height of the shop zone
-            ['maxZ'] = 38.22,  -- max height of the shop zone
+            ['minZ'] = 36.15,  -- min height of the parking zone
+            ['maxZ'] = 38.22,  -- max height of the parking zone
             debug = true,
         },
         label = 'LS Customs',
