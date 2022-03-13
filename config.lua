@@ -32,10 +32,10 @@ PolyGarages = {
         showBlip = true,
         blipcoords = vector3(52.41, -874.53, 30.42),
         blipName = 'Public Parking',
-        blipNumber = '357',
+        blipNumber = 357,
         type = 'public',
         vehicle = 'car'
-    }
+    },
     ["motelgarage"] = {
         ['Zone'] = {
             ['Shape'] = { --polygon that surrounds the parking area
