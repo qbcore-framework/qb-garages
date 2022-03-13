@@ -2,6 +2,21 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local PlayerData = QBCore.Functions.GetPlayerData() -- Just for resource restart (same as event handler)
 local insideZones = {}
 local OutsideVehicles = {}
+local inside = false
+
+--[[AddEventHandler('onResourceStart', function(resource)
+    if GetCurrentResourceName() == resource then
+        playerJob = QBCore.Functions.GetPlayerData().job
+    end
+end)]]
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
+    if inside then
+        exports['qb-radialmenu']:AddOption(5)
+    end
+end)
+
+
 
 for name, garage in pairs(PolyGarages) do -- foreach shop
     insideZones[name] = false  -- default to not being in a shop
@@ -28,6 +43,8 @@ local function isInGarage()
     return false
 end
 
+
+
 local function createGarageZones(garageShape, name)
     local zone = PolyZone:Create(garageShape, {
         name = name,
@@ -39,6 +56,10 @@ local function createGarageZones(garageShape, name)
             insideZones[name] = true
             CreateThread(function ()
                 while insideZones[name] do
+                    inside = true
+                    if inside then
+                        exports['qb-radialmenu']:AddOption(5)
+                    end
                     local PlayerJob = QBCore.Functions.GetPlayerData().job
                     local Player = PlayerPedId()
                     local veh = GetVehiclePedIsIn(Player)
@@ -78,7 +99,6 @@ local function createGarageZones(garageShape, name)
                                         shouldClose = true
                                     }) 
                                 else
-                                    --print('notinveh')
                                     exports['qb-radialmenu']:AddOption(5, {
                                         id = 'open_garage_menu',
                                         title = 'Open Garage Menu',
@@ -106,6 +126,7 @@ local function createGarageZones(garageShape, name)
             end)
         else
             insideZones[name] = false
+            inside = false
         end 
     end)
 end
@@ -121,7 +142,7 @@ RegisterNetEvent('qb-Garages:client:openmenu', function ()
         PublicGarage()
 end)
 
-local function CheckPlayers(vehicle, garage)
+local function CheckPlayerss(vehicle, garage)
     for i = -1, 5, 1 do
         local seat = GetPedInVehicleSeat(vehicle, i)
         if seat then
@@ -136,7 +157,7 @@ local function CheckPlayers(vehicle, garage)
     QBCore.Functions.DeleteVehicle(vehicle)
 end
 
-local function enterVehicle(veh, indexgarage, type, garage)
+local function enterVehicles(veh, indexgarage, type, garage)
     local plate = QBCore.Functions.GetPlate(veh)
     QBCore.Functions.TriggerCallback('qb-garage:server:checkOwnership', function(owned)
         if owned then
@@ -145,7 +166,7 @@ local function enterVehicle(veh, indexgarage, type, garage)
             local totalFuel = exports['LegacyFuel']:GetFuel(veh)
             local vehProperties = QBCore.Functions.GetVehicleProperties(veh)
             TriggerServerEvent('qb-garage:server:updateVehicle', 1, totalFuel, engineDamage, bodyDamage, plate, indexgarage)
-            CheckPlayers(veh, garage)
+            CheckPlayerss(veh, garage)
             if plate then
                 OutsideVehicles[plate] = nil
                 TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
@@ -167,7 +188,7 @@ RegisterNetEvent('qb-Garages:client:putupvehicle', function ()
             if vehClass ~=14 and vehClass ~= 15 and vehClass ~= 16 then
                 if index == getGarageInsideOf() then
                    local index = getGarageInsideOf()
-                    enterVehicle(curVeh, index, garage.type)
+                    enterVehicles(curVeh, index, garage.type)
                 end
                 --enterVehicle(curVeh, index, garage.type)
             end
