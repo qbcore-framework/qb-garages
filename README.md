@@ -9,7 +9,8 @@ end)
 
 exports('RemoveOption', function(id)
     Config.MenuItems[id] = nil
-end)```
+end)
+```
 
 **Public Garages**
 * Park owned cars in public garages.
