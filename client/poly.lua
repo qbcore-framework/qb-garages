@@ -120,7 +120,6 @@ local function createGarageZones(garageShape, name)
         else
             insideZones[name] = false
             inside = false
-            exports['qb-core']:HideText()
         end 
     end)
 end
