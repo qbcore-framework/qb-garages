@@ -46,17 +46,12 @@ local function createGarageZones(garageShape, name)
     zone:onPlayerInOut(function (isPointInside)
         if isPointInside then
             insideZones[name] = true
-            
-            
-            --QBCore.Functions.Notify('Open Radial Menu to open Garage Menu or to put up Vehicle.', 'primary', 10000)
+            QBCore.Functions.Notify('Open Radial Menu to open Garage Menu or to put up Vehicle.', 'primary', 10000)
             CreateThread(function ()
                 while insideZones[name] do
                     inside = true
                     if inside then
                         exports['qb-radialmenu']:AddOption(5)
-                        if IsControlJustPressed(0, 288) then
-                            exports['qb-core']:HideText()
-                        end
                     end
                     local PlayerJob = QBCore.Functions.GetPlayerData().job
                     local Player = PlayerPedId()
