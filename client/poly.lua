@@ -41,7 +41,8 @@ local function createGarageZones(garageShape, name)
     local zone = PolyZone:Create(garageShape, {
         name = name,
         minZ = garageShape.minZ,
-        maxZ = garageShape.maxZ
+        maxZ = garageShape.maxZ,
+        debugPoly = false       -- Set to true if you need help on where zones are
     })
     zone:onPlayerInOut(function (isPointInside)
         if isPointInside then
