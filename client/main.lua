@@ -234,10 +234,18 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
         else
             local ped = GetEntityCoords(PlayerPedId())
             local pedheadin = GetEntityHeading(PlayerPedId())
-            --location = garage.spawnPoint
-            --heading = garage.spawnPoint.w
-            location = ped
-            heading = pedheadin
+            local forward = GetEntityForwardVector(PlayerPedId())
+            local x, y, z = table.unpack(ped + forward * 3)
+            location = vector3(x, y, z)
+            if VehicleHeading == 'forward' then
+                heading = pedheadin
+            elseif VehicleHeading == 'driverside' then
+                heading = pedheadin + 90
+            elseif VehicleHeading == 'hood' then
+                heading = pedheadin + 180
+            elseif VehicleHeading == 'passengerside' then
+                heading = pedheadin + 270
+            end
         end
     
         QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
