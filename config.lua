@@ -74,7 +74,7 @@ PolyGarages = {
         blipNumber = 357,
         type = 'public',
         vehicle = 'car',
-        debugGrid = true
+        debugPoly = false
     },
     ['leigonsquarealley'] = {
         ['Zone'] = {
@@ -102,7 +102,7 @@ PolyGarages = {
         blipNumber = 357,
         type = 'public',
         vehicle = 'car',
-        debugPoly = true
+        debugPoly = false
     },
     ["motelgarage"] = {
         ['Zone'] = {
@@ -127,7 +127,8 @@ PolyGarages = {
         blipName = "Public Parking",
         blipNumber = 357,
         type = 'public',                --public, job, gang, depot
-        vehicle = 'car'                 --car, air, sea
+        vehicle = 'car',
+        debugPoly = false                 --car, air, sea
     },
     ["sapcounsel"] = {
         ['Zone'] = {
@@ -159,7 +160,8 @@ PolyGarages = {
         blipName = "Public Parking",
         blipNumber = 357,
         type = 'public',                --public, job, gang, depot
-        vehicle = 'car'                 --car, air, sea
+        vehicle = 'car',
+        debugPoly = false                 --car, air, sea
     },
     ["spanishave"] = {
         ['Zone'] = {
@@ -178,7 +180,8 @@ PolyGarages = {
         blipName = "Public Parking",
         blipNumber = 357,
         type = 'public',                --public, job, gang, depot
-        vehicle = 'car'                 --car, air, sea
+        vehicle = 'car',                 --car, air, sea
+        debugPoly = false
     },
     ["caears24"] = {
         ['Zone'] = {
@@ -199,7 +202,8 @@ PolyGarages = {
         blipName = "Public Parking",
         blipNumber = 357,
         type = 'public',                --public, job, gang, depot
-        vehicle = 'car'                 --car, air, sea
+        vehicle = 'car',                 --car, air, sea
+        debugPoly = false
     },
     ["caears242"] = {
         ['Zone'] = {
@@ -220,7 +224,8 @@ PolyGarages = {
         blipName = "Public Parking",
         blipNumber = 357,
         type = 'public',                --public, job, gang, depot
-        vehicle = 'car'                 --car, air, sea
+        vehicle = 'car',                 --car, air, sea
+        debugPoly = false
     },
     ["lagunapi"] = {
         ['Zone'] = {
@@ -245,7 +250,8 @@ PolyGarages = {
         blipName = "Public Parking",
         blipNumber = 357,
         type = 'public',                --public, job, gang, depot
-        vehicle = 'car'                 --car, air, sea
+        vehicle = 'car',                 --car, air, sea
+        debugPoly = false
     },
     ["airportp"] = {
         ['Zone'] = {
@@ -317,7 +323,7 @@ PolyGarages = {
         blipNumber = 357,
         type = 'public',                --public, job, gang, depot
         vehicle = 'car',
-        debugPoly = true
+        debugPoly = false
     },
     ["beachp"] = {
         ['Zone'] = {
@@ -348,7 +354,8 @@ PolyGarages = {
         blipName = "Public Parking",
         blipNumber = 357,
         type = 'public',                --public, job, gang, depot
-        vehicle = 'car'                 --car, air, sea
+        vehicle = 'car',                 --car, air, sea
+        debugPoly = false
     },
     ["themotorhotel"] = {
         ['Zone'] = {
@@ -371,7 +378,8 @@ PolyGarages = {
         blipName = "Public Parking",
         blipNumber = 357,
         type = 'public',                --public, job, gang, depot
-        vehicle = 'car'                 --car, air, sea
+        vehicle = 'car',                 --car, air, sea
+        debugPoly = false
     },
     ["liqourparking"] = {
         ['Zone'] = {
@@ -390,7 +398,8 @@ PolyGarages = {
         blipName = "Public Parking",
         blipNumber = 357,
         type = 'public',                --public, job, gang, depot
-        vehicle = 'car'                 --car, air, sea
+        vehicle = 'car',                 --car, air, sea
+        debugPoly = false
     },
     ["haanparking"] = {
         ['Zone'] = {
@@ -433,7 +442,8 @@ PolyGarages = {
         blipName = "Public Parking",
         blipNumber = 357,
         type = 'public',                --public, job, gang, depot
-        vehicle = 'car'                 --car, air, sea
+        vehicle = 'car',                 --car, air, sea
+        debugPoly = false
     },
     ["pillboxgarage"] = {
         ['Zone'] = {
@@ -447,7 +457,6 @@ PolyGarages = {
             },
             ['minZ'] = 30.07,  -- min height of the parking zone
             ['maxZ'] = 40.0,  -- max height of the parking zone
-            debug = true,
         },
         label = "Pillbox Garage Parking",
         showBlip = true,
@@ -455,7 +464,8 @@ PolyGarages = {
         blipName = "Public Parking",
         blipNumber = 357,
         type = 'public',                --public, job, gang, depot
-        vehicle = 'car'                 --car, air, sea
+        vehicle = 'car',                 --car, air, sea
+        debugPoly = false
     },
     ["impoundlot"] = {
         ['Zone'] = {
@@ -483,7 +493,8 @@ PolyGarages = {
         blipName = "Impound Lot",
         blipNumber = 68,
         type = 'depot',                --public, job, gang, depot
-        vehicle = 'car'                 --car, air, sea
+        vehicle = 'car',                 --car, air, sea
+        debugPoly = false
     },
     ["police"] = {
         ['Zone'] = {
@@ -508,7 +519,8 @@ PolyGarages = {
         blipNumber = 357,
         type = 'job',                --public, job, gang, depot
         vehicle = 'car',              --car, air, sea
-        job = "police"
+        job = "police",
+        debugPoly = false
     },
     ['mechanic'] = {
         ['Zone'] = {
@@ -527,7 +539,8 @@ PolyGarages = {
         label = 'LS Customs',
         type = 'job',
         vehicle = 'car',
-        job = 'mechanic'
+        job = 'mechanic',
+        debugPoly = false
     },
 }
 Garages = {

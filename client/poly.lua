@@ -37,12 +37,12 @@ end
 
 
 
-local function createGarageZones(garageShape, name)
+local function createGarageZones(garageShape, name, debugPoly)
     local zone = PolyZone:Create(garageShape, {
         name = name,
         minZ = garageShape.minZ,
         maxZ = garageShape.maxZ,
-        debugPoly = false       -- Set to true if you need help on where zones are
+        debugPoly = debugPoly
     })
     zone:onPlayerInOut(function (isPointInside)
         if isPointInside then
@@ -128,7 +128,7 @@ end
 
 for name, garage in pairs(PolyGarages) do
     if (garage.type == 'public' or garage.type == 'depot' or garage.type == 'job') and garage.vehicle == 'car' then
-        createGarageZones(garage['Zone']['Shape'], name)
+        createGarageZones(garage['Zone']['Shape'], name, garage.debugPoly)
     end
 end
 
