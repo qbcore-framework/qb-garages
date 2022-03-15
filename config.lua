@@ -1,5 +1,6 @@
 AutoRespawn = true --True == auto respawn cars that are outside into your garage on script restart, false == does not put them into your garage and players have to go to the impound
 SharedGarages = false   --True == Gang and job garages are shared, false == Gang and Job garages are personal
+WarpPlayerIntoVehicle = false -- True == Will Warp Player Into their vehicle after pulling it out of garage. False It will spawn it in front of them
 
 -- WILL WORK ON WORKING WITH EVERTHING
 PolyGarages = {
@@ -9,6 +10,48 @@ PolyGarages = {
         - Job with Car
         - Depot
     ]]
+    ['mirrorpark'] = {
+        ['Zone'] = {
+            ['Shape'] = {
+                vector2(1043.447265625, -767.26947021484),
+                vector2(1049.4702148438, -769.44775390625),
+                vector2(1049.4797363281, -794.31622314453),
+                vector2(1048.9655761719, -794.32214355469),
+                vector2(1049.03125, -793.87451171875),
+                vector2(1043.466796875, -793.80151367188),
+                vector2(1043.3436279297, -794.52691650391),
+                vector2(1031.5026855469, -794.34808349609),
+                vector2(1007.7255859375, -764.88061523438),
+                vector2(1022.2494506836, -752.11022949219),
+                vector2(1025.6563720703, -755.25653076172),
+                vector2(1030.9210205078, -758.50311279297),
+                vector2(1031.2462158203, -758.19201660156),
+                vector2(1035.1042480469, -760.79956054688),
+                vector2(1030.6268310547, -767.16302490234),
+                vector2(1025.9473876953, -763.81085205078),
+                vector2(1024.8063964844, -765.39245605469),
+                vector2(1033.9915771484, -772.05816650391),
+                vector2(1036.6497802734, -781.24871826172),
+                vector2(1038.708984375, -780.87786865234),
+                vector2(1035.7690429688, -770.72528076172),
+                vector2(1032.0593261719, -768.04278564453),
+                vector2(1034.0390625, -764.51586914062),
+                vector2(1036.8060302734, -766.30773925781),
+                vector2(1038.0424804688, -763.41851806641),
+                vector2(1043.5157470703, -766.21325683594)
+            },
+            ['minZ'] = 57.50,
+            ['maxZ'] = 59.20
+        },
+        label = 'Mirror Park Parking',
+        showBlip = true,
+        blipcoords = vector3(1037.65, -771.62, 58.01),
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        type = 'public',
+        vehicle = 'car',
+        debugPoly = false
+    },
     ['casinop'] = {
         ['Zone'] = {
             ['Shape'] = {

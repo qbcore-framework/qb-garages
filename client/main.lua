@@ -236,13 +236,12 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
             local pedheadin = GetEntityHeading(PlayerPedId())
             --location = garage.spawnPoint
             --heading = garage.spawnPoint.w
-            location = ped 
+            location = ped
             heading = pedheadin
         end
     
         QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
             QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
-    
                 if vehicle.plate then
                     OutsideVehicles[vehicle.plate] = veh
                     TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
@@ -256,7 +255,9 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
                 SetEntityAsMissionEntity(veh, true, true)
                 TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
                 closeMenuFull()
-                TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
+                if WarpPlayerIntoVehicle or type == 'house' or type == 'gang' or vehicle == 'air' or vehicle == 'sea' then
+                   TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1) 
+                end
                 TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
                 SetVehicleEngineOn(veh, true, true)
             end, vehicle.plate)
