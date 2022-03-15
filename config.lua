@@ -1,9 +1,9 @@
 AutoRespawn = true --True == auto respawn cars that are outside into your garage on script restart, false == does not put them into your garage and players have to go to the impound
 SharedGarages = false   --True == Gang and job garages are shared, false == Gang and Job garages are personal
 WarpPlayerIntoVehicle = false -- True == Will Warp Player Into their vehicle after pulling it out of garage. False It will spawn it in front of them
-VehicleHeading = 'driverside'
+VehicleHeading = 'passengerside'
 --[[^^^^^^^^
-    'forwad' = will face the sameway as the ped
+    'forward' = will face the sameway as the ped
     'driverside' = will put the driver door closets to the ped
     'hood' = will face the hood towards ped
     'passengerside' = will put the passenger door closets to the ped

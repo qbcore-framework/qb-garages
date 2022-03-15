@@ -114,7 +114,7 @@ local function createGarageZones(garageShape, name, debugPoly)
                             end
                         end
                     end
-                    Wait(1000)
+                    Wait(500)
                 end
                 exports['qb-radialmenu']:RemoveOption(5)
             end)
