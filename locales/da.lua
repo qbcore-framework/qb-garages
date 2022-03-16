@@ -1,7 +1,7 @@
 local Translations = {
     error = {
         no_vehicles = "Du har ingen køretøjer i denne garage!",
-        not_impound = "Dit køretøj er ikke i impound",
+        not_impound = "Dit køretøj er ikke beslaglagt",
         not_owned = "Du ejer ikke dette køretøj",
         not_correct_type = "Du kan ikke parkere dette køretøj i denne garage",
         not_enough = "Ikke nok penge",
@@ -20,7 +20,7 @@ local Translations = {
             job_sea = "Job Bådhus %{value}",
             job_air = "Job Hangar %{value}",
             gang_car = "Gang Garage %{value}",
-            gang_sea = "Gang Båshus %{value}",
+            gang_sea = "Gang Bådhus %{value}",
             gang_air = "Gang Hangar %{value}",
             depot_car = "Depot %{value}",
             depot_sea = "Depot %{value}",
