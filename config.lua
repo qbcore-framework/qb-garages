@@ -1,7 +1,7 @@
 AutoRespawn = true --True == auto respawn cars that are outside into your garage on script restart, false == does not put them into your garage and players have to go to the impound
 SharedGarages = false   --True == Gang and job garages are shared, false == Gang and Job garages are personal
 WarpPlayerIntoVehicle = false -- True == Will Warp Player Into their vehicle after pulling it out of garage. False It will spawn it in front of them
-VehicleHeading = 'passengerside'
+VehicleHeading = 'driverside'
 --[[^^^^^^^^
     'forward' = will face the sameway as the ped
     'driverside' = will put the driver door closets to the ped
@@ -17,6 +17,26 @@ PolyGarages = {
         - Job with Car
         - Depot
     ]]
+    ['pillboxlowergarage'] = {
+        ['Zone'] = {
+            ['Shape'] = {
+                vector2(352.34439086914, -620.59851074219),
+                vector2(344.32354736328, -636.03747558594),
+                vector2(325.94189453125, -628.93359375),
+                vector2(331.88412475586, -613.10968017578)
+            },
+            ['minZ'] = 29.00,  -- min height of the parking zone
+            ['maxZ'] = 31.30,  -- max height of the parking zone
+        },
+        label = 'Pillbox Lower Parking',
+        showBlip = true,
+        blipcoords = vector3(341.7, -623.33, 29.29),
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        type = 'public',
+        vehicle = 'car',
+        debugPoly = false
+    },
     ['mirrorpark'] = {
         ['Zone'] = {
             ['Shape'] = {
