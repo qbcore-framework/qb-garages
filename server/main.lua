@@ -191,6 +191,8 @@ QBCore.Functions.CreateCallback('qb-garage:server:GetPlayerVehicles', function(s
                 if v.garage ~= nil then
                     if Garages[v.garage] ~= nil then
                         VehicleGarage = Garages[v.garage].label
+                    elseif PolyGarages[v.garage] ~= nil then
+                        VehicleGarage = PolyGarages[v.garage].label
                     else
                         VehicleGarage = Lang:t("info.house_garage")         -- HouseGarages[v.garage].label
                     end

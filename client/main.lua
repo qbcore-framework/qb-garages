@@ -228,7 +228,7 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
         local currentFuel = vehicle.fuel
         local location
         local heading
-        if type == "house" then
+        if type == "house" or type == 'gang' or vehicle == 'air' or vehicle == 'sea' then
             location = garage.takeVehicle
             heading = garage.takeVehicle.h
         else
