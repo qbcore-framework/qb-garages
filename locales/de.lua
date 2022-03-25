@@ -6,6 +6,7 @@ local Translations = {
         not_correct_type = "Du kannst dieses Fahrzeug hier nicht parken. (Falscher Parkplatz)",
         not_enough = "Nicht genu Geld",
         no_garage = "None",
+        not_enough_space = "Someting blocking the space!"
     },
     success = {
         vehicle_parked = "Auto geparkt",

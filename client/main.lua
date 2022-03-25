@@ -44,51 +44,13 @@ local function MenuGarage(type, garage, indexgarage)
         },
     })
 end
+
 local function ClearMenu()
 	TriggerEvent("qb-menu:closeMenu")
 end
+
 local function closeMenuFull()
     ClearMenu()
-end
-local function doCarDamage(currentVehicle, veh)
-	local engine = veh.engine + 0.0
-	local body = veh.body + 0.0
-
-    Wait(100)
-    if body < 900.0 then
-		SmashVehicleWindow(currentVehicle, 0)
-		SmashVehicleWindow(currentVehicle, 1)
-		SmashVehicleWindow(currentVehicle, 2)
-		SmashVehicleWindow(currentVehicle, 3)
-		SmashVehicleWindow(currentVehicle, 4)
-		SmashVehicleWindow(currentVehicle, 5)
-		SmashVehicleWindow(currentVehicle, 6)
-		SmashVehicleWindow(currentVehicle, 7)
-	end
-	if body < 800.0 then
-		SetVehicleDoorBroken(currentVehicle, 0, true)
-		SetVehicleDoorBroken(currentVehicle, 1, true)
-		SetVehicleDoorBroken(currentVehicle, 2, true)
-		SetVehicleDoorBroken(currentVehicle, 3, true)
-		SetVehicleDoorBroken(currentVehicle, 4, true)
-		SetVehicleDoorBroken(currentVehicle, 5, true)
-		SetVehicleDoorBroken(currentVehicle, 6, true)
-	end
-	if engine < 700.0 then
-		SetVehicleTyreBurst(currentVehicle, 1, false, 990.0)
-		SetVehicleTyreBurst(currentVehicle, 2, false, 990.0)
-		SetVehicleTyreBurst(currentVehicle, 3, false, 990.0)
-		SetVehicleTyreBurst(currentVehicle, 4, false, 990.0)
-	end
-	if engine < 500.0 then
-		SetVehicleTyreBurst(currentVehicle, 0, false, 990.0)
-		SetVehicleTyreBurst(currentVehicle, 5, false, 990.0)
-		SetVehicleTyreBurst(currentVehicle, 6, false, 990.0)
-		SetVehicleTyreBurst(currentVehicle, 7, false, 990.0)
-	end
-    SetVehicleEngineHealth(currentVehicle, engine)
-    SetVehicleBodyHealth(currentVehicle, body)
-
 end
 
 local function CheckPlayers(vehicle, garage)
@@ -105,6 +67,60 @@ local function CheckPlayers(vehicle, garage)
     Wait(1500)
     QBCore.Functions.DeleteVehicle(vehicle)
 end
+
+local function GetVehicleProperties(vehicle)
+    if DoesEntityExist(vehicle) then
+        local vehicleProps = QBCore.Functions.GetVehicleProperties(vehicle)
+
+        vehicleProps["tyres"] = {}
+        vehicleProps["windows"] = {}
+        vehicleProps["doors"] = {}
+        vehicleProps["windowsBroken"] = AreAllVehicleWindowsIntact(vehicle)
+
+        --  tyres
+        for id = 1, 7 do
+            local tyreId = IsVehicleTyreBurst(vehicle, id, false)
+        
+            if tyreId then
+                vehicleProps["tyres"][#vehicleProps["tyres"] + 1] = tyreId
+        
+                if tyreId == false then
+                    tyreId = IsVehicleTyreBurst(vehicle, id, true)
+                    vehicleProps["tyres"][ #vehicleProps["tyres"]] = tyreId
+                end
+            else
+                vehicleProps["tyres"][#vehicleProps["tyres"] + 1] = false
+            end
+        end
+
+        --  window
+        local windowId = 0
+        for i = 1, 8 do
+            if IsVehicleWindowIntact(vehicle, windowId) then
+                vehicleProps["windows"][i] = false
+            else
+                vehicleProps["windows"][i] = true
+            end
+            windowId = windowId + 1
+        end
+        
+        for id = 0, 5 do
+            local doorId = IsVehicleDoorDamaged(vehicle, id)
+        
+            if doorId then
+                vehicleProps["doors"][#vehicleProps["doors"] + 1] = doorId
+            else
+                vehicleProps["doors"][#vehicleProps["doors"] + 1] = false
+            end
+        end
+
+        vehicleProps["engineHealth"] = GetVehicleEngineHealth(vehicle)
+        vehicleProps["bodyHealth"] = GetVehicleBodyHealth(vehicle)
+        vehicleProps["fuelLevel"] = GetVehicleFuelLevel(vehicle)
+        return vehicleProps
+    end
+end
+
 -- Functions
 local DrawText3Ds = function(x, y, z, text)
 	SetTextScale(0.35, 0.35)
@@ -120,6 +136,7 @@ local DrawText3Ds = function(x, y, z, text)
     DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
     ClearDrawOrigin()
 end
+
 local function round(num, numDecimalPlaces)
     return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
 end
@@ -226,38 +243,46 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
         local enginePercent = round(vehicle.engine / 10, 1)
         local bodyPercent = round(vehicle.body / 10, 1)
         local currentFuel = vehicle.fuel
-        local location
+        local location = nil
         local heading
         if type == "house" then
             location = garage.takeVehicle
             heading = garage.takeVehicle.h
         else
-            location = garage.spawnPoint
-            heading = garage.spawnPoint.w
+            for i = 1, #garage.spawnPoints do
+                if not IsAnyVehicleNearPoint(vector3(garage.spawnPoints[i].x, garage.spawnPoints[i].y, garage.spawnPoints[i].z), 3.0) then
+                    location = garage.spawnPoints[i]
+                    heading = garage.spawnPoints[i].w
+                    break
+                end
+            end
         end
     
-        QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
-            QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
-    
-                if vehicle.plate then
-                    OutsideVehicles[vehicle.plate] = veh
-                    TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
-                end
-    
-                QBCore.Functions.SetVehicleProperties(veh, properties)
-                SetVehicleNumberPlateText(veh, vehicle.plate)
-                SetEntityHeading(veh, heading)
-                exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
-                doCarDamage(veh, vehicle)
-                SetEntityAsMissionEntity(veh, true, true)
-                TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
-                closeMenuFull()
-                TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
-                TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
-                SetVehicleEngineOn(veh, true, true)
-            end, vehicle.plate)
-    
-        end, location, true)
+        if location then
+            QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
+                QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
+                    if vehicle.plate then
+                        OutsideVehicles[vehicle.plate] = veh
+                        TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
+                    end
+                    QBCore.Functions.SetVehicleProperties(veh, properties)
+                    SetVehicleNumberPlateText(veh, vehicle.plate)
+                    SetEntityHeading(veh, heading)
+                    exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
+                    TriggerEvent('qb-garage:client:InitiateDamageSimulation', veh, properties)
+                    SetEntityAsMissionEntity(veh, true, true)
+                    TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
+                    closeMenuFull()
+                    TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
+                    if WrapIntoVehicle then
+                        TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
+                        SetVehicleEngineOn(veh, true, true)
+                    end
+                end, vehicle.plate)
+            end, location, true)
+        else
+            QBCore.Functions.Notify(Lang:t("error.not_enough_space"), "error", 5000)
+        end
     end
 end)
 
@@ -292,8 +317,8 @@ local function enterVehicle(veh, indexgarage, type, garage)
             local bodyDamage = math.ceil(GetVehicleBodyHealth(veh))
             local engineDamage = math.ceil(GetVehicleEngineHealth(veh))
             local totalFuel = exports['LegacyFuel']:GetFuel(veh)
-            local vehProperties = QBCore.Functions.GetVehicleProperties(veh)
-            TriggerServerEvent('qb-garage:server:updateVehicle', 1, totalFuel, engineDamage, bodyDamage, plate, indexgarage)
+            local vehProperties = GetVehicleProperties(veh)
+            TriggerServerEvent('qb-garage:server:updateVehicle', 1, totalFuel, engineDamage, bodyDamage, vehProperties, plate, indexgarage)
             CheckPlayers(veh, garage)
             if plate then
                 OutsideVehicles[plate] = nil
@@ -436,5 +461,57 @@ RegisterNetEvent('qb-garages:client:TakeOutDepot', function(data)
         TriggerServerEvent("qb-garage:server:PayDepotPrice", data)
     else
         TriggerEvent("qb-garages:client:takeOutGarage", data)
+    end
+end)
+
+RegisterNetEvent('qb-garage:client:InitiateDamageSimulation', function(vehicle, vehicleProps)
+    if vehicle then
+
+        -- windows
+        local windowsBroken = 0
+        if vehicleProps["windows"] then
+            for i = 1, #vehicleProps["windows"] do
+                if vehicleProps["windows"][i] then
+                    RemoveVehicleWindow(vehicle, i - 1)
+                    windowsBroken = windowsBroken + 1
+                end
+            end
+            if windowsBroken >= 5 then
+                PopOutVehicleWindscreen(vehicle)
+            end
+        end
+
+        --  tyres
+        if vehicleProps["tyres"] then
+            for i = 1, #vehicleProps["tyres"] do
+                if vehicleProps["tyres"][i] ~= false then
+                    SetVehicleTyreBurst(vehicle, i, true, 1000)
+                end
+            end
+        end
+
+        --  doors
+        if vehicleProps["doors"] then
+            for i = 1, #vehicleProps["doors"] do
+                if vehicleProps["doors"][i] then
+                    SetVehicleDoorBroken(vehicle, i - 1, true)
+                end
+            end
+        end
+
+        --engineHealth
+        if vehicleProps["engineHealth"] then
+            SetVehicleEngineHealth(vehicle, vehicleProps["engineHealth"])
+        end
+
+        --bodyHealth
+        if vehicleProps["bodyHealth"] then
+            SetVehicleBodyHealth(vehicle, vehicleProps["bodyHealth"])
+        end
+
+        --fuel
+        if vehicleProps["fuelLevel"] then
+            exports["LegacyFuel"]:SetFuel(vehicle, tonumber(vehicleProps["fuelLevel"]))
+        end
     end
 end)

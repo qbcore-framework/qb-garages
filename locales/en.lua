@@ -6,6 +6,7 @@ local Translations = {
         not_correct_type = "You can't store this type of vehicle here",
         not_enough = "Not enough money",
         no_garage = "None",
+        not_enough_space = "Someting blocking the space!"
     },
     success = {
         vehicle_parked = "Vehicle Stored",

@@ -6,6 +6,7 @@ local Translations = {
         not_correct_type = "Du kan inte parkera den här typen av fordon här",
         not_enough = "Inte tillräckligt med pengar",
         no_garage = "Ingen",
+        not_enough_space = "Someting blocking the space!"
     },
     success = {
         vehicle_parked = "Fordon har parkerats",
