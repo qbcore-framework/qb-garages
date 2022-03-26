@@ -325,7 +325,6 @@ local function checkPutDist(pos, loc, garage, ped, type, indexgarage)
                 local vehClass = GetVehicleClass(curVeh)
                 --Check vehicle type for garage
                 if garage.vehicle == "car" or not garage.vehicle then
-					print(indexgarage)
                     if vehClass ~= 14 and vehClass ~= 15 and vehClass ~= 16 then
                         enterVehicle(curVeh, indexgarage, type)
                     else
