@@ -238,7 +238,7 @@ Garages = {
     },
     ["intairport"] = {
         label = "Airport Hangar", 
-        takeVehicle = vector3(-928.84, -2994.38, 19.85),
+        takeVehicle = vector3(-1025.92, -3017.86, 13.95),
         spawnPoint = vector4(-979.2, -2995.51, 13.95, 52.19),
         putVehicle = vector3(-1003.38, -3008.87, 13.95),
         showBlip = true,
@@ -249,9 +249,9 @@ Garages = {
     },
     ["higginsheli"] = {
         label = "Higgins Helitours", 
-        takeVehicle = vector3(-753.27, -1511.5, 5.01),
-        spawnPoint = vector4(-745.34, -1468.67, 5.0, 320.15),
-        putVehicle = vector3(-724.65, -1444.08, 5.0),
+        takeVehicle = vector3(-722.15, -1472.79, 5.0),
+        spawnPoint = vector4(-724.83, -1443.89, 5.0, 140.1),
+        putVehicle = vector3(-745.48, -1468.46, 5.0),
         showBlip = true,
         blipName = "Hangar",
         blipNumber = 360,
