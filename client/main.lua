@@ -357,20 +357,20 @@ CreateThread(function()
         inGarageRange = false
         for index, garage in pairs(Garages) do
             if garage.type == "public" then
-                checkTakeDist(pos, garage.takeVehicle, garage, ped, garage.type, index)
-                checkPutDist(pos, garage.putVehicle, garage, ped, garage.type, index)
+                checkTakeDist(pos, garage.takeVehicle, garage, ped, garage.type, garage.save)
+                checkPutDist(pos, garage.putVehicle, garage, ped, garage.type, garage.save)
             elseif garage.type == "job" then
                 if PlayerJob.name == garage.job then
-                    checkTakeDist(pos, garage.takeVehicle, garage, ped, garage.type, index)
-                    checkPutDist(pos, garage.putVehicle, garage, ped, garage.type, index)
+                    checkTakeDist(pos, garage.takeVehicle, garage, ped, garage.type, garage.save)
+                    checkPutDist(pos, garage.putVehicle, garage, ped, garage.type, garage.save)
                 end
             elseif garage.type == "gang" then
                 if PlayerGang.name == garage.job then
-                    checkTakeDist(pos, garage.takeVehicle, garage, ped, garage.type, index)
-                    checkPutDist(pos, garage.putVehicle, garage, ped, garage.type, index)
+                    checkTakeDist(pos, garage.takeVehicle, garage, ped, garage.type, garage.save)
+                    checkPutDist(pos, garage.putVehicle, garage, ped, garage.type, garage.save)
                 end
             elseif garage.type == "depot" then
-                checkTakeDist(pos, garage.takeVehicle, garage, ped, garage.type, index)
+                checkTakeDist(pos, garage.takeVehicle, garage, ped, garage.type, garage.save)
             end
         end
         if HouseGarages and currentHouseGarage then
