@@ -96,6 +96,9 @@ local function enterVehicle(veh, indexgarage, type, garage)
             local engineDamage = math.ceil(GetVehicleEngineHealth(veh))
             local totalFuel = exports['LegacyFuel']:GetFuel(veh)
             local vehProperties = QBCore.Functions.GetVehicleProperties(veh)
+            if UsingQbMechanic then
+                TriggerServerEvent('vehiclemod:server:saveStatus', plate)
+            end
             TriggerServerEvent('qb-garage:server:updateVehicle', 1, totalFuel, engineDamage, bodyDamage, vehProperties, plate, indexgarage)
             CheckPlayers(veh, garage)
             if plate then
@@ -303,6 +306,9 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
                     end
         
                     QBCore.Functions.SetVehicleProperties(veh, properties)
+                    if UsingQbMechanic then
+                        TriggerServerEvent('vehiclemod:server:setupVehicleStatus', vehicle.plate, vehicle.engine, vehicle.body)
+                    end
                     SetVehicleNumberPlateText(veh, vehicle.plate)
                     SetEntityHeading(veh, heading)
                     exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
