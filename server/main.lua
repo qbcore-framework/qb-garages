@@ -114,8 +114,8 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetVehicleProperties", functio
     cb(properties)
 end)
 
-RegisterNetEvent('qb-garage:server:updateVehicle', function(state, fuel, engine, body, plate, garage)
-    MySQL.Async.execute('UPDATE player_vehicles SET state = ?, garage = ?, fuel = ?, engine = ?, body = ? WHERE plate = ?',{state, garage, fuel, engine, body, plate})
+RegisterNetEvent('qb-garage:server:updateVehicle', function(state, fuel, engine, body, mods, plate, garage)
+    MySQL.Async.execute('UPDATE player_vehicles SET state = ?, garage = ?, fuel = ?, engine = ?, body = ?, mods = ? WHERE plate = ?',{state, garage, fuel, engine, body, json.encode(mods), plate})
 end)
 
 RegisterNetEvent('qb-garage:server:updateVehicleState', function(state, plate, garage)
