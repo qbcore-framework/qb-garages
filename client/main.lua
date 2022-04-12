@@ -527,7 +527,7 @@ CreateThread(function()
                             QBCore.Functions.Notify(Lang:t("error.not_correct_type"), "error", 3500)
                         end
                     end
-                elseif InputOut then
+                elseif InputOut and currentGarage then
                     MenuGarage(currentGarage.type, currentGarage, currentGarageIndex)
                 end
             end
