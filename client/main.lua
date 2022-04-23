@@ -60,6 +60,7 @@ local function closeMenuFull()
     ClearMenu()
 end
 
+-- Zones
 local function DestroyZone(type, index)
     if garageZones[type.."_"..index] then
         garageZones[type.."_"..index].zonecombo:destroy()
@@ -193,6 +194,7 @@ local function CreateZone(type, garage, index)
     end)
 end
 
+-- Functions
 local function doCarDamage(currentVehicle, veh)
 	local engine = veh.engine + 0.0
 	local body = veh.body + 0.0
@@ -251,11 +253,38 @@ local function CheckPlayers(vehicle, garage)
     QBCore.Functions.DeleteVehicle(vehicle)
 end
 
--- Functions
 local function round(num, numDecimalPlaces)
     return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
 end
 
+local function enterVehicle(veh, indexgarage, type, garage)
+    local plate = QBCore.Functions.GetPlate(veh)
+    QBCore.Functions.TriggerCallback('qb-garage:server:checkOwnership', function(owned)
+        if owned then
+            local bodyDamage = math.ceil(GetVehicleBodyHealth(veh))
+            local engineDamage = math.ceil(GetVehicleEngineHealth(veh))
+            local totalFuel = exports['LegacyFuel']:GetFuel(veh)
+            local vehProperties = QBCore.Functions.GetVehicleProperties(veh)
+            TriggerServerEvent('qb-garage:server:updateVehicle', 1, totalFuel, engineDamage, bodyDamage, plate, indexgarage)
+            CheckPlayers(veh, garage)
+            if type == "house" then
+                exports['qb-core']:DrawText(Lang:t("info.car_e"), 'left')
+                InputOut = true
+                InputIn = false
+            end
+
+            if plate then
+                OutsideVehicles[plate] = nil
+                TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
+            end
+            QBCore.Functions.Notify(Lang:t("success.vehicle_parked"), "primary", 4500)
+        else
+            QBCore.Functions.Notify(Lang:t("error.not_owned"), "error", 3500)
+        end
+    end, plate, type, indexgarage, PlayerGang.name)
+end
+
+-- Events
 RegisterNetEvent("qb-garages:client:VehicleList", function(data)
     local type = data.type
     local garage = data.garage
