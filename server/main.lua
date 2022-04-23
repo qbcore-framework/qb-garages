@@ -234,8 +234,6 @@ RegisterNetEvent('qb-garage:server:PayDepotPrice', function(data)
     end)
 end)
 
-
-
 --External Calls
 --Call from qb-vehiclesales
 QBCore.Functions.CreateCallback("qb-garage:server:checkVehicleOwner", function(source, cb, plate)

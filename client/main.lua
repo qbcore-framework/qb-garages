@@ -11,6 +11,7 @@ local currentGarage = nil
 local currentGarageIndex = nil
 local garageZones = {}
 local lasthouse = nil
+local currentNpcData = nil
 
 
 --Menus
@@ -65,6 +66,15 @@ local function DestroyZone(type, index)
     if garageZones[type.."_"..index] then
         garageZones[type.."_"..index].zonecombo:destroy()
         garageZones[type.."_"..index].zone:destroy()
+    end
+end
+
+local function DestroyNpc()
+    if currentNpcData then
+        if currentNpcData.ped then
+            DeletePed(currentNpcData.ped)
+        end
+        currentNpcData = nil
     end
 end
 
@@ -170,6 +180,7 @@ local function CreateZone(type, garage, index)
                     else
                         HouseMarkers = false
                     end
+                    DestroyNpc()
                     DestroyZone("in", index)
                     DestroyZone("out", index)
                     currentGarage = nil
@@ -177,6 +188,7 @@ local function CreateZone(type, garage, index)
                 end
             elseif type == "hmarker" then
                 HouseMarkers = false
+                DestroyNpc()
                 DestroyZone("house", index)
             elseif type == "house" then
                 exports['qb-core']:HideText()
@@ -259,29 +271,62 @@ end
 
 local function enterVehicle(veh, indexgarage, type, garage)
     local plate = QBCore.Functions.GetPlate(veh)
-    QBCore.Functions.TriggerCallback('qb-garage:server:checkOwnership', function(owned)
-        if owned then
-            local bodyDamage = math.ceil(GetVehicleBodyHealth(veh))
-            local engineDamage = math.ceil(GetVehicleEngineHealth(veh))
-            local totalFuel = exports['LegacyFuel']:GetFuel(veh)
-            local vehProperties = QBCore.Functions.GetVehicleProperties(veh)
-            TriggerServerEvent('qb-garage:server:updateVehicle', 1, totalFuel, engineDamage, bodyDamage, plate, indexgarage)
-            CheckPlayers(veh, garage)
-            if type == "house" then
-                exports['qb-core']:DrawText(Lang:t("info.car_e"), 'left')
-                InputOut = true
-                InputIn = false
+    if GetVehicleNumberOfPassengers(veh) == 0 then
+        QBCore.Functions.TriggerCallback('qb-garage:server:checkOwnership', function(owned)
+            if owned then
+                local bodyDamage = math.ceil(GetVehicleBodyHealth(veh))
+                local engineDamage = math.ceil(GetVehicleEngineHealth(veh))
+                local totalFuel = exports['LegacyFuel']:GetFuel(veh)
+                TriggerServerEvent('qb-garage:server:updateVehicle', 1, totalFuel, engineDamage, bodyDamage, plate, indexgarage, type, PlayerGang.name)
+                CheckPlayers(veh, garage)
+                if type == "house" then
+                    exports['qb-core']:DrawText(Lang:t("info.car_e"), 'left')
+                    InputOut = true
+                    InputIn = false
+                end
+    
+                if plate then
+                    TriggerServerEvent('qb-garages:server:UpdateOutsideVehicle', plate, nil)
+                end
+                QBCore.Functions.Notify(Lang:t("success.vehicle_parked"), "primary", 4500)
+            else
+                QBCore.Functions.Notify(Lang:t("error.not_owned"), "error", 3500)
+            end
+        end, plate, type, indexgarage, PlayerGang.name)
+    else
+        QBCore.Functions.Notify(Lang:t("error.vehicle_occupied"), "error", 5000)
+    end
+end
+
+local function CreateNpcIfNotExists()
+    if not currentNpcData then
+        currentNpcData = { ped = nil } -- Prevent multiple thread (and NPC) creation
+        CreateThread(function()
+            local model = GetHashKey(currentGarage.npc)
+            RequestModel(model)
+            while not HasModelLoaded(model) do
+                Wait(0)
             end
 
-            if plate then
-                OutsideVehicles[plate] = nil
-                TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
-            end
-            QBCore.Functions.Notify(Lang:t("success.vehicle_parked"), "primary", 4500)
-        else
-            QBCore.Functions.Notify(Lang:t("error.not_owned"), "error", 3500)
-        end
-    end, plate, type, indexgarage, PlayerGang.name)
+            local loc = currentGarage.takeVehicle
+            local locPed = CreatePed(4, model, loc.x, loc.y, loc.z - 0.98, loc.w, false, true)
+            currentNpcData = { ped = locPed }
+            PlaceObjectOnGroundProperly(locPed)
+            FreezeEntityPosition(locPed, true)
+            SetEntityInvincible(locPed, true)
+            SetBlockingOfNonTemporaryEvents(locPed, true)
+            SetEntityAsMissionEntity(locPed, false, true)
+            SetModelAsNoLongerNeeded(model)
+        end)
+    end
+end
+
+local function DrawOutMarker()
+    if currentGarage.npc then
+        CreateNpcIfNotExists()
+    else
+        DrawMarker(2, currentGarage.takeVehicle.x, currentGarage.takeVehicle.y, currentGarage.takeVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+    end
 end
 
 -- Events
@@ -414,35 +459,6 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
     end, vehicle.plate, type)
 end)
 
-local function enterVehicle(veh, indexgarage, type, garage)
-    local plate = QBCore.Functions.GetPlate(veh)
-    if GetVehicleNumberOfPassengers(veh) == 0 then
-        QBCore.Functions.TriggerCallback('qb-garage:server:checkOwnership', function(owned)
-            if owned then
-                local bodyDamage = math.ceil(GetVehicleBodyHealth(veh))
-                local engineDamage = math.ceil(GetVehicleEngineHealth(veh))
-                local totalFuel = exports['LegacyFuel']:GetFuel(veh)
-                TriggerServerEvent('qb-garage:server:updateVehicle', 1, totalFuel, engineDamage, bodyDamage, plate, indexgarage, type, PlayerGang.name)
-                CheckPlayers(veh, garage)
-                if type == "house" then
-                    exports['qb-core']:DrawText(Lang:t("info.car_e"), 'left')
-                    InputOut = true
-                    InputIn = false
-                end
-    
-                if plate then
-                    TriggerServerEvent('qb-garages:server:UpdateOutsideVehicle', plate, nil)
-                end
-                QBCore.Functions.Notify(Lang:t("success.vehicle_parked"), "primary", 4500)
-            else
-                QBCore.Functions.Notify(Lang:t("error.not_owned"), "error", 3500)
-            end
-        end, plate, type, indexgarage, PlayerGang.name)
-    else
-        QBCore.Functions.Notify(Lang:t("error.vehicle_occupied"), "error", 5000)
-    end
-end
-
 local function CreateBlipsZones()
     PlayerData = QBCore.Functions.GetPlayerData()
     PlayerGang = PlayerData.gang
@@ -528,10 +544,10 @@ CreateThread(function()
         sleep = 2000
         if Markers then
             DrawMarker(2, currentGarage.putVehicle.x, currentGarage.putVehicle.y, currentGarage.putVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 255, 255, 255, 255, false, false, false, true, false, false, false)
-            DrawMarker(2, currentGarage.takeVehicle.x, currentGarage.takeVehicle.y, currentGarage.takeVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+            DrawOutMarker()
             sleep = 0
         elseif HouseMarkers then
-            DrawMarker(2, currentGarage.takeVehicle.x, currentGarage.takeVehicle.y, currentGarage.takeVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+            DrawOutMarker()
             sleep = 0
         end
         if InputIn or InputOut then
