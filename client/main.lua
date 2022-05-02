@@ -70,127 +70,129 @@ local function DestroyZone(type, index)
 end
 
 local function CreateZone(type, garage, index)
-    local size
-    local coords
-    local heading
-    local minz
-    local maxz
+    if garage.takeVehicle.x ~= nil then
+	    local size
+	    local coords
+	    local heading
+	    local minz
+	    local maxz
 
-    if type == 'in' then
-        size = 4
-        coords = vector3(garage.putVehicle.x, garage.putVehicle.y, garage.putVehicle.z) 
-        heading = garage.spawnPoint.w
-        minz = coords.z - 1.0
-        maxz = coords.z + 2.0
-    elseif type == 'out' then
-        size = 2
-        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z) 
-        heading = garage.spawnPoint.w
-        minz = coords.z - 1.0
-        maxz = coords.z + 2.0
-    elseif type == 'marker' then
-        size = 60
-        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z) 
-        heading = garage.spawnPoint.w
-        minz = coords.z - 7.5
-        maxz = coords.z + 7.0
-    elseif type == 'hmarker' then
-        size = 20
-        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z) 
-        heading = 0
-        minz = coords.z - 4.0
-        maxz = coords.z + 2.0
-    elseif type == 'house' then
-        size = 2
-        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z) 
-        heading = 0
-        minz = coords.z - 1.0
-        maxz = coords.z + 2.0
-    end
-    garageZones[type.."_"..index] = {}
-    garageZones[type.."_"..index].zone = BoxZone:Create(
-        coords, size, size, {
-            minZ = minz,
-            maxZ = maxz,
-            name = type,
-            debugPoly = false,
-            heading = heading
-        })
+	    if type == 'in' then
+		size = 4
+		coords = vector3(garage.putVehicle.x, garage.putVehicle.y, garage.putVehicle.z) 
+		heading = garage.spawnPoint.w
+		minz = coords.z - 1.0
+		maxz = coords.z + 2.0
+	    elseif type == 'out' then
+		size = 2
+		coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z) 
+		heading = garage.spawnPoint.w
+		minz = coords.z - 1.0
+		maxz = coords.z + 2.0
+	    elseif type == 'marker' then
+		size = 60
+		coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z) 
+		heading = garage.spawnPoint.w
+		minz = coords.z - 7.5
+		maxz = coords.z + 7.0
+	    elseif type == 'hmarker' then
+		size = 20
+		coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z) 
+		heading = 0
+		minz = coords.z - 4.0
+		maxz = coords.z + 2.0
+	    elseif type == 'house' then
+		size = 2
+		coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z) 
+		heading = 0
+		minz = coords.z - 1.0
+		maxz = coords.z + 2.0
+	    end
+	    garageZones[type.."_"..index] = {}
+	    garageZones[type.."_"..index].zone = BoxZone:Create(
+		coords, size, size, {
+		    minZ = minz,
+		    maxZ = maxz,
+		    name = type,
+		    debugPoly = false,
+		    heading = heading
+		})
 
-    garageZones[type.."_"..index].zonecombo = ComboZone:Create({garageZones[type.."_"..index].zone}, {name = "box"..type, debugPoly = false})
-    garageZones[type.."_"..index].zonecombo:onPlayerInOut(function(isPointInside)
-        if isPointInside then
-            if type == "in" then
-                local text
-                if garage.type == "house" then
-                    text = Lang:t("info.park_e")
-                else
-                    text = Lang:t("info.park_e").."<br>"..garage.label
-                end
-                exports['qb-core']:DrawText(text, 'left')
-                InputIn = true
-            elseif type == "out" then
-                if garage.type == "house" then
-                    text = Lang:t("info.car_e")
-                else
-                    text = Lang:t("info."..garage.vehicle.."_e").."<br>"..garage.label
-                end
+	    garageZones[type.."_"..index].zonecombo = ComboZone:Create({garageZones[type.."_"..index].zone}, {name = "box"..type, debugPoly = false})
+	    garageZones[type.."_"..index].zonecombo:onPlayerInOut(function(isPointInside)
+		if isPointInside then
+		    if type == "in" then
+			local text
+			if garage.type == "house" then
+			    text = Lang:t("info.park_e")
+			else
+			    text = Lang:t("info.park_e").."<br>"..garage.label
+			end
+			exports['qb-core']:DrawText(text, 'left')
+			InputIn = true
+		    elseif type == "out" then
+			if garage.type == "house" then
+			    text = Lang:t("info.car_e")
+			else
+			    text = Lang:t("info."..garage.vehicle.."_e").."<br>"..garage.label
+			end
 
-                exports['qb-core']:DrawText(text, 'left')
-                InputOut = true
-            elseif type == "marker" then
-                currentGarage = garage
-                currentGarageIndex = index
-                CreateZone("out", garage, index)
-                if garage.type ~= "depot" then
-                    CreateZone("in", garage, index)
-                    Markers = true
-                else
-                    HouseMarkers = true
-                end
-            elseif type == "hmarker" then
-                currentGarage = garage
-                currentGarage.type = "house"
-                currentGarageIndex = index
-                CreateZone("house", garage, index)
-                HouseMarkers = true
-            elseif type == "house" then
-                if IsPedInAnyVehicle(PlayerPedId(), false) then
-                    exports['qb-core']:DrawText(Lang:t("info.park_e"), 'left')
-                    InputIn = true
-                else
-                    exports['qb-core']:DrawText(Lang:t("info.car_e"), 'left')
-                    InputOut = true
-                end
-            end
-        else
-            if type == "marker" then
-                if garage.type ~= "depot" then
-                    Markers = false
-                else
-                    HouseMarkers = false
-                end
-                currentGarage = nil
-                DestroyZone("in", index)
-                DestroyZone("out", index)
-            elseif type == "hmarker" then
-                HouseMarkers = false
-                currentHouseGarage = nil
-                DestroyZone("house", index)
-            elseif type == "house" then
-                exports['qb-core']:HideText()
-                InputIn = false
-                InputOut = false
-            elseif type == "in" then
-                exports['qb-core']:HideText()
-                InputIn = false
-            elseif type == "out" then
-                closeMenuFull()
-                exports['qb-core']:HideText()
-                InputOut = false
-            end
-        end
-    end)
+			exports['qb-core']:DrawText(text, 'left')
+			InputOut = true
+		    elseif type == "marker" then
+			currentGarage = garage
+			currentGarageIndex = index
+			CreateZone("out", garage, index)
+			if garage.type ~= "depot" then
+			    CreateZone("in", garage, index)
+			    Markers = true
+			else
+			    HouseMarkers = true
+			end
+		    elseif type == "hmarker" then
+			currentGarage = garage
+			currentGarage.type = "house"
+			currentGarageIndex = index
+			CreateZone("house", garage, index)
+			HouseMarkers = true
+		    elseif type == "house" then
+			if IsPedInAnyVehicle(PlayerPedId(), false) then
+			    exports['qb-core']:DrawText(Lang:t("info.park_e"), 'left')
+			    InputIn = true
+			else
+			    exports['qb-core']:DrawText(Lang:t("info.car_e"), 'left')
+			    InputOut = true
+			end
+		    end
+		else
+		    if type == "marker" then
+			if garage.type ~= "depot" then
+			    Markers = false
+			else
+			    HouseMarkers = false
+			end
+			currentGarage = nil
+			DestroyZone("in", index)
+			DestroyZone("out", index)
+		    elseif type == "hmarker" then
+			HouseMarkers = false
+			currentHouseGarage = nil
+			DestroyZone("house", index)
+		    elseif type == "house" then
+			exports['qb-core']:HideText()
+			InputIn = false
+			InputOut = false
+		    elseif type == "in" then
+			exports['qb-core']:HideText()
+			InputIn = false
+		    elseif type == "out" then
+			closeMenuFull()
+			exports['qb-core']:HideText()
+			InputOut = false
+		    end
+		end
+	    end)
+	end
 end
 
 local function doCarDamage(currentVehicle, veh)
