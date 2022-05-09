@@ -1,8 +1,6 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local PlayerData = {}
 local PlayerGang = {}
-local PlayerJob = {}
-local currentHouseGarage = nil
 local OutsideVehicles = {}
 
 local Markers = false
@@ -22,7 +20,7 @@ local function MenuGarage(type, garage, indexgarage)
     if type == "house" then
         header = Lang:t("menu.header."..type.."_car", {value = garage.label})
         leave = Lang:t("menu.leave.car")
-    else 
+    else
         header = Lang:t("menu.header."..type.."_"..garage.vehicle, {value = garage.label})
         leave = Lang:t("menu.leave."..garage.vehicle)
     end
@@ -65,7 +63,7 @@ end
 local function DestroyZone(type, index)
     if garageZones[type.."_"..index] then
         garageZones[type.."_"..index].zonecombo:destroy()
-        garageZones[type.."_"..index].zone:destroy()            
+        garageZones[type.."_"..index].zone:destroy()
     end
 end
 
@@ -78,31 +76,31 @@ local function CreateZone(type, garage, index)
 
     if type == 'in' then
         size = 4
-        coords = vector3(garage.putVehicle.x, garage.putVehicle.y, garage.putVehicle.z) 
+        coords = vector3(garage.putVehicle.x, garage.putVehicle.y, garage.putVehicle.z)
         heading = garage.spawnPoint.w
         minz = coords.z - 1.0
         maxz = coords.z + 2.0
     elseif type == 'out' then
         size = 2
-        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z) 
+        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z)
         heading = garage.spawnPoint.w
         minz = coords.z - 1.0
         maxz = coords.z + 2.0
     elseif type == 'marker' then
         size = 60
-        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z) 
+        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z)
         heading = garage.spawnPoint.w
         minz = coords.z - 7.5
         maxz = coords.z + 7.0
     elseif type == 'hmarker' then
         size = 20
-        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z) 
+        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z)
         heading = 0
         minz = coords.z - 4.0
         maxz = coords.z + 2.0
     elseif type == 'house' then
         size = 2
-        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z) 
+        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z)
         heading = 0
         minz = coords.z - 1.0
         maxz = coords.z + 2.0
@@ -120,8 +118,8 @@ local function CreateZone(type, garage, index)
     garageZones[type.."_"..index].zonecombo = ComboZone:Create({garageZones[type.."_"..index].zone}, {name = "box"..type, debugPoly = false})
     garageZones[type.."_"..index].zonecombo:onPlayerInOut(function(isPointInside)
         if isPointInside then
+            local text
             if type == "in" then
-                local text
                 if garage.type == "house" then
                     text = Lang:t("info.park_e")
                 else
@@ -175,7 +173,6 @@ local function CreateZone(type, garage, index)
                 DestroyZone("out", index)
             elseif type == "hmarker" then
                 HouseMarkers = false
-                currentHouseGarage = nil
                 DestroyZone("house", index)
             elseif type == "house" then
                 exports['qb-core']:HideText()
@@ -263,7 +260,7 @@ RegisterNetEvent("qb-garages:client:VehicleList", function(data)
     if type == "house" then
         header = Lang:t("menu.header."..type.."_car", {value = garage.label})
         leave = Lang:t("menu.leave.car")
-    else 
+    else
         header = Lang:t("menu.header."..type.."_"..garage.vehicle, {value = garage.label})
         leave = Lang:t("menu.leave."..garage.vehicle)
     end
@@ -278,7 +275,7 @@ RegisterNetEvent("qb-garages:client:VehicleList", function(data)
                     isMenuHeader = true
                 },
             }
-            for k, v in pairs(result) do
+            for _, v in pairs(result) do
                 local enginePercent = round(v.engine / 10, 0)
                 local bodyPercent = round(v.body / 10, 0)
                 local currentFuel = v.fuel
@@ -338,11 +335,10 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
     local type = data.type
     local vehicle = data.vehicle
     local garage = data.garage
-    local indexgarage = data.index
-    local spawn = false
+    local spawn
 
     if type == "depot" then         --If depot, check if vehicle is not already spawned on the map
-        local VehExists = DoesEntityExist(OutsideVehicles[vehicle.plate])        
+        local VehExists = DoesEntityExist(OutsideVehicles[vehicle.plate])
         if not VehExists then
             spawn = true
         else
@@ -353,9 +349,6 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
         spawn = true
     end
     if spawn then
-        local enginePercent = round(vehicle.engine / 10, 1)
-        local bodyPercent = round(vehicle.body / 10, 1)
-        local currentFuel = vehicle.fuel
         local location
         local heading
         if type == "house" then
@@ -403,7 +396,6 @@ local function enterVehicle(veh, indexgarage, type, garage)
             local bodyDamage = math.ceil(GetVehicleBodyHealth(veh))
             local engineDamage = math.ceil(GetVehicleEngineHealth(veh))
             local totalFuel = exports['LegacyFuel']:GetFuel(veh)
-            local vehProperties = QBCore.Functions.GetVehicleProperties(veh)
             TriggerServerEvent('qb-garage:server:updateVehicle', 1, totalFuel, engineDamage, bodyDamage, plate, indexgarage)
             CheckPlayers(veh, garage)
             if type == "house" then
@@ -424,7 +416,6 @@ local function enterVehicle(veh, indexgarage, type, garage)
 end
 
 RegisterNetEvent('qb-garages:client:setHouseGarage', function(house, hasKey)
-    currentHouseGarage = house
     hasGarageKey = hasKey
     if HouseGarages[house] then
         if lasthouse ~= house then
@@ -447,18 +438,22 @@ RegisterNetEvent('qb-garages:client:addHouseGarage', function(house, garageInfo)
     HouseGarages[house] = garageInfo
 end)
 
+RegisterNetEvent("qb-garages:client:SyncOutsideVehicle", function(citizenId, vehicles)
+    OutsideVehicles[citizenId] = vehicles
+end)
+
+RegisterNetEvent("qb-garages:client:SyncOutsideVehicles", function(outsideVehicles)
+    OutsideVehicles = outsideVehicles
+end)
+
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     PlayerData = QBCore.Functions.GetPlayerData()
     PlayerGang = PlayerData.gang
-    PlayerJob = PlayerData.job
+    TriggerServerEvent("qb-garages:server:SyncOutsideVehicles")
 end)
 
 RegisterNetEvent('QBCore:Client:OnGangUpdate', function(gang)
     PlayerGang = gang
-end)
-
-RegisterNetEvent('QBCore:Client:OnJobUpdate', function(job)
-    PlayerJob = job
 end)
 
 CreateThread(function()

@@ -17,7 +17,7 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetGarageVehicles", function(s
             local tosend = {}
             if result[1] then
                 --Check vehicle type against depot type
-                for k, vehicle in pairs(result) do
+                for _, vehicle in pairs(result) do
                     if category == "air" and ( QBCore.Shared.Vehicles[vehicle.vehicle].category == "helicopters" or QBCore.Shared.Vehicles[vehicle.vehicle].category == "planes" ) then
                         tosend[#tosend + 1] = vehicle
                     elseif category == "sea" and QBCore.Shared.Vehicles[vehicle.vehicle].category == "boats" then
@@ -42,7 +42,7 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetGarageVehicles", function(s
             else
                 cb(nil)
             end
-        end)    
+        end)
     end
 end)
 
@@ -104,8 +104,7 @@ QBCore.Functions.CreateCallback("qb-garage:server:checkOwnership", function(sour
     end
 end)
 
-QBCore.Functions.CreateCallback("qb-garage:server:GetVehicleProperties", function(source, cb, plate)
-    local src = source
+QBCore.Functions.CreateCallback("qb-garage:server:GetVehicleProperties", function(_, cb, plate)
     local properties = {}
     local result = MySQL.Sync.fetchAll('SELECT mods FROM player_vehicles WHERE plate = ?', {plate})
     if result[1] then
@@ -127,6 +126,12 @@ RegisterNetEvent('qb-garages:server:UpdateOutsideVehicles', function(Vehicles)
     local Ply = QBCore.Functions.GetPlayer(src)
     local CitizenId = Ply.PlayerData.citizenid
     OutsideVehicles[CitizenId] = Vehicles
+    TriggerClientEvent("qb-garages:client:SyncOutsideVehicle", -1, CitizenId, Vehicles) -- Sync single vehicle across all players
+end)
+
+RegisterNetEvent("qb-garages:server:SyncOutsideVehicles", function()
+    local src = source
+    TriggerClientEvent("qb-garages:client:SyncOutsideVehicles", src, OutsideVehicles)
 end)
 
 AddEventHandler('onResourceStart', function(resource)
@@ -184,7 +189,7 @@ QBCore.Functions.CreateCallback('qb-garage:server:GetPlayerVehicles', function(s
 
     MySQL.Async.fetchAll('SELECT * FROM player_vehicles WHERE citizenid = ?', {Player.PlayerData.citizenid}, function(result)
         if result[1] then
-            for k, v in pairs(result) do
+            for _, v in pairs(result) do
                 local VehicleData = QBCore.Shared.Vehicles[v.vehicle]
     
                 local VehicleGarage = Lang:t("error.no_garage")
@@ -204,12 +209,12 @@ QBCore.Functions.CreateCallback('qb-garage:server:GetPlayerVehicles', function(s
                     v.state = Lang:t("status.impound")
                 end
                 
-                local fullname 
+                local fullname
                 if VehicleData["brand"] ~= nil then
                     fullname = VehicleData["brand"] .. " " .. VehicleData["name"]
                 else
                     fullname = VehicleData["name"]
-                end    
+                end
                 Vehicles[#Vehicles+1] = {
                     fullname = fullname,
                     brand = VehicleData["brand"],
