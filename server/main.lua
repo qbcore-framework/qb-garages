@@ -18,12 +18,14 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetGarageVehicles", function(s
             if result[1] then
                 --Check vehicle type against depot type
                 for k, vehicle in pairs(result) do
-                    if category == "air" and ( QBCore.Shared.Vehicles[vehicle.vehicle].category == "helicopters" or QBCore.Shared.Vehicles[vehicle.vehicle].category == "planes" ) then
-                        tosend[#tosend + 1] = vehicle
-                    elseif category == "sea" and QBCore.Shared.Vehicles[vehicle.vehicle].category == "boats" then
-                        tosend[#tosend + 1] = vehicle
-                    elseif category == "car" and QBCore.Shared.Vehicles[vehicle.vehicle].category ~= "helicopters" and QBCore.Shared.Vehicles[vehicle.vehicle].category ~= "planes" and QBCore.Shared.Vehicles[vehicle.vehicle].category ~= "boats" then
-                        tosend[#tosend + 1] = vehicle
+                    if not OutsideVehicles[vehicle.plate] then
+                        if category == "air" and ( QBCore.Shared.Vehicles[vehicle.vehicle].category == "helicopters" or QBCore.Shared.Vehicles[vehicle.vehicle].category == "planes" ) then
+                            tosend[#tosend + 1] = vehicle
+                        elseif category == "sea" and QBCore.Shared.Vehicles[vehicle.vehicle].category == "boats" then
+                            tosend[#tosend + 1] = vehicle
+                        elseif category == "car" and QBCore.Shared.Vehicles[vehicle.vehicle].category ~= "helicopters" and QBCore.Shared.Vehicles[vehicle.vehicle].category ~= "planes" and QBCore.Shared.Vehicles[vehicle.vehicle].category ~= "boats" then
+                            tosend[#tosend + 1] = vehicle
+                        end
                     end
                 end
                 cb(tosend)
@@ -41,6 +43,40 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetGarageVehicles", function(s
                 cb(result)
             else
                 cb(nil)
+            end
+        end)    
+    end
+end)
+
+QBCore.Functions.CreateCallback("qb-garage:server:validateGarageVehicle", function(source, cb, garage, type, plate)
+    local src = source
+    local pData = QBCore.Functions.GetPlayer(src)
+    if type == "public" then        --Public garages give player cars in the garage only
+        MySQL.Async.fetchAll('SELECT * FROM player_vehicles WHERE citizenid = ? AND garage = ? AND state = ? AND plate = ?', {pData.PlayerData.citizenid, garage, 1, plate}, function(result)
+            if result[1] then
+                cb(true)
+            else
+                cb(false)
+            end
+        end)
+    elseif type == "depot" then    --Depot give player cars that are not in garage only
+        MySQL.Async.fetchAll('SELECT * FROM player_vehicles WHERE citizenid = ? AND (state = ? OR state = ?) AND plate = ?', {pData.PlayerData.citizenid, 0, 2, plate}, function(result)
+            if result[1] then
+                cb(true)
+            else
+                cb(false)
+            end
+        end)
+    else
+        local shared = ''
+        if not SharedGarages and type ~= "house" then
+            shared = " AND citizenid = '"..pData.PlayerData.citizenid.."'"
+        end
+        MySQL.Async.fetchAll('SELECT * FROM player_vehicles WHERE garage = ? AND state = ? AND plate = ?'..shared, {garage, 1, plate}, function(result)
+            if result[1] then
+                cb(true)
+            else
+                cb(false)
             end
         end)    
     end
@@ -114,19 +150,48 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetVehicleProperties", functio
     cb(properties)
 end)
 
-RegisterNetEvent('qb-garage:server:updateVehicle', function(state, fuel, engine, body, plate, garage)
-    MySQL.Async.execute('UPDATE player_vehicles SET state = ?, garage = ?, fuel = ?, engine = ?, body = ? WHERE plate = ?',{state, garage, fuel, engine, body, plate})
+QBCore.Functions.CreateCallback("qb-garage:server:IsSpawnOk", function(source, cb, plate, type)
+    if type == "depot" then         --If depot, check if vehicle is not already spawned on the map
+        if OutsideVehicles[plate] then
+            cb(false)
+        else
+            cb(true)
+        end
+    else
+        cb(true)
+    end
+end)
+
+RegisterNetEvent('qb-garage:server:updateVehicle', function(state, fuel, engine, body, plate, garage, type, gang)
+    QBCore.Functions.TriggerCallback('qb-garage:server:checkOwnership', source, function(owned)     --Check ownership
+        if owned then
+            if state == 0 or state == 1 or state == 2 then                                          --Check state value
+                if Garages[garage] then                                                             --Check if garage is existing
+                    MySQL.Async.execute('UPDATE player_vehicles SET state = ?, garage = ?, fuel = ?, engine = ?, body = ? WHERE plate = ?', {state, garage, fuel, engine, body, plate})
+                end
+            end
+        else
+            TriggerClientEvent('QBCore:Notify', source, Lang:t("error.not_owned"), 'error')
+        end
+    end, plate, type, garage, gang)
 end)
 
 RegisterNetEvent('qb-garage:server:updateVehicleState', function(state, plate, garage)
-    MySQL.Async.execute('UPDATE player_vehicles SET state = ?, garage = ?, depotprice = ? WHERE plate = ?',{state, garage, 0, plate})
+    QBCore.Functions.TriggerCallback('qb-garage:server:validateGarageVehicle', source, function(owned)     --Check ownership
+        if owned then
+            if state == 0 then                                          --Check state value
+                if Garages[garage] then                                 --Check if garage is existing
+                    MySQL.Async.execute('UPDATE player_vehicles SET state = ?, garage = ?, depotprice = ? WHERE plate = ?', {state, garage, 0, plate})
+                end
+            end
+        else
+            TriggerClientEvent('QBCore:Notify', source, Lang:t("error.not_owned"), 'error')
+        end
+    end, garage, Garages[garage].type, plate)
 end)
 
-RegisterNetEvent('qb-garages:server:UpdateOutsideVehicles', function(Vehicles)
-    local src = source
-    local Ply = QBCore.Functions.GetPlayer(src)
-    local CitizenId = Ply.PlayerData.citizenid
-    OutsideVehicles[CitizenId] = Vehicles
+RegisterNetEvent('qb-garages:server:UpdateOutsideVehicle', function(plate, vehicle)
+    OutsideVehicles[plate] = vehicle
 end)
 
 AddEventHandler('onResourceStart', function(resource)
