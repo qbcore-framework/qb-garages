@@ -76,7 +76,7 @@ local function CreateZone(type, garage, index)
     local minz
     local maxz
 
-    if type == 'in' then
+    if type == 'in' and putVehicle then
         size = 4
         coords = vector3(garage.putVehicle.x, garage.putVehicle.y, garage.putVehicle.z) 
         heading = garage.spawnPoint.w
