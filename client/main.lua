@@ -337,7 +337,7 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
     local type = data.type
     local vehicle = data.vehicle
     local garage = data.garage
-
+    local index = data.index
     QBCore.Functions.TriggerCallback('qb-garage:server:IsSpawnOk', function(spawn)
         if spawn then
             local location
@@ -363,7 +363,7 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
                     exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
                     doCarDamage(veh, vehicle)
                     SetEntityAsMissionEntity(veh, true, true)
-                    TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
+                    TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, index)
                     closeMenuFull()
                     TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
                     TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
