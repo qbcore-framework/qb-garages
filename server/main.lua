@@ -149,7 +149,7 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetVehicleProperties", functio
     cb(properties)
 end)
 
-QBCore.Functions.CreateCallback("qb-garage:server:IsSpawnOk", function(source, cb, plate, type)
+QBCore.Functions.CreateCallback("qb-garage:server:IsSpawnOk", function(_, cb, plate, type)
     if type == "depot" then         --If depot, check if vehicle is not already spawned on the map
         if OutsideVehicles[plate] then
             cb(false)

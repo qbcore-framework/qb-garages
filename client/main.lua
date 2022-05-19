@@ -2,6 +2,7 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local PlayerData = {}
 local PlayerGang = {}
 local PlayerJob = {}
+local OutsideVehicles = {}
 
 local Markers = false
 local HouseMarkers = false
@@ -427,11 +428,11 @@ local function CreateBlipsZones()
             AddTextComponentSubstringPlayerName(garage.blipName)
             EndTextCommandSetBlipName(Garage)
         end
-        if garage.type == "job" then 
+        if garage.type == "job" then
             if PlayerJob.name == garage.job then
                 CreateZone("marker", garage, index)
             end
-        elseif garage.type == "gang" then 
+        elseif garage.type == "gang" then
             if PlayerGang.name == garage.job then
                 CreateZone("marker", garage, index)
             end
@@ -475,7 +476,7 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     CreateBlipsZones()
 end)
 
-AddEventHandler("onResourceStart", function(resourceName)
+AddEventHandler("onResourceStart", function()
     CreateBlipsZones()
 end)
 
