@@ -267,6 +267,7 @@ QBCore.Functions.CreateCallback('qb-garage:server:GetPlayerVehicles', function(s
                 elseif v.state == 2 then
                     v.state = Lang:t("status.impound")
                 end
+
                 local fullname
                 if VehicleData["brand"] ~= nil then
                     fullname = VehicleData["brand"] .. " " .. VehicleData["name"]
