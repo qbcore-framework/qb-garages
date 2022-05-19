@@ -2,7 +2,7 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local PlayerData = {}
 local PlayerGang = {}
 local PlayerJob = {}
-local OutsideVehicles = {}
+local OutsideVehicles
 
 local Markers = false
 local HouseMarkers = false
