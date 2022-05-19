@@ -2,7 +2,6 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local PlayerData = {}
 local PlayerGang = {}
 local PlayerJob = {}
-local OutsideVehicles
 
 local Markers = false
 local HouseMarkers = false
@@ -462,14 +461,6 @@ end)
 
 RegisterNetEvent('qb-garages:client:addHouseGarage', function(house, garageInfo)
     HouseGarages[house] = garageInfo
-end)
-
-RegisterNetEvent("qb-garages:client:SyncOutsideVehicle", function(citizenId, vehicles)
-    OutsideVehicles[citizenId] = vehicles
-end)
-
-RegisterNetEvent("qb-garages:client:SyncOutsideVehicles", function(outsideVehicles)
-    OutsideVehicles = outsideVehicles
 end)
 
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
