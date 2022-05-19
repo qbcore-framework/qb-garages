@@ -17,7 +17,7 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetGarageVehicles", function(s
             local tosend = {}
             if result[1] then
                 --Check vehicle type against depot type
-                for k, vehicle in pairs(result) do
+                for _, vehicle in pairs(result) do
                     if not OutsideVehicles[vehicle.plate] then
                         if category == "air" and ( QBCore.Shared.Vehicles[vehicle.vehicle].category == "helicopters" or QBCore.Shared.Vehicles[vehicle.vehicle].category == "planes" ) then
                             tosend[#tosend + 1] = vehicle
@@ -140,8 +140,7 @@ QBCore.Functions.CreateCallback("qb-garage:server:checkOwnership", function(sour
     end
 end)
 
-QBCore.Functions.CreateCallback("qb-garage:server:GetVehicleProperties", function(source, cb, plate)
-    local src = source
+QBCore.Functions.CreateCallback("qb-garage:server:GetVehicleProperties", function(_, cb, plate)
     local properties = {}
     local result = MySQL.query.await('SELECT mods FROM player_vehicles WHERE plate = ?', {plate})
     if result[1] then
@@ -150,7 +149,7 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetVehicleProperties", functio
     cb(properties)
 end)
 
-QBCore.Functions.CreateCallback("qb-garage:server:IsSpawnOk", function(source, cb, plate, type)
+QBCore.Functions.CreateCallback("qb-garage:server:IsSpawnOk", function(_, cb, plate, type)
     if type == "depot" then         --If depot, check if vehicle is not already spawned on the map
         if OutsideVehicles[plate] then
             cb(false)
@@ -249,7 +248,7 @@ QBCore.Functions.CreateCallback('qb-garage:server:GetPlayerVehicles', function(s
 
     MySQL.query('SELECT * FROM player_vehicles WHERE citizenid = ?', {Player.PlayerData.citizenid}, function(result)
         if result[1] then
-            for k, v in pairs(result) do
+            for _, v in pairs(result) do
                 local VehicleData = QBCore.Shared.Vehicles[v.vehicle]
 
                 local VehicleGarage = Lang:t("error.no_garage")

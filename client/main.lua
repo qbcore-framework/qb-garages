@@ -20,7 +20,7 @@ local function MenuGarage(type, garage, indexgarage)
     if type == "house" then
         header = Lang:t("menu.header."..type.."_car", {value = garage.label})
         leave = Lang:t("menu.leave.car")
-    else 
+    else
         header = Lang:t("menu.header."..type.."_"..garage.vehicle, {value = garage.label})
         leave = Lang:t("menu.leave."..garage.vehicle)
     end
@@ -63,7 +63,7 @@ end
 local function DestroyZone(type, index)
     if garageZones[type.."_"..index] then
         garageZones[type.."_"..index].zonecombo:destroy()
-        garageZones[type.."_"..index].zone:destroy()            
+        garageZones[type.."_"..index].zone:destroy()
     end
 end
 
@@ -76,31 +76,31 @@ local function CreateZone(type, garage, index)
 
     if type == 'in' then
         size = 4
-        coords = vector3(garage.putVehicle.x, garage.putVehicle.y, garage.putVehicle.z) 
+        coords = vector3(garage.putVehicle.x, garage.putVehicle.y, garage.putVehicle.z)
         heading = garage.spawnPoint.w
         minz = coords.z - 1.0
         maxz = coords.z + 2.0
     elseif type == 'out' then
         size = 2
-        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z) 
+        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z)
         heading = garage.spawnPoint.w
         minz = coords.z - 1.0
         maxz = coords.z + 2.0
     elseif type == 'marker' then
         size = 60
-        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z) 
+        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z)
         heading = garage.spawnPoint.w
         minz = coords.z - 7.5
         maxz = coords.z + 7.0
     elseif type == 'hmarker' then
         size = 20
-        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z) 
+        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z)
         heading = 0
         minz = coords.z - 4.0
         maxz = coords.z + 2.0
     elseif type == 'house' then
         size = 2
-        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z) 
+        coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z)
         heading = 0
         minz = coords.z - 1.0
         maxz = coords.z + 2.0
@@ -262,7 +262,7 @@ RegisterNetEvent("qb-garages:client:VehicleList", function(data)
     if type == "house" then
         header = Lang:t("menu.header."..type.."_car", {value = garage.label})
         leave = Lang:t("menu.leave.car")
-    else 
+    else
         header = Lang:t("menu.header."..type.."_"..garage.vehicle, {value = garage.label})
         leave = Lang:t("menu.leave."..garage.vehicle)
     end
@@ -277,7 +277,7 @@ RegisterNetEvent("qb-garages:client:VehicleList", function(data)
                     isMenuHeader = true
                 },
             }
-            for k, v in pairs(result) do
+            for _, v in pairs(result) do
                 local enginePercent = round(v.engine / 10, 0)
                 local bodyPercent = round(v.body / 10, 0)
                 local currentFuel = v.fuel
@@ -427,11 +427,11 @@ local function CreateBlipsZones()
             AddTextComponentSubstringPlayerName(garage.blipName)
             EndTextCommandSetBlipName(Garage)
         end
-        if garage.type == "job" then 
+        if garage.type == "job" then
             if PlayerJob.name == garage.job then
                 CreateZone("marker", garage, index)
             end
-        elseif garage.type == "gang" then 
+        elseif garage.type == "gang" then
             if PlayerGang.name == garage.job then
                 CreateZone("marker", garage, index)
             end
@@ -467,7 +467,7 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     CreateBlipsZones()
 end)
 
-AddEventHandler("onResourceStart", function(resourceName)
+AddEventHandler("onResourceStart", function()
     CreateBlipsZones()
 end)
 
