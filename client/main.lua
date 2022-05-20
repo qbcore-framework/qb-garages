@@ -74,6 +74,9 @@ local function CreateZone(type, garage, index)
     local minz
     local maxz
 
+    currentGarage = garage
+    currentGarageIndex = index
+
     if type == 'in' then
         size = 4
         coords = vector3(garage.putVehicle.x, garage.putVehicle.y, garage.putVehicle.z)
@@ -137,8 +140,6 @@ local function CreateZone(type, garage, index)
                 exports['qb-core']:DrawText(text, 'left')
                 InputOut = true
             elseif type == "marker" then
-                currentGarage = garage
-                currentGarageIndex = index
                 CreateZone("out", garage, index)
                 if garage.type ~= "depot" then
                     CreateZone("in", garage, index)
@@ -147,9 +148,7 @@ local function CreateZone(type, garage, index)
                     HouseMarkers = true
                 end
             elseif type == "hmarker" then
-                currentGarage = garage
                 currentGarage.type = "house"
-                currentGarageIndex = index
                 CreateZone("house", garage, index)
                 HouseMarkers = true
             elseif type == "house" then
