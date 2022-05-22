@@ -163,14 +163,17 @@ local function CreateZone(type, garage, index)
             end
         else
             if type == "marker" then
-                if garage.type ~= "depot" then
-                    Markers = false
-                else
-                    HouseMarkers = false
+                if currentGarage == garage then
+                    if garage.type ~= "depot" then
+                        Markers = false
+                    else
+                        HouseMarkers = false
+                    end
+                    DestroyZone("in", index)
+                    DestroyZone("out", index)
+                    currentGarage = nil
+                    currentGarageIndex = nil
                 end
-                currentGarage = nil
-                DestroyZone("in", index)
-                DestroyZone("out", index)
             elseif type == "hmarker" then
                 HouseMarkers = false
                 DestroyZone("house", index)
