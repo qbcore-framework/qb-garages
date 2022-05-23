@@ -1,11 +1,12 @@
 local Translations = {
     error = {
-        no_vehicles = "Vous n'avez aucun véhicule dans ce garage!",              
+        no_vehicles = "Vous n'avez aucun véhicule dans ce garage!",
         not_impound = "Votre véhicule n'est pas à la fourrière",
         not_owned = "Le véhicule ne vous appartient pas",
         not_correct_type = "Vous ne pouvez pas stocker ce type de véhicule ici.",
         not_enough = "Pas assez d'argent",
         no_garage = "Aucun",
+        vehicle_occupied = "Vous ne pouvez pas stocker ce véhicule car il n'est pas vide",
     },
     success = {
         vehicle_parked = "Véhicule garé !",
