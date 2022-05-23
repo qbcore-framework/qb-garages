@@ -165,7 +165,11 @@ RegisterNetEvent('qb-garage:server:updateVehicle', function(state, fuel, engine,
     QBCore.Functions.TriggerCallback('qb-garage:server:checkOwnership', source, function(owned)     --Check ownership
         if owned then
             if state == 0 or state == 1 or state == 2 then                                          --Check state value
-                if Garages[garage] then                                                             --Check if garage is existing
+                if type ~= "house" then
+                    if Garages[garage] then                                                             --Check if garage is existing
+                        MySQL.update('UPDATE player_vehicles SET state = ?, garage = ?, fuel = ?, engine = ?, body = ? WHERE plate = ?', {state, garage, fuel, engine, body, plate})
+                    end
+                else
                     MySQL.update('UPDATE player_vehicles SET state = ?, garage = ?, fuel = ?, engine = ?, body = ? WHERE plate = ?', {state, garage, fuel, engine, body, plate})
                 end
             end
@@ -176,17 +180,22 @@ RegisterNetEvent('qb-garage:server:updateVehicle', function(state, fuel, engine,
 end)
 
 RegisterNetEvent('qb-garage:server:updateVehicleState', function(state, plate, garage)
+    local type
+    if Garages[garage] then
+        type = Garages[garage].type
+    else
+        type = "house"
+    end
+
     QBCore.Functions.TriggerCallback('qb-garage:server:validateGarageVehicle', source, function(owned)     --Check ownership
         if owned then
             if state == 0 then                                          --Check state value
-                if Garages[garage] then                                 --Check if garage is existing
-                    MySQL.update('UPDATE player_vehicles SET state = ?, garage = ?, depotprice = ? WHERE plate = ?', {state, garage, 0, plate})
-                end
+                MySQL.update('UPDATE player_vehicles SET state = ?, depotprice = ? WHERE plate = ?', {state, 0, plate})
             end
         else
             TriggerClientEvent('QBCore:Notify', source, Lang:t("error.not_owned"), 'error')
         end
-    end, garage, Garages[garage].type, plate)
+    end, garage, type, plate)
 end)
 
 RegisterNetEvent('qb-garages:server:UpdateOutsideVehicle', function(plate, vehicle)
