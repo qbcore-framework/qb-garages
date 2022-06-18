@@ -355,9 +355,9 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
         
             QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
                 QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
-        
                     if vehicle.plate then
-                        TriggerServerEvent('qb-garages:server:UpdateOutsideVehicle', vehicle.plate, vehicle)
+                        SetNetworkIdAlwaysExistsForPlayer(NetworkGetNetworkIdFromEntity(veh), PlayerPedId(), true)
+                        TriggerServerEvent('qb-garages:server:UpdateOutsideVehicle', vehicle.plate, NetworkGetNetworkIdFromEntity(veh))
                     end
         
                     QBCore.Functions.SetVehicleProperties(veh, properties)

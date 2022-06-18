@@ -18,7 +18,7 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetGarageVehicles", function(s
             if result[1] then
                 --Check vehicle type against depot type
                 for _, vehicle in pairs(result) do
-                    if not OutsideVehicles[vehicle.plate] then
+                    if not OutsideVehicles[vehicle.plate] or not DoesEntityExist(OutsideVehicles[vehicle.plate].entity) then
                         if category == "air" and ( QBCore.Shared.Vehicles[vehicle.vehicle].category == "helicopters" or QBCore.Shared.Vehicles[vehicle.vehicle].category == "planes" ) then
                             tosend[#tosend + 1] = vehicle
                         elseif category == "sea" and QBCore.Shared.Vehicles[vehicle.vehicle].category == "boats" then
@@ -151,7 +151,7 @@ end)
 
 QBCore.Functions.CreateCallback("qb-garage:server:IsSpawnOk", function(_, cb, plate, type)
     if type == "depot" then         --If depot, check if vehicle is not already spawned on the map
-        if OutsideVehicles[plate] then
+        if OutsideVehicles[plate] and DoesEntityExist(OutsideVehicles[plate].entity) then
             cb(false)
         else
             cb(true)
@@ -199,7 +199,8 @@ RegisterNetEvent('qb-garage:server:updateVehicleState', function(state, plate, g
 end)
 
 RegisterNetEvent('qb-garages:server:UpdateOutsideVehicle', function(plate, vehicle)
-    OutsideVehicles[plate] = vehicle
+    local entity = NetworkGetEntityFromNetworkId(vehicle)
+    OutsideVehicles[plate] = {netID = vehicle, entity = entity}
 end)
 
 AddEventHandler('onResourceStart', function(resource)
