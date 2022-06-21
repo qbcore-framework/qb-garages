@@ -336,7 +336,7 @@ RegisterNetEvent("qb-garage:client:VehicleList", function(data)
     end, indexgarage, type, garage.vehicle)
 end)
 
-local function SetProperties(veh, props, heading, index, owner)
+local function SetProperties(veh, props, heading, owner)
     QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
         if props.plate then
             SetNetworkIdAlwaysExistsForPlayer(NetworkGetNetworkIdFromEntity(veh), PlayerPedId(), true)
@@ -361,7 +361,7 @@ local function SetProperties(veh, props, heading, index, owner)
 
 end
 
-RegisterNetEvent('qb-garage:client:SetProperties', function(netId, vehicle, heading, index, owner)
+RegisterNetEvent('qb-garage:client:SetProperties', function(netId, vehicle, heading, owner)
     if not NetworkDoesEntityExistWithNetworkId(netId) then
         print("Vehicle not found")
         -- vehicles wont instantly exist on the client, even though they exist on the server.
@@ -370,7 +370,7 @@ RegisterNetEvent('qb-garage:client:SetProperties', function(netId, vehicle, head
     if NetworkDoesEntityExistWithNetworkId(netId) then
         print("Found id : ".. netId .. "applying props")
         local veh = NetworkGetEntityFromNetworkId(netId)
-        SetProperties(veh, vehicle, heading, index, owner)
+        SetProperties(veh, vehicle, heading, owner)
     else
         print("Could not find id : ".. netId)
     end
@@ -397,7 +397,7 @@ RegisterNetEvent('qb-garage:client:takeOutGarage', function(data)
             if not ServerSpawnCars then
                 QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
                     TriggerEvent("vehiclekeys:client:SetOwner", vehicle.plate)
-                    SetProperties(veh, vehicle, heading, index)
+                    SetProperties(veh, vehicle, heading)
                     TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, index)
                     closeMenuFull()
                     if type == "house" then
@@ -420,12 +420,12 @@ RegisterNetEvent('qb-garage:client:takeOutGarage', function(data)
                 --    Wait(50)
                 --end
                 --local veh = NetworkGetEntityFromNetworkId(spawn)
-                --SetProperties(veh, vehicle, heading, index)
+                --SetProperties(veh, vehicle, heading)
             end
         else
             QBCore.Functions.Notify(Lang:t("error.not_impound"), "error", 5000)
         end
-    end, vehicle.plate, type, vehicle, location, heading, index)
+    end, vehicle.plate, type, vehicle, location, heading)
 end)
 
 local function enterVehicle(veh, indexgarage, type, garage)

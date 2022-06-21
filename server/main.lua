@@ -149,9 +149,9 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetVehicleProperties", functio
     cb(properties)
 end)
 
-QBCore.Functions.CreateCallback("qb-garage:server:IsSpawnOk", function(source, cb, plate, type, vehicle, position, heading, index)
+QBCore.Functions.CreateCallback("qb-garage:server:IsSpawnOk", function(source, cb, plate, type, vehicle, position, heading)
     local model = vehicle.vehicle
-    local ok = false
+    local ok
     if type == "depot" then         --If depot, check if vehicle is not already spawned on the map
         if OutsideVehicles[plate] and DoesEntityExist(OutsideVehicles[plate].entity) then
             ok = false
@@ -173,7 +173,7 @@ QBCore.Functions.CreateCallback("qb-garage:server:IsSpawnOk", function(source, c
             end
             if DoesEntityExist(veh) then
                 netId = NetworkGetNetworkIdFromEntity(veh)
-                TriggerClientEvent("qb-garage:client:SetProperties", -1, netId, vehicle, heading, index, source)
+                TriggerClientEvent("qb-garage:client:SetProperties", -1, netId, vehicle, heading, source)
                 cb(true)
             else
                 cb(false)
