@@ -149,15 +149,36 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetVehicleProperties", functio
     cb(properties)
 end)
 
-QBCore.Functions.CreateCallback("qb-garage:server:IsSpawnOk", function(_, cb, plate, type)
+QBCore.Functions.CreateCallback("qb-garage:server:IsSpawnOk", function(source, cb, plate, type, vehicle, position, heading, index)
+    local model = vehicle.vehicle
+    local ok = false
     if type == "depot" then         --If depot, check if vehicle is not already spawned on the map
         if OutsideVehicles[plate] and DoesEntityExist(OutsideVehicles[plate].entity) then
-            cb(false)
+            ok = false
         else
-            cb(true)
+            ok = true
         end
     else
-        cb(true)
+        ok = true
+    end
+    if not ServerSpawnCars then
+        cb(ok)
+    else
+        if ok then
+            local CreateAutomobile = GetHashKey("CREATE_AUTOMOBILE")
+            local veh = Citizen.InvokeNative(CreateAutomobile, GetHashKey(model), position, heading, true, false)
+            local netId
+            while not DoesEntityExist(veh) do
+                Wait(25)
+            end
+            if DoesEntityExist(veh) then
+                netId = NetworkGetNetworkIdFromEntity(veh)
+                TriggerClientEvent("qb-garage:client:SetProperties", -1, netId, vehicle, heading, index, source)
+                cb(true)
+            else
+                cb(false)
+            end
+        end
     end
 end)
 
@@ -198,7 +219,7 @@ RegisterNetEvent('qb-garage:server:updateVehicleState', function(state, plate, g
     end, garage, type, plate)
 end)
 
-RegisterNetEvent('qb-garages:server:UpdateOutsideVehicle', function(plate, vehicle)
+RegisterNetEvent('qb-garage:server:UpdateOutsideVehicle', function(plate, vehicle)
     local entity = NetworkGetEntityFromNetworkId(vehicle)
     OutsideVehicles[plate] = {netID = vehicle, entity = entity}
 end)
@@ -224,10 +245,10 @@ RegisterNetEvent('qb-garage:server:PayDepotPrice', function(data)
         if result[1] then
             if cashBalance >= result[1].depotprice then
                 Player.Functions.RemoveMoney("cash", result[1].depotprice, "paid-depot")
-                TriggerClientEvent("qb-garages:client:takeOutGarage", src, data)
+                TriggerClientEvent("qb-garage:client:takeOutGarage", src, data)
             elseif bankBalance >= result[1].depotprice then
                 Player.Functions.RemoveMoney("bank", result[1].depotprice, "paid-depot")
-                TriggerClientEvent("qb-garages:client:takeOutGarage", src, data)
+                TriggerClientEvent("qb-garage:client:takeOutGarage", src, data)
             else
                 TriggerClientEvent('QBCore:Notify', src, Lang:t("error.not_enough"), 'error')
             end

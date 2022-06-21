@@ -34,7 +34,7 @@ local function MenuGarage(type, garage, indexgarage)
             header = Lang:t("menu.header.vehicles"),
             txt = Lang:t("menu.text.vehicles"),
             params = {
-                event = "qb-garages:client:VehicleList",
+                event = "qb-garage:client:VehicleList",
                 args = {
                     type = type,
                     garage = garage,
@@ -256,7 +256,7 @@ local function round(num, numDecimalPlaces)
     return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
 end
 
-RegisterNetEvent("qb-garages:client:VehicleList", function(data)
+RegisterNetEvent("qb-garage:client:VehicleList", function(data)
     local type = data.type
     local garage = data.garage
     local indexgarage = data.index
@@ -298,7 +298,7 @@ RegisterNetEvent("qb-garages:client:VehicleList", function(data)
                         header = Lang:t('menu.header.depot', {value = vname, value2 = v.depotprice}),
                         txt = Lang:t('menu.text.depot', {value = v.plate, value2 = currentFuel, value3 = enginePercent, value4 = bodyPercent}),
                         params = {
-                            event = "qb-garages:client:TakeOutDepot",
+                            event = "qb-garage:client:TakeOutDepot",
                             args = {
                                 vehicle = v,
                                 type = type,
@@ -312,7 +312,7 @@ RegisterNetEvent("qb-garages:client:VehicleList", function(data)
                         header = Lang:t('menu.header.garage', {value = vname, value2 = v.plate}),
                         txt = Lang:t('menu.text.garage', {value = v.state, value2 = currentFuel, value3 = enginePercent, value4 = bodyPercent}),
                         params = {
-                            event = "qb-garages:client:takeOutGarage",
+                            event = "qb-garage:client:takeOutGarage",
                             args = {
                                 vehicle = v,
                                 type = type,
@@ -336,53 +336,96 @@ RegisterNetEvent("qb-garages:client:VehicleList", function(data)
     end, indexgarage, type, garage.vehicle)
 end)
 
-RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
+local function SetProperties(veh, props, heading, index, owner)
+    QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
+        if props.plate then
+            SetNetworkIdAlwaysExistsForPlayer(NetworkGetNetworkIdFromEntity(veh), PlayerPedId(), true)
+            TriggerServerEvent('qb-garage:server:UpdateOutsideVehicle', props.plate, NetworkGetNetworkIdFromEntity(veh))
+        end
+
+        QBCore.Functions.SetVehicleProperties(veh, properties)
+        SetVehicleNumberPlateText(veh, props.plate)
+        SetEntityHeading(veh, heading)
+        exports['LegacyFuel']:SetFuel(veh, props.fuel)
+        doCarDamage(veh, props)
+        SetEntityAsMissionEntity(veh, true, true)
+        if not owner then
+            TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
+        else
+            local playerIdx = GetPlayerFromServerId(owner)
+            local ped = GetPlayerPed(playerIdx)
+            TaskWarpPedIntoVehicle(ped, veh, -1)
+        end
+        SetVehicleEngineOn(veh, true, true)
+    end, props.plate)
+
+end
+
+RegisterNetEvent('qb-garage:client:SetProperties', function(netId, vehicle, heading, index, owner)
+    if not NetworkDoesEntityExistWithNetworkId(netId) then
+        print("Vehicle not found")
+        -- vehicles wont instantly exist on the client, even though they exist on the server.
+        Wait(500)
+    end
+    if NetworkDoesEntityExistWithNetworkId(netId) then
+        print("Found id : ".. netId .. "applying props")
+        local veh = NetworkGetEntityFromNetworkId(netId)
+        SetProperties(veh, vehicle, heading, index, owner)
+    else
+        print("Could not find id : ".. netId)
+    end
+end)
+
+RegisterNetEvent('qb-garage:client:takeOutGarage', function(data)
     local type = data.type
     local vehicle = data.vehicle
     local garage = data.garage
     local index = data.index
+
+    local location
+    local heading
+    if type == "house" then
+        location = garage.takeVehicle
+        heading = garage.takeVehicle.h
+    else
+        location = garage.spawnPoint
+        heading = garage.spawnPoint.w
+    end
+
     QBCore.Functions.TriggerCallback('qb-garage:server:IsSpawnOk', function(spawn)
         if spawn then
-            local location
-            local heading
-            if type == "house" then
-                location = garage.takeVehicle
-                heading = garage.takeVehicle.h
-            else
-                location = garage.spawnPoint
-                heading = garage.spawnPoint.w
-            end
-        
-            QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
-                QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
-                    if vehicle.plate then
-                        SetNetworkIdAlwaysExistsForPlayer(NetworkGetNetworkIdFromEntity(veh), PlayerPedId(), true)
-                        TriggerServerEvent('qb-garages:server:UpdateOutsideVehicle', vehicle.plate, NetworkGetNetworkIdFromEntity(veh))
-                    end
-        
-                    QBCore.Functions.SetVehicleProperties(veh, properties)
-                    SetVehicleNumberPlateText(veh, vehicle.plate)
-                    SetEntityHeading(veh, heading)
-                    exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
-                    doCarDamage(veh, vehicle)
-                    SetEntityAsMissionEntity(veh, true, true)
+            if not ServerSpawnCars then
+                QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
+                    TriggerEvent("vehiclekeys:client:SetOwner", vehicle.plate)
+                    SetProperties(veh, vehicle, heading, index)
                     TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, index)
                     closeMenuFull()
-                    TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
-                    TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
-                    SetVehicleEngineOn(veh, true, true)
                     if type == "house" then
                         exports['qb-core']:DrawText(Lang:t("info.park_e"), 'left')
                         InputOut = false
                         InputIn = true
                     end
-                end, vehicle.plate)
-        
-            end, location, true)
+                end, location, true)
+            else
+                TriggerEvent("vehiclekeys:client:SetOwner", vehicle.plate)
+                TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, index)
+                closeMenuFull()
+                if type == "house" then
+                    exports['qb-core']:DrawText(Lang:t("info.park_e"), 'left')
+                    InputOut = false
+                    InputIn = true
+                end
+            --while not NetworkDoesEntityExistWithNetworkId(spawn) do
+                    -- vehicles wont instantly exist on the client, even though they exist on the server.
+                --    Wait(50)
+                --end
+                --local veh = NetworkGetEntityFromNetworkId(spawn)
+                --SetProperties(veh, vehicle, heading, index)
+            end
         else
             QBCore.Functions.Notify(Lang:t("error.not_impound"), "error", 5000)
         end
-    end, vehicle.plate, type)
+    end, vehicle.plate, type, vehicle, location, heading, index)
 end)
 
 local function enterVehicle(veh, indexgarage, type, garage)
@@ -402,7 +445,7 @@ local function enterVehicle(veh, indexgarage, type, garage)
                 end
     
                 if plate then
-                    TriggerServerEvent('qb-garages:server:UpdateOutsideVehicle', plate, nil)
+                    TriggerServerEvent('qb-garage:server:UpdateOutsideVehicle', plate, nil)
                 end
                 QBCore.Functions.Notify(Lang:t("success.vehicle_parked"), "primary", 4500)
             else
@@ -444,7 +487,7 @@ local function CreateBlipsZones()
     end
 end
 
-RegisterNetEvent('qb-garages:client:setHouseGarage', function(house, hasKey)
+RegisterNetEvent('qb-garage:client:setHouseGarage', function(house, hasKey)
     if HouseGarages[house] then
         if lasthouse ~= house then
             if lasthouse then
@@ -458,11 +501,11 @@ RegisterNetEvent('qb-garages:client:setHouseGarage', function(house, hasKey)
     end
 end)
 
-RegisterNetEvent('qb-garages:client:houseGarageConfig', function(garageConfig)
+RegisterNetEvent('qb-garage:client:houseGarageConfig', function(garageConfig)
     HouseGarages = garageConfig
 end)
 
-RegisterNetEvent('qb-garages:client:addHouseGarage', function(house, garageInfo)
+RegisterNetEvent('qb-garage:client:addHouseGarage', function(house, garageInfo)
     HouseGarages[house] = garageInfo
 end)
 
@@ -482,13 +525,13 @@ RegisterNetEvent('QBCore:Client:OnJobUpdate', function(job)
     PlayerJob = job
 end)
 
-RegisterNetEvent('qb-garages:client:TakeOutDepot', function(data)
+RegisterNetEvent('qb-garage:client:TakeOutDepot', function(data)
     local vehicle = data.vehicle
 
     if vehicle.depotprice ~= 0 then
         TriggerServerEvent("qb-garage:server:PayDepotPrice", data)
     else
-        TriggerEvent("qb-garages:client:takeOutGarage", data)
+        TriggerEvent("qb-garage:client:takeOutGarage", data)
     end
 end)
 
@@ -506,7 +549,7 @@ CreateThread(function()
             sleep = 0
         end
         if InputIn or InputOut then
-            if IsControlJustReleased(0, 38) then
+            if IsControlJustReleased(0, 38) and currentGarage then
                 if InputIn then
                     local ped = PlayerPedId()
                     local curVeh = GetVehiclePedIsIn(ped)

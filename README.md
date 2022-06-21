@@ -8,7 +8,8 @@
 
 ![image](https://user-images.githubusercontent.com/82112471/149678977-2a574ee9-8ecc-494f-a845-e17281a74594.png)
 
-
+**Server side car spawn**
+* With the option ServerSpawnCars car can be spawned from the server, making them existing at any time as long the server is not restart
 
 **House Garages**
 * Park owned cars in house garages. To add a house garage, you must have the realestate job and do /addgarage.
