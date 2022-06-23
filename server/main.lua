@@ -142,11 +142,13 @@ end)
 
 QBCore.Functions.CreateCallback("qb-garage:server:GetVehicleProperties", function(_, cb, plate)
     local properties = {}
+    local damages = {}
     local result = MySQL.query.await('SELECT mods FROM player_vehicles WHERE plate = ?', {plate})
     if result[1] then
         properties = json.decode(result[1].mods)
+        damages = json.decode(result[1].damages)
     end
-    cb(properties)
+    cb(properties, damages)
 end)
 
 QBCore.Functions.CreateCallback("qb-garage:server:IsSpawnOk", function(_, cb, plate, type)
@@ -161,16 +163,16 @@ QBCore.Functions.CreateCallback("qb-garage:server:IsSpawnOk", function(_, cb, pl
     end
 end)
 
-RegisterNetEvent('qb-garage:server:updateVehicle', function(state, fuel, engine, body, plate, garage, type, gang)
+RegisterNetEvent('qb-garage:server:updateVehicle', function(state, fuel, engine, body, plate, garage, type, gang, damages)
     QBCore.Functions.TriggerCallback('qb-garage:server:checkOwnership', source, function(owned)     --Check ownership
         if owned then
             if state == 0 or state == 1 or state == 2 then                                          --Check state value
                 if type ~= "house" then
                     if Garages[garage] then                                                             --Check if garage is existing
-                        MySQL.update('UPDATE player_vehicles SET state = ?, garage = ?, fuel = ?, engine = ?, body = ? WHERE plate = ?', {state, garage, fuel, engine, body, plate})
+                        MySQL.update('UPDATE player_vehicles SET state = ?, garage = ?, fuel = ?, engine = ?, body = ?, damages = ? WHERE plate = ?', {state, garage, fuel, engine, body, damages, plate})
                     end
                 else
-                    MySQL.update('UPDATE player_vehicles SET state = ?, garage = ?, fuel = ?, engine = ?, body = ? WHERE plate = ?', {state, garage, fuel, engine, body, plate})
+                    MySQL.update('UPDATE player_vehicles SET state = ?, garage = ?, fuel = ?, engine = ?, body = ?, damages = ? WHERE plate = ?', {state, garage, fuel, engine, body, damages, plate})
                 end
             end
         else

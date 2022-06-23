@@ -196,44 +196,57 @@ end
 local function doCarDamage(currentVehicle, veh)
 	local engine = veh.engine + 0.0
 	local body = veh.body + 0.0
-
     Wait(100)
-    if VisuallyDamageCars then
-        if body < 900.0 then
-            SmashVehicleWindow(currentVehicle, 0)
-            SmashVehicleWindow(currentVehicle, 1)
-            SmashVehicleWindow(currentVehicle, 2)
-            SmashVehicleWindow(currentVehicle, 3)
-            SmashVehicleWindow(currentVehicle, 4)
-            SmashVehicleWindow(currentVehicle, 5)
-            SmashVehicleWindow(currentVehicle, 6)
-            SmashVehicleWindow(currentVehicle, 7)
-        end
-        if body < 800.0 then
-            SetVehicleDoorBroken(currentVehicle, 0, true)
-            SetVehicleDoorBroken(currentVehicle, 1, true)
-            SetVehicleDoorBroken(currentVehicle, 2, true)
-            SetVehicleDoorBroken(currentVehicle, 3, true)
-            SetVehicleDoorBroken(currentVehicle, 4, true)
-            SetVehicleDoorBroken(currentVehicle, 5, true)
-            SetVehicleDoorBroken(currentVehicle, 6, true)
-        end
-        if engine < 700.0 then
-            SetVehicleTyreBurst(currentVehicle, 1, false, 990.0)
-            SetVehicleTyreBurst(currentVehicle, 2, false, 990.0)
-            SetVehicleTyreBurst(currentVehicle, 3, false, 990.0)
-            SetVehicleTyreBurst(currentVehicle, 4, false, 990.0)
-        end
-        if engine < 500.0 then
-            SetVehicleTyreBurst(currentVehicle, 0, false, 990.0)
-            SetVehicleTyreBurst(currentVehicle, 5, false, 990.0)
-            SetVehicleTyreBurst(currentVehicle, 6, false, 990.0)
-            SetVehicleTyreBurst(currentVehicle, 7, false, 990.0)
-        end
-    end
     SetVehicleEngineHealth(currentVehicle, engine)
     SetVehicleBodyHealth(currentVehicle, body)
+end
 
+local function GetVehicleDamages(vehicle)
+	local damages = {['damaged_windows'] = {}, ['burst_tires'] = {}, ['broken_doors'] = {}}
+
+	for i = 0, GetVehicleNumberOfWheels(vehicle) do
+		if IsVehicleTyreBurst(vehicle, i, false) then table.insert(damages['burst_tires'], i) end
+	end
+	for i = 0, 7 do
+		if not IsVehicleWindowIntact(vehicle, i) then table.insert(damages['damaged_windows'], i) end
+	end
+	for i = 0, GetNumberOfVehicleDoors(vehicle) do 
+		if IsVehicleDoorDamaged(vehicle, i) then table.insert(damages['broken_doors'], i) end
+	end
+
+	return json.encode(damages)
+end
+
+local function setDamages(car, damages)
+    if VisuallyDamageCars then
+        if damages == nil then
+            return
+        end
+
+        for i = 0, GetVehicleNumberOfWheels(car) do
+            if damages['burst_tires'] then
+                if damages['burst_tires'][i] then
+                    SetVehicleTyreBurst(car, damages['burst_tires'][i], true, 1000.0)
+                end
+            end
+        end
+
+        for i = 0, 7 do
+            if damages['damaged_windows'] then
+                if damages['damaged_windows'][i] then
+                    SmashVehicleWindow(car, damages['damaged_windows'][i])
+                end
+            end
+        end
+
+        for i = 0, GetNumberOfVehicleDoors(car) do
+            if damages['broken_doors'] then
+                if damages['broken_doors'][i] then
+                    SetVehicleDoorBroken(car, damages['broken_doors'][i], true)
+                end
+            end
+        end
+    end
 end
 
 local function CheckPlayers(vehicle, garage)
@@ -352,14 +365,14 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
                 location = garage.spawnPoint
                 heading = garage.spawnPoint.w
             end
-        
+
             QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
-                QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
+                QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties, damages)
                     if vehicle.plate then
                         SetNetworkIdAlwaysExistsForPlayer(NetworkGetNetworkIdFromEntity(veh), PlayerPedId(), true)
                         TriggerServerEvent('qb-garages:server:UpdateOutsideVehicle', vehicle.plate, NetworkGetNetworkIdFromEntity(veh))
                     end
-        
+
                     QBCore.Functions.SetVehicleProperties(veh, properties)
                     SetVehicleNumberPlateText(veh, vehicle.plate)
                     SetEntityHeading(veh, heading)
@@ -368,6 +381,7 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
                     SetEntityAsMissionEntity(veh, true, true)
                     TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, index)
                     closeMenuFull()
+                    setDamages(veh, damages)
                     TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
                     TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
                     SetVehicleEngineOn(veh, true, true)
@@ -393,7 +407,7 @@ local function enterVehicle(veh, indexgarage, type, garage)
                 local bodyDamage = math.ceil(GetVehicleBodyHealth(veh))
                 local engineDamage = math.ceil(GetVehicleEngineHealth(veh))
                 local totalFuel = exports['LegacyFuel']:GetFuel(veh)
-                TriggerServerEvent('qb-garage:server:updateVehicle', 1, totalFuel, engineDamage, bodyDamage, plate, indexgarage, type, PlayerGang.name)
+                TriggerServerEvent('qb-garage:server:updateVehicle', 1, totalFuel, engineDamage, bodyDamage, plate, indexgarage, type, PlayerGang.name, GetVehicleDamages(veh))
                 CheckPlayers(veh, garage)
                 if type == "house" then
                     exports['qb-core']:DrawText(Lang:t("info.car_e"), 'left')
