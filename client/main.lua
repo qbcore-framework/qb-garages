@@ -11,6 +11,7 @@ local currentGarage = nil
 local currentGarageIndex = nil
 local garageZones = {}
 local lasthouse = nil
+local blipsZonesLoaded = false
 
 
 --Menus
@@ -415,6 +416,8 @@ local function enterVehicle(veh, indexgarage, type, garage)
 end
 
 local function CreateBlipsZones()
+    if blipsZonesLoaded then return end
+
     PlayerData = QBCore.Functions.GetPlayerData()
     PlayerGang = PlayerData.gang
     PlayerJob = PlayerData.job
@@ -442,6 +445,7 @@ local function CreateBlipsZones()
             CreateZone("marker", garage, index)
         end
     end
+    blipsZonesLoaded = true
 end
 
 RegisterNetEvent('qb-garages:client:setHouseGarage', function(house, hasKey)
@@ -470,7 +474,8 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     CreateBlipsZones()
 end)
 
-AddEventHandler("onResourceStart", function()
+AddEventHandler("onResourceStart", function(res)
+    if res ~= GetCurrentResourceName() then return end
     CreateBlipsZones()
 end)
 
