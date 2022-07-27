@@ -355,32 +355,23 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
                 heading = garage.spawnPoint.w
             end
 
-            QBCore.Functions.TriggerCallback('QBCore:Server:SpawnVehicle', function(netId)
+            QBCore.Functions.TriggerCallback('qb-garage:server:spawnvehicle', function(netId, properties)
                 local veh = NetToVeh(netId)
-                QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
-                    if vehicle.plate then  -- can probably change this logic here now to server
-                        SetNetworkIdAlwaysExistsForPlayer(NetworkGetNetworkIdFromEntity(veh), PlayerPedId(), true)
-                        TriggerServerEvent('qb-garages:server:UpdateOutsideVehicle', vehicle.plate, NetworkGetNetworkIdFromEntity(veh))
-                    end
-                    QBCore.Functions.SetVehicleProperties(veh, properties)
-                    SetVehicleNumberPlateText(veh, vehicle.plate)
-                    SetEntityHeading(veh, heading)
-                    exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
-                    doCarDamage(veh, vehicle)
-                    SetEntityAsMissionEntity(veh, true, true)
-                    TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, index)
-                    closeMenuFull()
-                    TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
-                    TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
-                    SetVehicleEngineOn(veh, true, true)
-                    if type == "house" then
-                        exports['qb-core']:DrawText(Lang:t("info.park_e"), 'left')
-                        InputOut = false
-                        InputIn = true
-                    end
-                end, vehicle.plate)
-
-            end, vehicle.vehicle, location, true)
+                QBCore.Functions.SetVehicleProperties(veh, properties)
+                SetVehicleNumberPlateText(veh, vehicle.plate)
+                SetEntityHeading(veh, heading)
+                exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
+                doCarDamage(veh, vehicle)
+                TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, index)
+                closeMenuFull()
+                TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
+                SetVehicleEngineOn(veh, true, true)
+                if type == "house" then
+                    exports['qb-core']:DrawText(Lang:t("info.park_e"), 'left')
+                    InputOut = false
+                    InputIn = true
+                end
+            end, vehicle, location, true)
         else
             QBCore.Functions.Notify(Lang:t("error.not_impound"), "error", 5000)
         end
