@@ -199,9 +199,6 @@ local function doCarDamage(currentVehicle, veh)
     local engine = veh.engine + 0.0
     local body = veh.body + 0.0
     local data = json.decode(veh.mods)
-    local doorStatus = data.doorStatus
-    local tireBurstState = data.tireBurstState
-    local windowStatus = data.windowStatus
 
     for k, v in pairs(data.doorStatus) do
         if v then
