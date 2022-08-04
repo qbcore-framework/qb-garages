@@ -346,20 +346,14 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
     QBCore.Functions.TriggerCallback('qb-garage:server:IsSpawnOk', function(spawn)
         if spawn then
             local location
-            local heading
             if type == "house" then
                 location = garage.takeVehicle
-                heading = garage.takeVehicle.h
             else
                 location = garage.spawnPoint
-                heading = garage.spawnPoint.w
             end
-
             QBCore.Functions.TriggerCallback('qb-garage:server:spawnvehicle', function(netId, properties)
                 local veh = NetToVeh(netId)
                 QBCore.Functions.SetVehicleProperties(veh, properties)
-                SetVehicleNumberPlateText(veh, vehicle.plate)
-                SetEntityHeading(veh, heading)
                 exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
                 doCarDamage(veh, vehicle)
                 TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, index)
