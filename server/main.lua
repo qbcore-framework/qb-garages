@@ -141,9 +141,11 @@ QBCore.Functions.CreateCallback("qb-garage:server:checkOwnership", function(sour
 end)
 
 QBCore.Functions.CreateCallback('qb-garage:server:spawnvehicle', function (source, cb, vehInfo, coords, warp)
-    local veh = QBCore.Functions.SpawnVehicle(source, vehInfo.vehicle, coords, warp)
-    local vehProps = {}
     local plate = vehInfo.plate
+    local veh = QBCore.Functions.SpawnVehicle(source, vehInfo.vehicle, coords, warp)
+    SetEntityHeading(veh, coords.w)
+    SetVehicleNumberPlateText(veh, plate)
+    local vehProps = {}
     local result = MySQL.query.await('SELECT mods FROM player_vehicles WHERE plate = ?', {plate})
     if result[1] then vehProps = json.decode(result[1].mods) end
     local netId = NetworkGetNetworkIdFromEntity(veh)
