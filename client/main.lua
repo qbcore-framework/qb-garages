@@ -388,7 +388,7 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
     end, vehicle.plate, garagetype)
 end)
 
-local function enterVehicle(veh, indexgarage, type, garage)
+local function enterVehicle(veh, indexgarage, garagetype, garage)
     local plate = QBCore.Functions.GetPlate(veh)
     if GetVehicleNumberOfPassengers(veh) == 0 then
         QBCore.Functions.TriggerCallback('qb-garage:server:checkOwnership', function(owned)
