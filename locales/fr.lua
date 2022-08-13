@@ -47,10 +47,10 @@ local Translations = {
         impound = "En Fourrière par la Police",
     },
     info = {
-        car_e = "~g~E~w~ - Garage",
-        sea_e = "~g~E~w~ - Hangarà bateaux",
-        air_e = "~g~E~w~ - Hangar",
-        park_e = "~g~E~w~ - Ranger le véhicule",
+        car_e = "E - Garage",
+        sea_e = "E - Hangarà bateaux",
+        air_e = "E - Hangar",
+        park_e = "E - Ranger le véhicule",
         house_garage = "Garage Personnel",
     }
 }
