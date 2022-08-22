@@ -48,7 +48,7 @@ local Translations = {
     },
     info = {
         car_e = "E - Garage",
-        sea_e = "E - Hangarà bateaux",
+        sea_e = "E - Hangar à bateaux",
         air_e = "E - Hangar",
         park_e = "E - Ranger le véhicule",
         house_garage = "Garage Personnel",
