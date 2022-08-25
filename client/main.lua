@@ -409,15 +409,17 @@ local function CreateBlipsZones()
     PlayerJob = PlayerData.job
     for index, garage in pairs(Garages) do
         if garage.showBlip then
-            local Garage = AddBlipForCoord(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z)
-            SetBlipSprite(Garage, garage.blipNumber)
-            SetBlipDisplay(Garage, 4)
-            SetBlipScale(Garage, 0.60)
-            SetBlipAsShortRange(Garage, true)
-            SetBlipColour(Garage, 3)
-            BeginTextCommandSetBlipName("STRING")
-            AddTextComponentSubstringPlayerName(garage.blipName)
-            EndTextCommandSetBlipName(Garage)
+            if not garage.job or garage.job == PlayerJob.name or garage.job == PlayerGang.name then
+                local Garage = AddBlipForCoord(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z)
+                SetBlipSprite(Garage, garage.blipNumber)
+                SetBlipDisplay(Garage, 4)
+                SetBlipScale(Garage, 0.60)
+                SetBlipAsShortRange(Garage, true)
+                SetBlipColour(Garage, 3)
+                BeginTextCommandSetBlipName("STRING")
+                AddTextComponentSubstringPlayerName(garage.blipName)
+                EndTextCommandSetBlipName(Garage)
+            end
         end
         if garage.type == "job" then
             if PlayerJob.name == garage.job then
@@ -467,10 +469,12 @@ end)
 
 RegisterNetEvent('QBCore:Client:OnGangUpdate', function(gang)
     PlayerGang = gang
+    CreateBlipsZones()
 end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate', function(job)
     PlayerJob = job
+    CreateBlipsZones()
 end)
 
 RegisterNetEvent('qb-garages:client:TakeOutDepot', function(data)
