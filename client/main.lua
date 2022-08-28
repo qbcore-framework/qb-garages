@@ -12,6 +12,7 @@ local currentGarageIndex = nil
 local garageZones = {}
 local lasthouse = nil
 local blipsZonesLoaded = false
+local Garage = {}
 
 
 --Menus
