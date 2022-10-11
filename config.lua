@@ -15,6 +15,17 @@ Config.Garages = {
         ["type"] = "public",                --public, job, gang, depot
         ["vehicle"] = "car"                 --car, air, sea
     },
+    ["casinogarage"] = {
+        ["label"] = "Casino Parking",
+        ["takeVehicle"] = vector3(925.3, 51.85, 81.11),
+        ["spawnPoint"] = vector4(918.77, 51.73, 80.16, 329.43),
+        ["putVehicle"] = vector3(914.92, 37.85, 80.07),
+        ["showBlip"] = true,
+        ["blipName"] = "Public Parking",
+        ["blipNumber"] = 357,
+        ["type"] = "public",                --public, job, gang, depot
+        ["vehicle"] = "car"                 --car, air, sea
+    },
     ["sapcounsel"] = {
         ["label"] = "San Andreas Parking",
         ["takeVehicle"] = vector3(-330.01, -780.33, 33.96),
