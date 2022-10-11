@@ -200,7 +200,7 @@ local function doCarDamage(currentVehicle, veh)
     local body = veh.body + 0.0
 
     Wait(100)
-    if VisuallyDamageCars then
+    if Config["VisuallyDamageCars"] then
         if body < 900.0 then
             SmashVehicleWindow(currentVehicle, 0)
             SmashVehicleWindow(currentVehicle, 1)
@@ -407,7 +407,7 @@ local function CreateBlipsZones()
     PlayerData = QBCore.Functions.GetPlayerData()
     PlayerGang = PlayerData.gang
     PlayerJob = PlayerData.job
-    for index, garage in pairs(Garages) do
+    for index, garage in pairs(Config.Garages) do
         if garage.showBlip then
             local Garage = AddBlipForCoord(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z)
             SetBlipSprite(Garage, garage.blipNumber)
@@ -435,13 +435,13 @@ local function CreateBlipsZones()
 end
 
 RegisterNetEvent('qb-garages:client:setHouseGarage', function(house, hasKey)
-    if HouseGarages[house] then
+    if Config.HouseGarages[house] then
         if lasthouse ~= house then
             if lasthouse then
                 DestroyZone("hmarker", lasthouse)
             end
-            if hasKey and HouseGarages[house].takeVehicle.x then
-                CreateZone("hmarker", HouseGarages[house], house)
+            if hasKey and Config.HouseGarages[house].takeVehicle.x then
+                CreateZone("hmarker", Config.HouseGarages[house], house)
                 lasthouse = house
             end
         end
@@ -453,7 +453,7 @@ RegisterNetEvent('qb-garages:client:houseGarageConfig', function(garageConfig)
 end)
 
 RegisterNetEvent('qb-garages:client:addHouseGarage', function(house, garageInfo)
-    HouseGarages[house] = garageInfo
+    Config.HouseGarages[house] = garageInfo
 end)
 
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()

@@ -35,7 +35,7 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetGarageVehicles", function(s
         end)
     else                            --House give all cars in the garage, Job and Gang depend of config
         local shared = ''
-        if not SharedGarages and type ~= "house" then
+        if not Config["SharedGarages"] and type ~= "house" then
             shared = " AND citizenid = '"..pData.PlayerData.citizenid.."'"
         end
         MySQL.query('SELECT * FROM player_vehicles WHERE garage = ? AND state = ?'..shared, {garage, 1}, function(result)
@@ -69,7 +69,7 @@ QBCore.Functions.CreateCallback("qb-garage:server:validateGarageVehicle", functi
         end)
     else
         local shared = ''
-        if not SharedGarages and type ~= "house" then
+        if not Config["SharedGarages"] and type ~= "house" then
             shared = " AND citizenid = '"..pData.PlayerData.citizenid.."'"
         end
         MySQL.query('SELECT * FROM player_vehicles WHERE garage = ? AND state = ? AND plate = ?'..shared, {garage, 1, plate}, function(result)
@@ -127,7 +127,7 @@ QBCore.Functions.CreateCallback("qb-garage:server:checkOwnership", function(sour
         end)
     else                            --Job garages only for cars that are owned by someone (for sharing and service) or only by player depending of config
         local shared = ''
-        if not SharedGarages then
+        if not Config["SharedGarages"] then
             shared = " AND citizenid = '"..pData.PlayerData.citizenid.."'"
         end
         MySQL.query('SELECT * FROM player_vehicles WHERE plate = ?'..shared, {plate}, function(result)
@@ -179,7 +179,7 @@ RegisterNetEvent('qb-garage:server:updateVehicle', function(state, fuel, engine,
         if owned then
             if state == 0 or state == 1 or state == 2 then                                          --Check state value
                 if type ~= "house" then
-                    if Garages[garage] then                                                             --Check if garage is existing
+                    if Config.Garages[garage] then                                                             --Check if garage is existing
                         MySQL.update('UPDATE player_vehicles SET state = ?, garage = ?, fuel = ?, engine = ?, body = ? WHERE plate = ?', {state, garage, fuel, engine, body, plate})
                     end
                 else
@@ -194,8 +194,8 @@ end)
 
 RegisterNetEvent('qb-garage:server:updateVehicleState', function(state, plate, garage)
     local type
-    if Garages[garage] then
-        type = Garages[garage].type
+    if Config.Garages[garage] then
+        type = Config.Garages[garage].type
     else
         type = "house"
     end
@@ -219,7 +219,7 @@ end)
 AddEventHandler('onResourceStart', function(resource)
     if resource == GetCurrentResourceName() then
         Wait(100)
-        if AutoRespawn then
+        if Config["AutoRespawn"] then
             MySQL.update('UPDATE player_vehicles SET state = 1 WHERE state = 0', {})
         end
     end
@@ -276,8 +276,8 @@ QBCore.Functions.CreateCallback('qb-garage:server:GetPlayerVehicles', function(s
 
                 local VehicleGarage = Lang:t("error.no_garage")
                 if v.garage ~= nil then
-                    if Garages[v.garage] ~= nil then
-                        VehicleGarage = Garages[v.garage].label
+                    if Config.Garages[v.garage] ~= nil then
+                        VehicleGarage = Config.Garages[v.garage].label
                     else
                         VehicleGarage = Lang:t("info.house_garage")         -- HouseGarages[v.garage].label
                     end
