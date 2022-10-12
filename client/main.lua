@@ -420,11 +420,11 @@ local function CreateBlipsZones()
             EndTextCommandSetBlipName(Garage)
         end
         if garage.type == "job" then
-            if PlayerJob.name == garage.job then
+            if PlayerJob.name == garage.job or PlayerJob.type == garage.jobType then
                 CreateZone("marker", garage, index)
             end
         elseif garage.type == "gang" then
-            if PlayerGang.name == garage.job then
+            if PlayerGang.name == garage.job or PlayerJob.type == garage.jobType then
                 CreateZone("marker", garage, index)
             end
         else
@@ -506,11 +506,11 @@ CreateThread(function()
                     if currentGarage.vehicle == "car" or not currentGarage.vehicle then
                         if vehClass ~= 14 and vehClass ~= 15 and vehClass ~= 16 then
                             if currentGarage.type == "job" then
-                                if PlayerJob.name == currentGarage.job then
+                                if PlayerJob.name == currentGarage.job or PlayerJob.type == currentGarage.jobType then
                                     enterVehicle(curVeh, currentGarageIndex, currentGarage.type)
                                 end
                             elseif currentGarage.type == "gang" then
-                                if PlayerGang.name == currentGarage.job then
+                                if PlayerGang.name == currentGarage.job or PlayerJob.type == currentGarage.jobType then
                                     enterVehicle(curVeh, currentGarageIndex, currentGarage.type)
                                 end
                             else
@@ -522,11 +522,11 @@ CreateThread(function()
                     elseif currentGarage.vehicle == "air" then
                         if vehClass == 15 or vehClass == 16 then
                             if currentGarage.type == "job" then
-                                if PlayerJob.name == currentGarage.job then
+                                if PlayerJob.name == currentGarage.job or PlayerJob.type == currentGarage.jobType then
                                     enterVehicle(curVeh, currentGarageIndex, currentGarage.type)
                                 end
                             elseif currentGarage.type == "gang" then
-                                if PlayerGang.name == currentGarage.job then
+                                if PlayerGang.name == currentGarage.job or PlayerJob.type == currentGarage.jobType then
                                     enterVehicle(curVeh, currentGarageIndex, currentGarage.type)
                                 end
                             else

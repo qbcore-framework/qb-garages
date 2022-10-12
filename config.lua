@@ -199,7 +199,8 @@ Config.Garages = {
         ["blipNumber"] = 357,
         ["type"] = "gang",                --public, job, gang, depot
         ["vehicle"] = "car",              --car, air, sea
-        ["job"] = "ballas"
+        ["job"] = "ballas",
+        ["jobType"] = "ballas"
     },
     ["families"] = {
         ["label"] = "La Familia",
@@ -211,7 +212,8 @@ Config.Garages = {
         ["blipNumber"] = 357,
         ["type"] = "gang",                --public, job, gang, depot
         ["vehicle"] = "car",              --car, air, sea
-        ["job"] = "families"
+        ["job"] = "families",
+        ["jobType"] = "families"
     },
     ["lostmc"] = {
         ["label"] = "Lost MC",
@@ -223,7 +225,8 @@ Config.Garages = {
         ["blipNumber"] = 357,
         ["type"] = "gang",                --public, job, gang, depot
         ["vehicle"] = "car",              --car, air, sea
-        ["job"] = "lostmc"
+        ["job"] = "lostmc",
+        ["jobType"] = "lostmc"
     },
     ["cartel"] = {
         ["label"] = "Cartel",
@@ -235,7 +238,8 @@ Config.Garages = {
         ["blipNumber"] = 357,
         ["type"] = "gang",                --public, job, gang, depot
         ["vehicle"] = "car",              --car, air, sea
-        ["job"] = "cartel"
+        ["job"] = "cartel",
+        ["jobType"] = "cartel"
     },
     ["police"] = {
         ["label"] = "Police",
@@ -247,7 +251,8 @@ Config.Garages = {
         ["blipNumber"] = 357,
         ["type"] = "job",                --public, job, gang, depot
         ["vehicle"] = "car",              --car, air, sea
-        ["job"] = "police"
+        ["job"] = "police",
+        ["jobType"] = "leo"
     },
     ["intairport"] = {
         ["label"] = "Airport Hangar",
