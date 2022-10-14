@@ -486,6 +486,7 @@ end)
 -- Threads
 CreateThread(function()
     local sleep
+    if not currentGarage then CreateBlipsZones() end
     while true do
         sleep = 2000
         if Markers then
