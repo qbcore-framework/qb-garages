@@ -414,7 +414,7 @@ local function CreateBlipsZones()
             SetBlipDisplay(Garage, 4)
             SetBlipScale(Garage, 0.60)
             SetBlipAsShortRange(Garage, true)
-            SetBlipColour(Garage, 3)
+            SetBlipColour(Garage, garage.blipColor)
             BeginTextCommandSetBlipName("STRING")
             AddTextComponentSubstringPlayerName(garage.blipName)
             EndTextCommandSetBlipName(Garage)
@@ -505,7 +505,7 @@ CreateThread(function()
                     local vehClass = GetVehicleClass(curVeh)
                     --Check vehicle type for garage
                     if currentGarage.vehicle == "car" or not currentGarage.vehicle then
-                        if vehClass ~= 14 and vehClass ~= 15 and vehClass ~= 16 then
+                        if vehClass ~= 10 and vehClass ~= 14 and vehClass ~= 15 and vehClass ~= 16 and vehClass ~= 20 then
                             if currentGarage.type == "job" then
                                 if PlayerJob.name == currentGarage.job or PlayerJob.type == currentGarage.jobType then
                                     enterVehicle(curVeh, currentGarageIndex, currentGarage.type)
@@ -538,6 +538,22 @@ CreateThread(function()
                         end
                     elseif currentGarage.vehicle == "sea" then
                         if vehClass == 14 then
+                            if currentGarage.type == "job" then
+                                if PlayerJob.name == currentGarage.job then
+                                    enterVehicle(curVeh, currentGarageIndex, currentGarage.type, currentGarage)
+                                end
+                            elseif currentGarage.type == "gang" then
+                                if PlayerGang.name == currentGarage.job then
+                                    enterVehicle(curVeh, currentGarageIndex, currentGarage.type, currentGarage)
+                                end
+                            else
+                                enterVehicle(curVeh, currentGarageIndex, currentGarage.type, currentGarage)
+                            end
+                        else
+                            QBCore.Functions.Notify(Lang:t("error.not_correct_type"), "error", 3500)
+                        end
+                    elseif currentGarage.vehicle == "rig" then
+                        if vehClass == 10 or vehClass == 11 or vehClass == 12 or vehClass == 20 then
                             if currentGarage.type == "job" then
                                 if PlayerJob.name == currentGarage.job then
                                     enterVehicle(curVeh, currentGarageIndex, currentGarage.type, currentGarage)
