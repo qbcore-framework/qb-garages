@@ -347,7 +347,7 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
         if spawn then
             local location
             if type == "house" then
-                if garage.takeVehicle.h then garage.takeVehicle.w = garage.takeVehicle.h end
+                if garage.takeVehicle.h then garage.takeVehicle.w = garage.takeVehicle.h end -- backward compatibility
                 location = garage.takeVehicle
             else
                 location = garage.spawnPoint
