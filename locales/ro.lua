@@ -40,7 +40,7 @@ local Translations = {
             air = "⬅ Paraseste Hangarul",
         },
         text = {
-            vehicles = "Lista behicule parcate!",
+            vehicles = "Lista vehicule parcate!",
             depot = "Numar: %{value}<br>Combustibil: %{value2} | Motor: %{value3} | Caroserie: %{value4}",
             garage = "Stare: %{value}<br>Combustibil: %{value2} | Motor: %{value3} | Caroserie: %{value4}",
         }
@@ -59,7 +59,10 @@ local Translations = {
     }
 }
 
-Lang = Locale:new({
-    phrases = Translations,
-    warnOnMissing = true
-})
+if GetConvar('qb_locale', 'en') == 'ro' then
+    Lang = Locale:new({
+        phrases = Translations,
+        warnOnMissing = true,
+        fallbackLang = Lang,
+    })
+end
