@@ -97,13 +97,13 @@ local function CreateZone(type, garage, index)
     elseif type == 'hmarker' then
         size = 20
         coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z)
-        heading = 0
+        heading = garage.takeVehicle.w
         minz = coords.z - 4.0
         maxz = coords.z + 2.0
     elseif type == 'house' then
         size = 2
         coords = vector3(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z)
-        heading = 0
+        heading = garage.takeVehicle.w
         minz = coords.z - 1.0
         maxz = coords.z + 2.0
     end
@@ -348,6 +348,7 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
         if spawn then
             local location
             if type == "house" then
+                if garage.takeVehicle.h then garage.takeVehicle.w = garage.takeVehicle.h end -- backward compatibility
                 location = garage.takeVehicle
             else
                 location = garage.spawnPoint
