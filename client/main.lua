@@ -391,7 +391,6 @@ local function CreateBlipsZones()
     PlayerData = QBCore.Functions.GetPlayerData()
     PlayerGang = PlayerData.gang
     PlayerJob = PlayerData.job
-    local setloc = {}
     local function blipZoneGen(setloc)
         local Garage = AddBlipForCoord(setloc.takeVehicle.x, setloc.takeVehicle.y, setloc.takeVehicle.z)
         SetBlipSprite(Garage, setloc.blipNumber)
