@@ -199,43 +199,27 @@ local function doCarDamage(currentVehicle, veh)
     local engine = veh.engine + 0.0
     local body = veh.body + 0.0
 
-    Wait(100)
-    if Config["VisuallyDamageCars"] then
-        if body < 900.0 then
-            SmashVehicleWindow(currentVehicle, 0)
-            SmashVehicleWindow(currentVehicle, 1)
-            SmashVehicleWindow(currentVehicle, 2)
-            SmashVehicleWindow(currentVehicle, 3)
-            SmashVehicleWindow(currentVehicle, 4)
-            SmashVehicleWindow(currentVehicle, 5)
-            SmashVehicleWindow(currentVehicle, 6)
-            SmashVehicleWindow(currentVehicle, 7)
+    if VisuallyDamageCars then
+        local data = json.decode(veh.mods)
+
+        for k, v in pairs(data.doorStatus) do
+            if v then
+                SetVehicleDoorBroken(currentVehicle, tonumber(k), true)
+            end
         end
-        if body < 800.0 then
-            SetVehicleDoorBroken(currentVehicle, 0, true)
-            SetVehicleDoorBroken(currentVehicle, 1, true)
-            SetVehicleDoorBroken(currentVehicle, 2, true)
-            SetVehicleDoorBroken(currentVehicle, 3, true)
-            SetVehicleDoorBroken(currentVehicle, 4, true)
-            SetVehicleDoorBroken(currentVehicle, 5, true)
-            SetVehicleDoorBroken(currentVehicle, 6, true)
+        for k, v in pairs(data.tireBurstState) do
+            if v then
+                SetVehicleTyreBurst(currentVehicle, tonumber(k), true)
+            end
         end
-        if engine < 700.0 then
-            SetVehicleTyreBurst(currentVehicle, 1, false, 990.0)
-            SetVehicleTyreBurst(currentVehicle, 2, false, 990.0)
-            SetVehicleTyreBurst(currentVehicle, 3, false, 990.0)
-            SetVehicleTyreBurst(currentVehicle, 4, false, 990.0)
-        end
-        if engine < 500.0 then
-            SetVehicleTyreBurst(currentVehicle, 0, false, 990.0)
-            SetVehicleTyreBurst(currentVehicle, 5, false, 990.0)
-            SetVehicleTyreBurst(currentVehicle, 6, false, 990.0)
-            SetVehicleTyreBurst(currentVehicle, 7, false, 990.0)
+        for k, v in pairs(data.windowStatus) do
+            if not v then
+                SmashVehicleWindow(currentVehicle, tonumber(k))
+            end
         end
     end
     SetVehicleEngineHealth(currentVehicle, engine)
     SetVehicleBodyHealth(currentVehicle, body)
-
 end
 
 local function CheckPlayers(vehicle, garage)
@@ -381,6 +365,7 @@ local function enterVehicle(veh, indexgarage, type, garage)
                 local bodyDamage = math.ceil(GetVehicleBodyHealth(veh))
                 local engineDamage = math.ceil(GetVehicleEngineHealth(veh))
                 local totalFuel = exports['LegacyFuel']:GetFuel(veh)
+                TriggerServerEvent("qb-vehicletuning:server:SaveVehicleProps", QBCore.Functions.GetVehicleProperties(veh))
                 TriggerServerEvent('qb-garage:server:updateVehicle', 1, totalFuel, engineDamage, bodyDamage, plate, indexgarage, type, PlayerGang.name)
                 CheckPlayers(veh, garage)
                 if type == "house" then
