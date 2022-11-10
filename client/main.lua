@@ -402,21 +402,24 @@ local function enterVehicle(veh, indexgarage, type, garage)
 end
 local function CreateBlipsZones()
     if blipsZonesLoaded then return end
-
     PlayerData = QBCore.Functions.GetPlayerData()
     PlayerGang = PlayerData.gang
     PlayerJob = PlayerData.job
+    local setloc = {}
+    local function blipZoneGen(setloc)
+        local Garage = AddBlipForCoord(setloc.takeVehicle.x, setloc.takeVehicle.y, setloc.takeVehicle.z)
+        SetBlipSprite(Garage, setloc.blipNumber)
+        SetBlipDisplay(Garage, 4)
+        SetBlipScale(Garage, 0.60)
+        SetBlipAsShortRange(Garage, true)
+        SetBlipColour(Garage, setloc.blipColor)
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentSubstringPlayerName(setloc.blipName)
+        EndTextCommandSetBlipName(Garage)
+    end
     for index, garage in pairs(Config.Garages) do
         if garage.showBlip then
-            local Garage = AddBlipForCoord(garage.takeVehicle.x, garage.takeVehicle.y, garage.takeVehicle.z)
-            SetBlipSprite(Garage, garage.blipNumber)
-            SetBlipDisplay(Garage, 4)
-            SetBlipScale(Garage, 0.60)
-            SetBlipAsShortRange(Garage, true)
-            SetBlipColour(Garage, garage.blipColor)
-            BeginTextCommandSetBlipName("STRING")
-            AddTextComponentSubstringPlayerName(garage.blipName)
-            EndTextCommandSetBlipName(Garage)
+            blipZoneGen(garage);
         end
         if garage.type == "job" then
             if PlayerJob.name == garage.job or PlayerJob.type == garage.jobType then
