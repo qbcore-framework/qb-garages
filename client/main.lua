@@ -199,7 +199,7 @@ local function doCarDamage(currentVehicle, veh)
     local engine = veh.engine + 0.0
     local body = veh.body + 0.0
 
-    if VisuallyDamageCars then
+    if Config.VisuallyDamageCars then
         local data = json.decode(veh.mods)
 
         for k, v in pairs(data.doorStatus) do
