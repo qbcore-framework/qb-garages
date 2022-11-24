@@ -29,8 +29,8 @@ local Translations = {
         impounded = "حجزتها الشرطة",
         garage_line = "%{value}<br>البنزين: %{value2} | المحرك: %{value3} | الجسم: %{value4}",
         depot_line = "%{value}<br>البنزين: %{value2} | المحرك: %{value3} | الجسم: %{value4}",
-        garage_e = "[E] - ﺝﺍﺮﻏ",
-        park_e = "[E] - ﺓﺭﺎﻴﺴﻟﺍ ﻦﻳﺰﺨﺗ",
+        garage_e = "[E] ﺝﺍﺮﻏ",
+        park_e = "[E] ﺓﺭﺎﻴﺴﻟﺍ ﻦﻳﺰﺨﺗ",
     }
 }
 
