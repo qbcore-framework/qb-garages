@@ -29,8 +29,8 @@ local Translations = {
         impounded = "Togif Shode Tavasote Police",
         garage_line = "Eyalat: %{value}<br>Sokht: %{value2} | Motor: %{value3} | Badane: %{value4}",
         depot_line = "Pelak: %{value}<br>Sokht: %{value2} | Motor: %{value3} | Badane: %{value4}",
-        garage_e = "~g~E~w~ - Garazh",
-        park_e = "~g~E~w~ - Park Kardan Vasile Nagliye",
+        garage_e = "[E] Garazh",
+        park_e = "[E] Park Kardan Vasile Nagliye",
     }
 }
 
