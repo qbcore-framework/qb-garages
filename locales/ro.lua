@@ -51,10 +51,10 @@ local Translations = {
         impound = "Confiscat de Stat",
     },
     info = {
-        car_e = "[E] - Garaj",
-        sea_e = "[E] - Debarcader",
-        air_e = "[E] - Hangar",
-        park_e = "[E] - Parcheaza vehicul",
+        car_e = "[E] Garaj",
+        sea_e = "[E] Debarcader",
+        air_e = "[E] Hangar",
+        park_e = "[E] Parcheaza vehicul",
         house_garage = "Parcare domiciuliu",
     }
 }

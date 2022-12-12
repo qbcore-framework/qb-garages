@@ -29,8 +29,8 @@ local Translations = {
         impounded = "Takavarikoitu poliisin toimesta",
         garage_line = "Tila: %{value}<br>Bensa: %{value2} | Moottori: %{value3} | Kori: %{value4}",
         depot_line = "Rekisteritunnus: %{value}<br>Bensa: %{value2} | Moottori: %{value3} | Kori: %{value4}",
-        garage_e = "~g~E~w~ - Talli",
-        park_e = "~g~E~w~ - Parkkeeraa ajoneuvo",
+        garage_e = "[E] Talli",
+        park_e = "[E] Parkkeeraa ajoneuvo",
     }
 }
 

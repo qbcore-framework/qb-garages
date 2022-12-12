@@ -29,8 +29,8 @@ local Translations = {
         impounded = "Sequestrato Dalla Polizia",
         garage_line = "Stato: %{value}<br>Carburante: %{value2} | Motore: %{value3} | Carrozzeria: %{value4}",
         depot_line = "Targa: %{value}<br>Carburante: %{value2} | Motore: %{value3} | Carrozzeria: %{value4}",
-        garage_e = "~g~E~w~ - Garage",
-        park_e = "~g~E~w~ - Parcheggia Veicolo",
+        garage_e = "[E] Garage",
+        park_e = "[E] Parcheggia Veicolo",
     }
 }
 
