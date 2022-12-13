@@ -1,6 +1,6 @@
 local Translations = {
     error = {
-        no_vehicles = "There is no vehicles in this location!",
+        no_vehicles = "In dieser Garage hast du kein Fahrzeug!",
         not_impound = "Dein Auto wurde nicht abgeschleppt",
         not_owned = "Das Fahrzeug gehört dir nicht",
         not_correct_type = "Du kannst dieses Fahrzeug hier nicht parken. (Falscher Parkplatz)",
