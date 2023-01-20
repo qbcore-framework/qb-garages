@@ -1,43 +1,67 @@
 local Translations = {
     error = {
-        not_enough = "Ei tarpeeksi rahaa!",
-        not_impound = "Ajoneuvosi ei ole takavarikossa",
-        not_owned = "Ajoneuvo ei ole omistuksessasi",
         no_vehicles = "Sinulla ei ole ajoneuvoja tässä tallissa!",
-        no_vehicles_impounded = "Sinulla ei ole ajoneuvoja takavarikoituna!",
-        vehicle_at_depot = "Ajoneuvosi saattaa olla varikolla!",
-        impounded_by_police = "Ajoneuvo takavarikoitiin poliisin toimesta.",
-        someone_inside = "Ajoneuvoa ei voitu tallettaa: Tarkista onko joku sisällä.",
+        not_impound = "Autosi ei ole varikolla",
+        not_owned = "Tätä ajoneuvoa ei voi säilyttää",
+        not_correct_type = "Et voi säilyttää tämän tyyppistä ajoneuvoa täällä",
+        not_enough = "Ei tarpeeksi rahaa",
+        no_garage = "Ei mitään",
+        vehicle_occupied = "Et voi säilyttää tätä ajoneuvoa, koska se ei ole tyhjä",
     },
     success = {
-        vehicle_parked = "Ajoneuvo parkkeerattu",
+        vehicle_parked = "Ajoneuvo varastoitu",
+    },
+    menu = {
+        header = {
+            house_car = "House Garage %{value}",
+            public_car = "Julkinen Autotalli %{value}",
+            public_sea = "Julkinen venevaja %{value}",
+            public_air = "julkinen Hangaari %{value}",
+            public_rig = "Julkinen Rig Lot %{value}",
+            job_car = "Työ Autotalli %{value}",
+            job_sea = "Työ Venevaja %{value}",
+            job_air = "Työ Hangaari %{value}",
+            job_rig = "Rig Lot %{value}",
+            gang_car = "Jengi Talli %{value}",
+            gang_sea = "Jengi Venevaja %{value}",
+            gang_air = "Jengi Hangaari %{value}",
+            gang_rig = "Jengi Rig Lot %{value}",
+            depot_car = "varikko %{value}",
+            depot_sea = "varikko %{value}",
+            depot_air = "varikko %{value}",
+            depot_rig = "varikko %{value}",
+            vehicles = "Käytettävissä olevat ajoneuvot",
+            depot = "%{value} [ $%{value2} ]",
+            garage = "%{value} [ %{value2} ]",
+        },
+        leave = {
+            car = "⬅ Poistu tallista",
+            sea = "⬅ Poistu Venevajasta",
+            air = "⬅ Poistu Hangaarista",
+            rig = "⬅ Poistu",
+        },
+        text = {
+            vehicles = "Katso varastoituja ajoneuvoja!",
+            depot = "Kilpi: %{value}<br>Bensa: %{value2} | Moottori: %{value3} | Kori: %{value4}",
+            garage = "State: %{value}<br>Bensa: %{value2} | Moottori: %{value3} | Kori: %{value4}",
+        }
+    },
+    status = {
+        out = "Ulos",
+        garaged = "Autotalli",
+        impound = "Poliisin takavarikoitu",
     },
     info = {
-        public_garage = "Julkinen talli",
-        gang_garage = "Jengitalli",
-        job_garage = "Työtalli",
-        house_garage = "Talon talli",
-        impound = "Takavarikko",
-        my_vehicles = "Ajoneuvoni",
-        view_stored = "Katso talletettuja ajoneuvoja!",
-        leave_garage = "⬅ Poistu tallista",
-        leave_depot = "⬅ Poistu varikolta",
-        garage = "Talli: %{value}",
-        depot = "Varikko: %{value}",
-        out = "Ulos",
-        garaged = "Talletettu",
-        impounded = "Takavarikoitu poliisin toimesta",
-        garage_line = "Tila: %{value}<br>Bensa: %{value2} | Moottori: %{value3} | Kori: %{value4}",
-        depot_line = "Rekisteritunnus: %{value}<br>Bensa: %{value2} | Moottori: %{value3} | Kori: %{value4}",
-        garage_e = "[E] Talli",
-        park_e = "[E] Parkkeeraa ajoneuvo",
+        car_e = "E - Autoalli",
+        sea_e = "E - Venetalli",
+        air_e = "E - Hangar",
+        rig_e = "E - Rig Lot",
+        park_e = "E - Varastoi Ajoneuvo",
+        house_garage = "Talon autotalli",
     }
 }
 
-if GetConvar('qb_locale', 'en') == 'fi' then
-    Lang = Locale:new({
-        phrases = Translations,
-        warnOnMissing = true,
-        fallbackLang = Lang,
-    })
-end
+Lang = Lang or Locale:new({
+    phrases = Translations,
+    warnOnMissing = true
+})
