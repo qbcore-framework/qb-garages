@@ -12,7 +12,7 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetGarageVehicles", function(s
             {
                 ["@citizenid"]= pData.PlayerData.citizenid,
                 ["@garage"]= garage,
-                ["state"]= 1
+                ["@state"]= 1
             },
             function(result)
                 if result[1] then
