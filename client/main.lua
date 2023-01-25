@@ -298,12 +298,12 @@ RegisterNetEvent("qb-garages:client:VehicleList", function(data)
                 else
                     -- 
                     local txt = Lang:t('menu.text.garage', { value = v.state, value2 = currentFuel, value3 = enginePercent, value4 = bodyPercent })
-                    local header = Lang:t('menu.header.garage', { value = vname, value2 = v.plate })
+                    local menuHeader = Lang:t('menu.header.garage', { value = vname, value2 = v.plate })
                     if vname == nil then
-                        header = Lang:t('menu.header.unavailable_vehicle_model', { vehicle = string.upper(v.vehicle) })
+                        menuHeader = Lang:t('menu.header.unavailable_vehicle_model', { vehicle = string.upper(v.vehicle) })
                     end
                     MenuGarageOptions[#MenuGarageOptions + 1] = {
-                        header = header,
+                        header = menuHeader,
                         txt = txt,
                         disabled = vname == nil,
                         params = {
