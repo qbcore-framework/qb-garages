@@ -5,7 +5,8 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetGarageVehicles", function(s
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
     if type == "public" then        --Public garages give player cars in the garage only
-        local sharedPublic = ' AND garage = @garage'
+        local sharedPublic = ''
+        if (not Config.SharedPublicGarages) then sharedPublic = sharedPublic..' AND garage = @garage' end
         MySQL.query(
             'SELECT * FROM player_vehicles WHERE citizenid = @citizenid AND state = @state'..sharedPublic,
             {
@@ -61,7 +62,8 @@ QBCore.Functions.CreateCallback("qb-garage:server:validateGarageVehicle", functi
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
     if type == "public" then        --Public garages give player cars in the garage only
-        local sharedPublic = ' AND garage = @garage'
+        local sharedPublic = ''
+        if (not Config.SharedPublicGarages) then sharedPublic = sharedPublic..' AND garage = @garage' end
         MySQL.query(
             'SELECT * FROM player_vehicles WHERE citizenid = @citizenid AND state = @state AND plate = @plate'..sharedPublic,
             {
