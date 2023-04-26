@@ -34,6 +34,7 @@ local Translations = {
             car = "⬅ Quitter le garage",
             sea = "⬅ Quitter le hangar à bateaux",
             air = "⬅ Quitter le Hangar",
+            rig = "⬅ Quitter ",
         },
         text = {
             vehicles = "Voir les véhicules stockés!",
@@ -50,6 +51,7 @@ local Translations = {
         car_e = "[E] Garage",
         sea_e = "[E] Hangar à bateaux",
         air_e = "[E] Hangar",
+        rig_e = "E - Hangar à camion",
         park_e = "[E] Ranger le véhicule",
         house_garage = "Garage Personnel",
     }
