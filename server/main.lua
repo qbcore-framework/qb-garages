@@ -203,7 +203,7 @@ RegisterNetEvent('qb-garage:server:updateVehicleState', function(state, plate, g
     QBCore.Functions.TriggerCallback('qb-garage:server:validateGarageVehicle', source, function(owned)     --Check ownership
         if owned then
             if state == 0 then                                          --Check state value
-                MySQL.update('UPDATE player_vehicles SET state = ?, depotprice = ? WHERE plate = ?', {state, 0, plate})
+                MySQL.update('UPDATE player_vehicles SET state = ?, depotdate = ?, reason = ?, depotprice = ? WHERE plate = ?', {state, "", "", 0, plate})
             end
         else
             TriggerClientEvent('QBCore:Notify', source, Lang:t("error.not_owned"), 'error')
