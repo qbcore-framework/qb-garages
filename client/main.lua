@@ -270,8 +270,10 @@ RegisterNetEvent("qb-garages:client:VehicleList", function(data)
                 local enginePercent = round(v.engine / 10, 0)
                 local bodyPercent = round(v.body / 10, 0)
                 local currentFuel = v.fuel
-                local vname = QBCore.Shared.Vehicles[v.vehicle].name
-
+                local vname = nil
+                pcall(function ()
+                    vname = QBCore.Shared.Vehicles[v.vehicle].name
+                end)
                 if v.state == 0 then
                     v.state = Lang:t("status.out")
                 elseif v.state == 1 then
@@ -279,7 +281,7 @@ RegisterNetEvent("qb-garages:client:VehicleList", function(data)
                 elseif v.state == 2 then
                     v.state = Lang:t("status.impound")
                 end
-                if type == "depot" then
+                if type == "depot" and vname ~= nil then
                     MenuGarageOptions[#MenuGarageOptions + 1] = {
                         header = Lang:t('menu.header.depot', { value = vname, value2 = v.depotprice }),
                         txt = Lang:t('menu.text.depot', { value = v.plate, value2 = currentFuel, value3 = enginePercent, value4 = bodyPercent }),
@@ -294,9 +296,16 @@ RegisterNetEvent("qb-garages:client:VehicleList", function(data)
                         }
                     }
                 else
+                    -- 
+                    local txt = Lang:t('menu.text.garage', { value = v.state, value2 = currentFuel, value3 = enginePercent, value4 = bodyPercent })
+                    local menuHeader = Lang:t('menu.header.garage', { value = vname, value2 = v.plate })
+                    if vname == nil then
+                        menuHeader = Lang:t('menu.header.unavailable_vehicle_model', { vehicle = string.upper(v.vehicle) })
+                    end
                     MenuGarageOptions[#MenuGarageOptions + 1] = {
-                        header = Lang:t('menu.header.garage', { value = vname, value2 = v.plate }),
-                        txt = Lang:t('menu.text.garage', { value = v.state, value2 = currentFuel, value3 = enginePercent, value4 = bodyPercent }),
+                        header = menuHeader,
+                        txt = txt,
+                        disabled = vname == nil,
                         params = {
                             event = "qb-garages:client:takeOutGarage",
                             args = {
