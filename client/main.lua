@@ -445,7 +445,7 @@ RegisterNetEvent('qb-garages:client:setHouseGarage', function(house, hasKey)
 end)
 
 RegisterNetEvent('qb-garages:client:houseGarageConfig', function(garageConfig)
-    HouseGarages = garageConfig
+    Config.HouseGarages = garageConfig
 end)
 
 RegisterNetEvent('qb-garages:client:addHouseGarage', function(house, garageInfo)
