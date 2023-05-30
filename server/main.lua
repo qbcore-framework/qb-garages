@@ -5,13 +5,23 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetGarageVehicles", function(s
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
     if type == "public" then        --Public garages give player cars in the garage only
-        MySQL.query('SELECT * FROM player_vehicles WHERE citizenid = ? AND garage = ? AND state = ?', {pData.PlayerData.citizenid, garage, 1}, function(result)
-            if result[1] then
-                cb(result)
-            else
-                cb(nil)
+        local sharedPublic = ''
+        if (not Config.SharedPublicGarages) then sharedPublic = sharedPublic..' AND garage = @garage' end
+        MySQL.query(
+            'SELECT * FROM player_vehicles WHERE citizenid = @citizenid AND state = @state'..sharedPublic,
+            {
+                ["@citizenid"]= pData.PlayerData.citizenid,
+                ["@garage"]= garage,
+                ["@state"]= 1
+            },
+            function(result)
+                if result[1] then
+                    cb(result)
+                else
+                    cb(nil)
+                end
             end
-        end)
+        )
     elseif type == "depot" then    --Depot give player cars that are not in garage only
         MySQL.query('SELECT * FROM player_vehicles WHERE citizenid = ? AND (state = ?)', {pData.PlayerData.citizenid, 0}, function(result)
             local tosend = {}
@@ -52,13 +62,24 @@ QBCore.Functions.CreateCallback("qb-garage:server:validateGarageVehicle", functi
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
     if type == "public" then        --Public garages give player cars in the garage only
-        MySQL.query('SELECT * FROM player_vehicles WHERE citizenid = ? AND garage = ? AND state = ? AND plate = ?', {pData.PlayerData.citizenid, garage, 1, plate}, function(result)
-            if result[1] then
-                cb(true)
-            else
-                cb(false)
+        local sharedPublic = ''
+        if (not Config.SharedPublicGarages) then sharedPublic = sharedPublic..' AND garage = @garage' end
+        MySQL.query(
+            'SELECT * FROM player_vehicles WHERE citizenid = @citizenid AND state = @state AND plate = @plate'..sharedPublic,
+            {
+                ["@citizenid"]= pData.PlayerData.citizenid,
+                ["@garage"]= garage,
+                ["@state"]= 1,
+                ["@plate"]= plate
+            },
+            function(result)
+                if result[1] then
+                    cb(true)
+                else
+                    cb(false)
+                end
             end
-        end)
+        )
     elseif type == "depot" then    --Depot give player cars that are not in garage only
         MySQL.query('SELECT * FROM player_vehicles WHERE citizenid = ? AND (state = ? OR state = ?) AND plate = ?', {pData.PlayerData.citizenid, 0, 2, plate}, function(result)
             if result[1] then
