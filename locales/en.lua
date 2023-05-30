@@ -33,6 +33,7 @@ local Translations = {
             vehicles = "Available Vehicles",
             depot = "%{value} [ $%{value2} ]",
             garage = "%{value} [ %{value2} ]",
+            unavailable_vehicle_model = "%{vehicle} | Vehicle Unavailable",
         },
         leave = {
             car = "⬅ Leave Garage",
