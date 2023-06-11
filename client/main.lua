@@ -39,13 +39,13 @@ local function MenuGarage(type, garage, indexgarage)
             header = leave,
             txt = "",
             params = {
-                event = "qb-menu:closeMenu"
+                event = "qb-menu:client:closeMenu"
             }
         },
     })
 end
 local function ClearMenu()
-	TriggerEvent("qb-menu:closeMenu")
+    TriggerEvent("qb-menu:client:closeMenu")
 end
 local function closeMenuFull()
     ClearMenu()
@@ -196,7 +196,7 @@ RegisterNetEvent("qb-garages:client:VehicleList", function(data)
                 header = leave,
                 txt = "",
                 params = {
-                    event = "qb-menu:closeMenu",
+                    event = "qb-menu:client:closeMenu",
                 }
             }
             exports['qb-menu']:openMenu(MenuGarageOptions)
