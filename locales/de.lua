@@ -1,56 +1,32 @@
 local Translations = {
     error = {
-        no_vehicles = "In dieser Garage hast du kein Fahrzeug!",
-        not_impound = "Dein Auto wurde nicht abgeschleppt",
-        not_owned = "Das Fahrzeug gehört dir nicht",
-        not_correct_type = "Du kannst dieses Fahrzeug hier nicht parken. (Falscher Parkplatz)",
-        not_enough = "Nicht genu Geld",
-        no_garage = "None",
+        no_vehicles = 'Es gibt keine Fahrzeuge an diesem Ort!',
+        not_depot = 'Ihr Fahrzeug befindet sich nicht im Depot',
+        not_owned = 'Dieses Fahrzeug kann nicht eingelagert werden',
+        not_correct_type = 'Sie können diesen Fahrzeugtyp hier nicht abstellen',
+        not_enough = 'Nicht genug Geld',
+        no_garage = 'Keine',
+        vehicle_occupied = 'Sie können dieses Fahrzeug nicht einlagern, da es nicht leer ist',
+        vehicle_not_tracked = 'Fahrzeug konnte nicht verfolgt werden',
+        no_spawn = 'Bereich zu überfüllt'
     },
     success = {
-        vehicle_parked = "Auto geparkt",
-    },
-    menu = {
-        header = {
-            house_car = "Haus Garage %{value}",
-            public_car = "Öffentliche  Garage %{value}",
-            public_sea = "Öffentlichtes Bootshaus %{value}",
-            public_air = "Öffentlicher Hangar %{value}",
-            job_car = "Job Garage %{value}",
-            job_sea = "Job Boathouse %{value}",
-            job_air = "Job Hangar %{value}",
-            gang_car = "Gang Garage %{value}",
-            gang_sea = "Gang Bootshaus %{value}",
-            gang_air = "Gang Hangar %{value}",
-            depot_car = "Abschlepphof %{value}",
-            depot_sea = "Abschlepphof %{value}",
-            depot_air = "Abschlepphof %{value}",
-            vehicles = "Verfügbare Fahrzeuge",
-            depot = "%{value} [ $%{value2} ]",
-            garage = "%{value} [ %{value2} ]",
-        },
-        leave = {
-            car = "⬅ Verlasse Garage",
-            sea = "⬅ Verlasse Bootshaus",
-            air = "⬅ Verlasse Hangar",
-        },
-        text = {
-            vehicles = "Deine geparkten Autos!",
-            depot = "Nummernschild: %{value}<br>Tank: %{value2} | Motor: %{value3} | Karosserie: %{value4}",
-            garage = "Status: %{value}<br>Tank: %{value2} | Motor: %{value3} | Karosserie: %{value4}",
-        }
+        vehicle_parked = 'Fahrzeug eingelagert',
+        vehicle_tracked = 'Fahrzeug verfolgt',
     },
     status = {
-        out = "Ausgeparkt",
-        garaged = "Eingeparkt",
-        impound = "Abgeschleppt von der Polizei",
+        out = 'Draußen',
+        garaged = 'In der Garage',
+        impound = 'Von der Polizei beschlagnahmt',
+        house = 'Haus',
     },
     info = {
-        car_e = "[E] Garage",
-        sea_e = "[E] Bootshause",
-        air_e = "[E] Hangar",
-        park_e = "[E] Fahrzeug einparken",
-        house_garage = "Haus Garage",
+        car_e = 'E - Garage',
+        sea_e = 'E - Bootshaus',
+        air_e = 'E - Hangar',
+        rig_e = 'E - Rig Parkplatz',
+        depot_e = 'E - Depot',
+        house_garage = 'E - Hausgarage',
     }
 }
 

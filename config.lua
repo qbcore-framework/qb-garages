@@ -1,446 +1,514 @@
-Config = Config or {}
-Config.AutoRespawn = false --True == auto respawn cars that are outside into your garage on script restart, false == does not put them into your garage and players have to go to the impound
-Config.SharedGarages = false   --True == Gang and job garages are shared, false == Gang and Job garages are personal
-Config.VisuallyDamageCars = true --True == Visually damage cars that go out of the garage depending of body damage, false == Do not visually damage cars (damage is still applied to car values)
-Config.SharedPublicGarages = false --Ture All public garages can access all vehicle of player that parked in garage type "public", -- False player can't access another public garages from anywhere (this is original behavior of script)
+Config = {}
+Config.AutoRespawn = false         -- true == stores cars in garage on restart | false == doesnt modify car states
+Config.VisuallyDamageCars = true   -- true == damage car on spawn | false == no damage on spawn
+Config.SharedGarages = false       -- true == take any car from any garage | false == only take car from garage stored in
+Config.ClassSystem = true          -- true == restrict vehicles by class | false == any vehicle class in any garage
+Config.FuelResource = 'LegacyFuel' -- supports any that has a GetFuel() and SetFuel() export
+
+-- https://docs.fivem.net/natives/?_0x29439776AAA00A62
+Config.VehicleClass = {
+    all = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22 },
+    car = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 13, 18, 22 },
+    air = { 15, 16 },
+    sea = { 14 },
+    rig = { 10, 11, 17, 19, 20 }
+}
 
 Config.Garages = {
-    ["motelgarage"] = {
-        ["label"] = "Motel Parking",
-        ["takeVehicle"] = vector3(273.43, -343.99, 44.91),
-        ["spawnPoint"] = vector4(270.94, -342.96, 43.97, 161.5),
-        ["putVehicle"] = vector3(276.69, -339.85, 44.91),
-        ["showBlip"] = true,
-        ["blipName"] = "Public Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
+    motelgarage = {
+        label = 'Motel Parking',
+        takeVehicle = vector3(274.29, -334.15, 44.92),
+        spawnPoint = {
+            vector4(265.96, -332.3, 44.51, 250.68)
+        },
+        showBlip = true,
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'public', -- public, gang, job, depot
+        category = Config.VehicleClass['car']
     },
-    ["casinogarage"] = {
-        ["label"] = "Casino Parking",
-        ["takeVehicle"] = vector3(925.3, 51.85, 81.11),
-        ["spawnPoint"] = vector4(918.77, 51.73, 80.16, 329.43),
-        ["putVehicle"] = vector3(914.92, 37.85, 80.07),
-        ["showBlip"] = true,
-        ["blipName"] = "Public Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
+    casinogarage = {
+        label = 'Casino Parking',
+        takeVehicle = vector3(883.96, -4.71, 78.76),
+        spawnPoint = {
+            vector4(895.39, -4.75, 78.35, 146.85)
+        },
+        showBlip = true,
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['car']
     },
-    ["sapcounsel"] = {
-        ["label"] = "San Andreas Parking",
-        ["takeVehicle"] = vector3(-330.01, -780.33, 33.96),
-        ["spawnPoint"] = vector4(-334.44, -780.75, 33.96, 137.5),
-        ["putVehicle"] = vector3(-336.31, -774.93, 33.96),
-        ["showBlip"] = true,
-        ["blipName"] = "Public Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
+    sapcounsel = {
+        label = 'San Andreas Parking',
+        takeVehicle = vector3(-330.01, -780.33, 33.96),
+        spawnPoint = {
+            vector4(-341.57, -767.45, 33.56, 92.61)
+        },
+        showBlip = true,
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['car']
     },
-    ["spanishave"] = {
-        ["label"] = "Spanish Ave Parking",
-        ["takeVehicle"] = vector3(-1160.86, -741.41, 19.63),
-        ["spawnPoint"] = vector4(-1163.88, -749.32, 18.42, 35.5),
-        ["putVehicle"] = vector3(-1147.58, -738.11, 19.31),
-        ["showBlip"] = true,
-        ["blipName"] = "Public Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
+    spanishave = {
+        label = 'Spanish Ave Parking',
+        takeVehicle = vector3(-1160.86, -741.41, 19.63),
+        spawnPoint = {
+            vector4(-1145.2, -745.42, 19.26, 108.22)
+        },
+        showBlip = true,
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['car']
     },
-    ["caears24"] = {
-        ["label"] = "Caears 24 Parking",
-        ["takeVehicle"] = vector3(69.84, 12.6, 68.96),
-        ["spawnPoint"] = vector4(73.21, 10.72, 68.83, 163.5),
-        ["putVehicle"] = vector3(65.43, 21.19, 69.47),
-        ["showBlip"] = true,
-        ["blipName"] = "Public Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
+    caears24 = {
+        label = 'Caears 24 Parking',
+        takeVehicle = vector3(69.84, 12.6, 68.96),
+        spawnPoint = {
+            vector4(60.8, 17.54, 68.82, 339.7)
+        },
+        showBlip = true,
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['car']
     },
-    ["caears242"] = {
-        ["label"] = "Caears 24 Parking",
-        ["takeVehicle"] = vector3(-475.31, -818.73, 30.46),
-        ["spawnPoint"] = vector4(-472.03, -815.47, 30.5, 177.5),
-        ["putVehicle"] = vector3(-453.6, -817.08, 30.61),
-        ["showBlip"] = true,
-        ["blipName"] = "Public Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
+    caears242 = {
+        label = 'Caears 24 Parking',
+        takeVehicle = vector3(-453.7, -786.78, 30.56),
+        spawnPoint = {
+            vector4(-472.39, -787.71, 30.14, 180.52)
+        },
+        showBlip = true,
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['car']
     },
-    ["lagunapi"] = {
-        ["label"] = "Laguna Parking",
-        ["takeVehicle"] = vector3(364.37, 297.83, 103.49),
-        ["spawnPoint"] = vector4(367.49, 297.71, 103.43, 340.5),
-        ["putVehicle"] = vector3(363.04, 283.51, 103.38),
-        ["showBlip"] = true,
-        ["blipName"] = "Public Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
+    lagunapi = {
+        label = 'Laguna Parking',
+        takeVehicle = vector3(364.37, 297.83, 103.49),
+        spawnPoint = {
+            vector4(375.09, 294.66, 102.86, 164.04)
+        },
+        showBlip = true,
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['car']
     },
-    ["airportp"] = {
-        ["label"] = "Airport Parking",
-        ["takeVehicle"] = vector3(-796.86, -2024.85, 8.88),
-        ["spawnPoint"] = vector4(-800.41, -2016.53, 9.32, 48.5),
-        ["putVehicle"] = vector3(-804.84, -2023.21, 9.16),
-        ["showBlip"] = true,
-        ["blipName"] = "Public Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
+    airportp = {
+        label = 'Airport Parking',
+        takeVehicle = vector3(-773.12, -2033.04, 8.88),
+        spawnPoint = {
+            vector4(-779.77, -2040.18, 8.47, 315.34)
+        },
+        showBlip = true,
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['car']
     },
-    ["beachp"] = {
-        ["label"] = "Beach Parking",
-        ["takeVehicle"] = vector3(-1183.1, -1511.11, 4.36),
-        ["spawnPoint"] = vector4(-1181.0, -1505.98, 4.37, 214.5),
-        ["putVehicle"] = vector3(-1176.81, -1498.63, 4.37),
-        ["showBlip"] = true,
-        ["blipName"] = "Public Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
+    beachp = {
+        label = 'Beach Parking',
+        takeVehicle = vector3(-1185.32, -1500.64, 4.38),
+        spawnPoint = {
+            vector4(-1188.14, -1487.95, 3.97, 124.06)
+        },
+        showBlip = true,
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['car']
     },
-    ["themotorhotel"] = {
-        ["label"] = "The Motor Hotel Parking",
-        ["takeVehicle"] = vector3(1137.77, 2663.54, 37.9),
-        ["spawnPoint"] = vector4(1137.69, 2673.61, 37.9, 359.5),
-        ["putVehicle"] = vector3(1137.75, 2652.95, 37.9),
-        ["showBlip"] = true,
-        ["blipName"] = "Public Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
+    themotorhotel = {
+        label = 'The Motor Hotel Parking',
+        takeVehicle = vector3(1137.77, 2663.54, 37.9),
+        spawnPoint = {
+            vector4(1127.7, 2647.84, 37.58, 1.41)
+        },
+        showBlip = true,
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['car']
     },
-    ["liqourparking"] = {
-        ["label"] = "Liqour Parking",
-        ["takeVehicle"] = vector3(934.95, 3606.59, 32.81),
-        ["spawnPoint"] = vector4(941.57, 3619.99, 32.5, 141.5),
-        ["putVehicle"] = vector3(939.37, 3612.25, 32.69),
-        ["showBlip"] = true,
-        ["blipName"] = "Public Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
+    liqourparking = {
+        label = 'Liqour Parking',
+        takeVehicle = vector3(883.99, 3649.67, 32.87),
+        spawnPoint = {
+            vector4(898.38, 3649.41, 32.36, 90.75)
+        },
+        showBlip = true,
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['car']
     },
-    ["shoreparking"] = {
-        ["label"] = "Shore Parking",
-        ["takeVehicle"] = vector3(1726.21, 3707.16, 34.17),
-        ["spawnPoint"] = vector4(1730.31, 3711.07, 34.2, 20.5),
-        ["putVehicle"] = vector3(1737.13, 3718.91, 34.04),
-        ["showBlip"] = true,
-        ["blipName"] = "Public Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
+    shoreparking = {
+        label = 'Shore Parking',
+        takeVehicle = vector3(1737.03, 3718.88, 34.05),
+        spawnPoint = {
+            vector4(1725.4, 3716.78, 34.15, 20.54)
+        },
+        showBlip = true,
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['car']
     },
-    ["haanparking"] = {
-        ["label"] = "Bell Farms Parking",
-        ["takeVehicle"] = vector3(78.34, 6418.74, 31.28),
-        ["spawnPoint"] = vector4(70.71, 6425.16, 30.92, 68.5),
-        ["putVehicle"] = vector3(85.3, 6427.52, 31.33),
-        ["showBlip"] = true,
-        ["blipName"] = "Public Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
+    haanparking = {
+        label = 'Bell Farms Parking',
+        takeVehicle = vector3(76.88, 6397.3, 31.23),
+        spawnPoint = {
+            vector4(62.15, 6403.41, 30.81, 211.38)
+        },
+        showBlip = true,
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['car']
     },
-    ["dumbogarage"] = {
-        ["label"] = "Dumbo Private Parking",
-        ["takeVehicle"] = vector3(157.26, -3240.00, 7.00),
-        ["spawnPoint"] = vector4(165.32, -3236.10, 5.93, 268.5),
-        ["putVehicle"] = vector3(165.32, -3230.00, 5.93),
-        ["showBlip"] = true,
-        ["blipName"] = "Public Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
+    dumbogarage = {
+        label = 'Dumbo Private Parking',
+        takeVehicle = vector3(165.75, -3227.2, 5.89),
+        spawnPoint = {
+            vector4(168.34, -3236.1, 5.43, 272.05)
+        },
+        showBlip = true,
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['car']
     },
-    ["pillboxgarage"] = {
-        ["label"] = "Pillbox Garage Parking",
-        ["takeVehicle"] = vector3(215.9499, -809.698, 30.731),
-        ["spawnPoint"] = vector4(234.1942, -787.066, 30.193, 159.6),
-        ["putVehicle"] = vector3(218.0894, -781.370, 30.389),
-        ["showBlip"] = true,
-        ["blipName"] = "Public Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
+    pillboxgarage = {
+        label = 'Pillbox Garage Parking',
+        takeVehicle = vector3(213.2, -796.05, 30.86),
+        spawnPoint = {
+            vector4(222.02, -804.19, 30.26, 248.19),
+            vector4(223.93, -799.11, 30.25, 248.53),
+            vector4(226.46, -794.33, 30.24, 248.29),
+            vector4(232.33, -807.97, 30.02, 69.17),
+            vector4(234.42, -802.76, 30.04, 67.2)
+        },
+        showBlip = true,
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['car']
     },
-    --[[    ["hayesdepot"] = {
-        ["label"] = "Hayes Depot",
-        ["takeVehicle"] = vector3(491.0, -1314.69, 29.25),
-        ["spawnPoint"] = vector4(491.0, -1314.69, 29.25, 304.5),
-        ["showBlip"] = true,
-        ["blipName"] = "Hayes Depot",
-        ["blipNumber"] = 68,
-        ["blipColor"] = 3,
-        ["type"] = "depot",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
-    }, --]]
-    ["impoundlot"] = {
-        ["label"] = "Impound Lot",
-        ["takeVehicle"] = vector3(409.89, -1623.51, 29.29),
-        ["spawnPoint"] = vector4(407.92, -1646.29, 29.29, 226.39),
-        ["showBlip"] = true,
-        ["blipName"] = "Impound Lot",
-        ["blipNumber"] = 68,
-        ["blipColor"] = 3,
-        ["type"] = "depot",                --public, job, gang, depot
-        ["vehicle"] = "car"                 --car, air, sea, rig
+    grapeseedgarage = {
+        label = 'Grapeseed Parking',
+        takeVehicle = vector3(2552.68, 4671.8, 33.95),
+        spawnPoint = {
+            vector4(2550.17, 4681.96, 33.81, 17.05)
+        },
+        showBlip = true,
+        blipName = 'Public Parking',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['car']
     },
-    ["ballas"] = {
-        ["label"] = "Ballas",
-        ["takeVehicle"] = vector3(98.50, -1954.49, 20.84),
-        ["spawnPoint"] = vector4(98.50, -1954.49, 20.75, 335.73),
-        ["putVehicle"] = vector3(94.75, -1959.93, 20.84),
-        ["showBlip"] = false,
-        ["blipName"] = "Ballas",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "gang",                --public, job, gang, depot
-        ["vehicle"] = "car",              --car, air, sea, rig
-        ["job"] = "ballas",
-        ["jobType"] = "ballas"
+    depotLot = {
+        label = 'Depot Lot',
+        takeVehicle = vector3(401.76, -1632.57, 29.29),
+        spawnPoint = {
+            vector4(396.55, -1643.93, 28.88, 321.91)
+        },
+        showBlip = true,
+        blipName = 'Depot Lot',
+        blipNumber = 68,
+        blipColor = 3,
+        type = 'depot',
+        category = Config.VehicleClass['car']
     },
-    ["families"] = {
-        ["label"] = "La Familia",
-        ["takeVehicle"] = vector3(-811.65, 187.49, 72.48),
-        ["spawnPoint"] = vector4(-818.43, 184.97, 72.28, 107.85),
-        ["putVehicle"] = vector3(-811.65, 187.49, 72.48),
-        ["showBlip"] = false,
-        ["blipName"] = "La Familia",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "gang",                --public, job, gang, depot
-        ["vehicle"] = "car",              --car, air, sea, rig
-        ["job"] = "families",
-        ["jobType"] = "families"
+    ballas = {
+        label = 'Ballas',
+        takeVehicle = vector3(87.51, -1969.1, 20.75),
+        spawnPoint = {
+            vector4(93.78, -1961.73, 20.34, 319.11)
+        },
+        showBlip = false,
+        blipName = 'Ballas',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'gang',
+        category = Config.VehicleClass['car'], --car, air, sea, rig
+        job = 'ballas',
+        jobType = 'ballas'
     },
-    ["lostmc"] = {
-        ["label"] = "Lost MC",
-        ["takeVehicle"] = vector3(957.25, -129.63, 74.39),
-        ["spawnPoint"] = vector4(957.25, -129.63, 74.39, 199.21),
-        ["putVehicle"] = vector3(950.47, -122.05, 74.36),
-        ["showBlip"] = false,
-        ["blipName"] = "Lost MC",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "gang",                --public, job, gang, depot
-        ["vehicle"] = "car",              --car, air, sea, rig
-        ["job"] = "lostmc",
-        ["jobType"] = "lostmc"
+    families = {
+        label = 'Families',
+        takeVehicle = vector3(-23.89, -1436.03, 30.65),
+        spawnPoint = {
+            vector4(-25.47, -1445.76, 30.24, 178.5)
+        },
+        showBlip = false,
+        blipName = 'Families',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'gang',
+        category = Config.VehicleClass['car'], --car, air, sea, rig
+        job = 'families',
+        jobType = 'families'
     },
-    ["cartel"] = {
-        ["label"] = "Cartel",
-        ["takeVehicle"] = vector3(1407.18, 1118.04, 114.84),
-        ["spawnPoint"] = vector4(1407.18, 1118.04, 114.84, 88.34),
-        ["putVehicle"] = vector3(1407.18, 1118.04, 114.84),
-        ["showBlip"] = false,
-        ["blipName"] = "Cartel",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "gang",                --public, job, gang, depot
-        ["vehicle"] = "car",              --car, air, sea, rig
-        ["job"] = "cartel",
-        ["jobType"] = "cartel"
+    lostmc = {
+        label = 'Lost MC',
+        takeVehicle = vector3(985.83, -138.14, 73.09),
+        spawnPoint = {
+            vector4(977.65, -133.02, 73.34, 59.39)
+        },
+        showBlip = false,
+        blipName = 'Lost MC',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'gang',
+        category = Config.VehicleClass['car'], --car, air, sea, rig
+        job = 'lostmc',
+        jobType = 'lostmc'
     },
-    ["police"] = {
-        ["label"] = "Police",
-        ["takeVehicle"] = vector3(454.6, -1017.4, 28.4),
-        ["spawnPoint"] = vector4(438.4, -1018.3, 27.7, 90.0),
-        ["putVehicle"] = vector3(452.88, -1006.98, 27.5),
-        ["showBlip"] = false,
-        ["blipName"] = "Police",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 3,
-        ["type"] = "job",                --public, job, gang, depot
-        ["vehicle"] = "car",              --car, air, sea, rig
-        ["job"] = "police",
-        ["jobType"] = "leo"
+    cartel = {
+        label = 'Cartel',
+        takeVehicle = vector3(1411.67, 1117.8, 114.84),
+        spawnPoint = {
+            vector4(1403.01, 1118.25, 114.84, 88.69)
+        },
+        showBlip = false,
+        blipName = 'Cartel',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'gang',
+        category = Config.VehicleClass['car'],
+        job = 'cartel',
+        jobType = 'cartel'
     },
-    ["intairport"] = {
-        ["label"] = "Airport Hangar",
-        ["takeVehicle"] = vector3(-1025.92, -3017.86, 13.95),
-        ["spawnPoint"] = vector4(-979.2, -2995.51, 13.95, 52.19),
-        ["putVehicle"] = vector3(-1003.38, -3008.87, 13.95),
-        ["showBlip"] = true,
-        ["blipName"] = "Hangar",
-        ["blipNumber"] = 360,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "air"                 --car, air, sea, rig
+    police = {
+        label = 'Police',
+        takeVehicle = vector3(462.83, -1019.52, 28.1),
+        spawnPoint = {
+            vector4(446.16, -1025.79, 28.23, 6.59)
+        },
+        showBlip = false,
+        blipName = 'Police',
+        blipNumber = 357,
+        blipColor = 3,
+        type = 'job',
+        category = Config.VehicleClass['car'], --car, air, sea, rig
+        job = 'police',
+        jobType = 'leo'
     },
-    ["higginsheli"] = {
-        ["label"] = "Higgins Helitours",
-        ["takeVehicle"] = vector3(-722.15, -1472.79, 5.0),
-        ["spawnPoint"] = vector4(-724.83, -1443.89, 5.0, 140.1),
-        ["putVehicle"] = vector3(-745.48, -1468.46, 5.0),
-        ["showBlip"] = true,
-        ["blipName"] = "Hangar",
-        ["blipNumber"] = 360,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "air"                 --car, air, sea, rig
+    intairport = {
+        label = 'Airport Hangar',
+        takeVehicle = vector3(-979.06, -2995.48, 13.95),
+        spawnPoint = {
+            vector4(-998.37, -2985.01, 13.95, 61.09)
+        },
+        showBlip = true,
+        blipName = 'Hangar',
+        blipNumber = 360,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['air']
     },
-    ["airsshores"] = {
-        ["label"] = "Sandy Shores Hangar",
-        ["takeVehicle"] = vector3(1758.19, 3296.66, 41.14),
-        ["spawnPoint"] = vector4(1740.98, 3279.08, 41.75, 106.77),
-        ["putVehicle"] = vector3(1740.4, 3283.92, 41.1),
-        ["showBlip"] = true,
-        ["blipName"] = "Hangar",
-        ["blipNumber"] = 360,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "air"                 --car, air, sea, rig
+    higginsheli = {
+        label = 'Higgins Helitours',
+        takeVehicle = vector3(-722.15, -1472.79, 5.0),
+        spawnPoint = {
+            vector4(-745.22, -1468.72, 5.39, 319.84),
+            vector4(-724.36, -1443.61, 5.39, 135.78)
+        },
+        showBlip = true,
+        blipName = 'Hangar',
+        blipNumber = 360,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['air']
     },
-    ["airdepot"] = {
-        ["label"] = "Air Depot",
-        ["takeVehicle"] = vector3(-1243.29, -3392.3, 13.94),
-        ["spawnPoint"] = vector4(-1269.67, -3377.74, 13.94, 327.88),
-        ["showBlip"] = true,
-        ["blipName"] = "Air Depot",
-        ["blipNumber"] = 359,
-        ["blipColor"] = 3,
-        ["type"] = "depot",                --public, job, gang, depot
-        ["vehicle"] = "air"                 --car, air, sea, rig
+    airsshores = {
+        label = 'Sandy Shores Hangar',
+        takeVehicle = vector3(1737.89, 3288.13, 41.14),
+        spawnPoint = {
+            vector4(1742.83, 3266.83, 41.24, 102.64)
+        },
+        showBlip = true,
+        blipName = 'Hangar',
+        blipNumber = 360,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['air']
     },
-    ["lsymc"] = {
-        ["label"] = "LSYMC Boathouse",
-        ["takeVehicle"] = vector3(-794.66, -1510.83, 1.59),
-        ["spawnPoint"] = vector4(-793.58, -1501.4, 0.12, 111.5),
-        ["putVehicle"] = vector3(-793.58, -1501.4, 0.12),
-        ["showBlip"] = true,
-        ["blipName"] = "Boathouse",
-        ["blipNumber"] = 356,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "sea"                 --car, air, sea, rig
+    airzancudo = {
+        label = 'Fort Zancudo Hangar',
+        takeVehicle = vector3(-1828.25, 2975.44, 32.81),
+        spawnPoint = {
+            vector4(-1828.25, 2975.44, 32.81, 57.24)
+        },
+        showBlip = true,
+        blipName = 'Hangar',
+        blipNumber = 360,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['air']
     },
-    ["paleto"] = {
-        ["label"] = "Paleto Boathouse",
-        ["takeVehicle"] = vector3(-277.46, 6637.2, 7.48),
-        ["spawnPoint"] = vector4(-289.2, 6637.96, 1.01, 45.5),
-        ["putVehicle"] = vector3(-289.2, 6637.96, 1.01),
-        ["showBlip"] = true,
-        ["blipName"] = "Boathouse",
-        ["blipNumber"] = 356,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "sea"                 --car, air, sea, rig
+    airdepot = {
+        label = 'Air Depot',
+        takeVehicle = vector3(-1270.01, -3377.53, 14.33),
+        spawnPoint = {
+            vector4(-1270.01, -3377.53, 14.33, 329.25)
+        },
+        showBlip = true,
+        blipName = 'Air Depot',
+        blipNumber = 359,
+        blipColor = 3,
+        type = 'depot',
+        category = Config.VehicleClass['air']
     },
-    ["millars"] = {
-        ["label"] = "Millars Boathouse",
-        ["takeVehicle"] = vector3(1299.24, 4216.69, 33.9),
-        ["spawnPoint"] = vector4(1297.82, 4209.61, 30.12, 253.5),
-        ["putVehicle"] = vector3(1297.82, 4209.61, 30.12),
-        ["showBlip"] = true,
-        ["blipName"] = "Boathouse",
-        ["blipNumber"] = 356,
-        ["blipColor"] = 3,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "sea"                 --car, air, sea, rig
+    lsymc = {
+        label = 'LSYMC Boathouse',
+        takeVehicle = vector3(-785.95, -1497.84, -0.09),
+        spawnPoint = {
+            vector4(-796.64, -1502.6, -0.09, 111.49)
+        },
+        showBlip = true,
+        blipName = 'Boathouse',
+        blipNumber = 356,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['sea']
     },
-    ["seadepot"] = {
-        ["label"] = "LSYMC Depot",
-        ["takeVehicle"] = vector3(-772.98, -1430.76, 1.59),
-        ["spawnPoint"] = vector4(-729.77, -1355.49, 1.19, 142.5),
-        ["showBlip"] = true,
-        ["blipName"] = "LSYMC Depot",
-        ["blipNumber"] = 356,
-        ["blipColor"] = 3,
-        ["type"] = "depot",                --public, job, gang, depot
-        ["vehicle"] = "sea"                 --car, air, sea, rig
+    paleto = {
+        label = 'Paleto Boathouse',
+        takeVehicle = vector3(-278.21, 6638.13, 7.55),
+        spawnPoint = {
+            vector4(-289.2, 6637.96, 1.01, 45.5)
+        },
+        showBlip = true,
+        blipName = 'Boathouse',
+        blipNumber = 356,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['sea']
     },
-    ["rigdepot"] = {
-        ["label"] = "Big Rig Depot",
-        ["takeVehicle"] = vector3(2373.64, 3104.58, 48.05),
-        ["spawnPoint"] = vector4(2373.63, 3110.19, 48.12, 123.26),
-        ["showBlip"] = true,
-        ["blipName"] = "Big Rig Depot",
-        ["blipNumber"] = 68,
-        ["blipColor"] = 2,
-        ["type"] = "depot",                --public, job, gang, depot
-        ["vehicle"] = "rig"                 --car, air, sea, rig
+    millars = {
+        label = 'Millars Boathouse',
+        takeVehicle = vector3(1298.56, 4212.42, 33.25),
+        spawnPoint = {
+            vector4(1297.82, 4209.61, 30.12, 253.5)
+        },
+        showBlip = true,
+        blipName = 'Boathouse',
+        blipNumber = 356,
+        blipColor = 3,
+        type = 'public',
+        category = Config.VehicleClass['sea']
     },
-    ["dumborigparking"] = {
-        ["label"] = "Dumbo Big Rig Parking",
-        ["takeVehicle"] = vector3(161.23, -3188.73, 5.97),
-        ["spawnPoint"] = vector4(172.59, -3178.28, 5.79, 269.66),
-        ["putVehicle"] =vector3(172.64, -3182.48, 5.79),
-        ["showBlip"] = true,
-        ["blipName"] = "Big Rig Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 2,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "rig"                 --car, air, sea, rig
+    seadepot = {
+        label = 'LSYMC Depot',
+        takeVehicle = vector3(-742.95, -1407.58, 5.5),
+        spawnPoint = {
+            vector4(-729.77, -1355.49, 1.19, 142.5)
+        },
+        showBlip = true,
+        blipName = 'LSYMC Depot',
+        blipNumber = 356,
+        blipColor = 3,
+        type = 'depot',
+        category = Config.VehicleClass['sea']
     },
-    ["popsrigparking"] = {
-        ["label"] = "Pop's Big Rig Parking",
-        ["takeVehicle"] = vector3(121.05, 6587.59, 32.09),
-        ["spawnPoint"] = vector4(131.08, 6589.77, 31.99, 272.9),
-        ["putVehicle"] = vector3(126.08, 6595.23, 31.95),
-        ["showBlip"] = true,
-        ["blipName"] = "Big Rig Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 2,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "rig"                 --car, air, sea, rig
+    rigdepot = {
+        label = 'Big Rig Depot',
+        takeVehicle = vector3(2334.42, 3118.62, 48.2),
+        spawnPoint = {
+            vector4(2324.57, 3117.79, 48.21, 4.05)
+        },
+        showBlip = true,
+        blipName = 'Big Rig Depot',
+        blipNumber = 68,
+        blipColor = 2,
+        type = 'depot',
+        category = Config.VehicleClass['rig']
     },
-    ["ronsrigparking"] = {
-        ["label"] = "Ron's Big Rig Parking",
-        ["takeVehicle"] = vector3(-2523.99, 2319.13, 33.22),
-        ["spawnPoint"] = vector4(-2531.0, 2335.86, 33.13, 210.88),
-        ["putVehicle"] = vector3(-2526.56, 2335.61, 33.06),
-        ["showBlip"] = true,
-        ["blipName"] = "Big Rig Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 2,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "rig"                 --car, air, sea, rig
+    dumborigparking = {
+        label = 'Dumbo Big Rig Parking',
+        takeVehicle = vector3(161.23, -3188.73, 5.97),
+        spawnPoint = {
+            vector4(167.0, -3203.89, 5.94, 271.27)
+        },
+        showBlip = true,
+        blipName = 'Big Rig Parking',
+        blipNumber = 357,
+        blipColor = 2,
+        type = 'public',
+        category = Config.VehicleClass['rig']
     },
-    ["ronsrigparking2"] = {
-        ["label"] = "Ron's Big Rig Parking",
-        ["takeVehicle"] = vector3(2567.7, 463.03, 108.6),
-        ["spawnPoint"] = vector4(2555.24, 446.92, 108.52, 314.79),
-        ["putVehicle"] = vector3(2558.69, 425.04, 108.52),
-        ["showBlip"] = true,
-        ["blipName"] = "Big Rig Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 2,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "rig"                 --car, air, sea, rig
+    popsrigparking = {
+        label = 'Pop\'s Big Rig Parking',
+        takeVehicle = vector3(137.67, 6632.99, 31.67),
+        spawnPoint = {
+            vector4(127.69, 6605.84, 31.93, 223.67)
+        },
+        showBlip = true,
+        blipName = 'Big Rig Parking',
+        blipNumber = 357,
+        blipColor = 2,
+        type = 'public',
+        category = Config.VehicleClass['rig']
     },
-    ["ronsrigparking3"] = {
-        ["label"] = "Ron's Big Rig Parking",
-        ["takeVehicle"] = vector3(-23.63, -2551.7, 6.14),
-        ["spawnPoint"] = vector4(-32.81, -2536.0, 6.07, 53.26),
-        ["putVehicle"] = vector3(-36.32, -2541.84, 6.07),
-        ["showBlip"] = true,
-        ["blipName"] = "Big Rig Parking",
-        ["blipNumber"] = 357,
-        ["blipColor"] = 2,
-        ["type"] = "public",                --public, job, gang, depot
-        ["vehicle"] = "rig"                 --car, air, sea, rig
+    ronsrigparking = {
+        label = 'Ron\'s Big Rig Parking',
+        takeVehicle = vector3(-2529.37, 2342.67, 33.06),
+        spawnPoint = {
+            vector4(-2521.61, 2326.45, 33.13, 88.7)
+        },
+        showBlip = true,
+        blipName = 'Big Rig Parking',
+        blipNumber = 357,
+        blipColor = 2,
+        type = 'public',
+        category = Config.VehicleClass['rig']
+    },
+    ronsrigparking2 = {
+        label = 'Ron\'s Big Rig Parking',
+        takeVehicle = vector3(2561.67, 476.68, 108.49),
+        spawnPoint = {
+            vector4(2561.67, 476.68, 108.49, 177.86)
+        },
+        showBlip = true,
+        blipName = 'Big Rig Parking',
+        blipNumber = 357,
+        blipColor = 2,
+        type = 'public',
+        category = Config.VehicleClass['rig']
+    },
+    ronsrigparking3 = {
+        label = 'Ron\'s Big Rig Parking',
+        takeVehicle = vector3(-41.24, -2550.63, 6.01),
+        spawnPoint = {
+            vector4(-39.39, -2527.81, 6.08, 326.18)
+        },
+        showBlip = true,
+        blipName = 'Big Rig Parking',
+        blipNumber = 357,
+        blipColor = 2,
+        type = 'public',
+        category = Config.VehicleClass['rig']
     },
 }
-Config.HouseGarages = {}

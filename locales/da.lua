@@ -1,56 +1,32 @@
 local Translations = {
     error = {
-        no_vehicles = "Du har ingen køretøjer i denne garage!",
-        not_impound = "Dit køretøj er ikke beslaglagt",
-        not_owned = "Du ejer ikke dette køretøj",
-        not_correct_type = "Du kan ikke parkere dette køretøj i denne garage",
-        not_enough = "Ikke nok penge",
-        no_garage = "Ingen",
+        no_vehicles = 'Der er ingen køretøjer på denne placering!',
+        not_depot = 'Dit køretøj er ikke i depotet',
+        not_owned = 'Dette køretøj kan ikke opbevares',
+        not_correct_type = 'Du kan ikke opbevare denne type køretøj her',
+        not_enough = 'Ikke nok penge',
+        no_garage = 'Ingen',
+        vehicle_occupied = 'Du kan ikke opbevare dette køretøj, da det ikke er tomt',
+        vehicle_not_tracked = 'Kunne ikke spore køretøjet',
+        no_spawn = 'Området er for overfyldt'
     },
     success = {
-        vehicle_parked = "Køretøj Parkeret",
-    },
-    menu = {
-        header = {
-            house_car = "Bolig Garage %{value}",
-            public_car = "Offentlig Garage %{value}",
-            public_sea = "Offentligt Bådhus %{value}",
-            public_air = "Offentlig Hangar %{value}",
-            job_car = "Job Garage %{value}",
-            job_sea = "Job Bådhus %{value}",
-            job_air = "Job Hangar %{value}",
-            gang_car = "Gang Garage %{value}",
-            gang_sea = "Gang Bådhus %{value}",
-            gang_air = "Gang Hangar %{value}",
-            depot_car = "Depot %{value}",
-            depot_sea = "Depot %{value}",
-            depot_air = "Depot %{value}",
-            vehicles = "Tilgængelige Køretøjer",
-            depot = "%{value} [ $%{value2} ]",
-            garage = "%{value} [ %{value2} ]",
-        },
-        leave = {
-            car = "⬅ Forlad Garage",
-            sea = "⬅ Forlad Bådhus",
-            air = "⬅ Forlad Hangar",
-        },
-        text = {
-            vehicles = "Se parkeret køretøjer!",
-            depot = "Plade: %{value}<br>Tank: %{value2} | Motor: %{value3} | Karosseri: %{value4}",
-            garage = "Stand: %{value}<br>Tank: %{value2} | Motor: %{value3} | Karosseri: %{value4}",
-        }
+        vehicle_parked = 'Køretøj opbevaret',
+        vehicle_tracked = 'Køretøj sporet',
     },
     status = {
-        out = "Ude",
-        garaged = "Parkeret",
-        impound = "Beslaglagt af politiet",
+        out = 'Ude',
+        garaged = 'I garagen',
+        impound = 'Beslaglagt af politiet',
+        house = 'Hus',
     },
     info = {
-        car_e = "[E] Garage",
-        sea_e = "[E] Bådhus",
-        air_e = "[E] Hangar",
-        park_e = "[E] Parker Køretøj",
-        house_garage = "Bolig garage",
+        car_e = 'E - Garage',
+        sea_e = 'E - Bådhus',
+        air_e = 'E - Hangar',
+        rig_e = 'E - Rig Parkeringsplads',
+        depot_e = 'E - Depot',
+        house_garage = 'E - Husgarage',
     }
 }
 

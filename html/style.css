@@ -1,0 +1,186 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+
+div {
+    font-family: "Roboto", sans-serif;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 50px;
+    background: #dc143c;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-height: 75vh;
+    width: 40vw;
+    overflow: hidden;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.garage-header {
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: left;
+    color: #fafafa;
+}
+
+.garage-logo {
+    margin-left: auto;
+    margin-bottom: 20px;
+}
+
+.vehicle-table {
+    max-height: 60vh;
+    overflow-y: auto;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.vehicle-item {
+    background-color: #2a2a2a;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.vehicle-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    color: #fafafa;
+}
+
+.plate,
+.mileage,
+.vehicle-name {
+    margin: 0;
+    flex: 1;
+}
+
+.vehicle-name {
+    text-align: left;
+}
+
+.plate {
+    text-align: center;
+}
+
+.mileage {
+    text-align: right;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 10px auto;
+}
+
+.stat {
+    flex: 0 0 calc(33.333% - 10px);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    margin: 0 5px;
+}
+
+.label {
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    width: 100%;
+    background-color: #3c3c3c;
+    border-radius: 5px;
+    height: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-text {
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+}
+
+.progress-bar span {
+    display: block;
+    height: 100%;
+}
+
+.progress-bar span.bar-green {
+    background-color: #4caf50;
+}
+
+.progress-bar span.bar-yellow {
+    background-color: #ffc107;
+}
+
+.progress-bar span.bar-red {
+    background-color: #e53935;
+}
+
+.finance-drive-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.finance-info {
+    color: #ffffff;
+    font-size: 13.3px;
+    background-color: #388e3c;
+    margin-top: 10px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border: none;
+    border-radius: 5px;
+    padding: 4px 8px;
+}
+
+.drive-btn {
+    font-family: "Roboto", sans-serif;
+    color: #ffffff;
+    background-color: #388e3c;
+    margin-top: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border: none;
+    border-radius: 5px;
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.drive-btn:hover {
+    background-color: #4caf50;
+}
+
+.drive-btn:disabled {
+    background-color: #222;
+    cursor: not-allowed;
+}

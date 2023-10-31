@@ -1,56 +1,32 @@
 local Translations = {
     error = {
-        no_vehicles = "Du har inga fordon i det här garaget!",
-        not_impound = "Ditt fordon är inte beslagtaget",
-        not_owned = "Du äger inte det här fordonet",
-        not_correct_type = "Du kan inte parkera den här typen av fordon här",
-        not_enough = "Inte tillräckligt med pengar",
-        no_garage = "Ingen",
+        no_vehicles = 'Det finns inga fordon på den här platsen!',
+        not_depot = 'Ditt fordon är inte i depån',
+        not_owned = 'Det går inte att lagra detta fordon',
+        not_correct_type = 'Du kan inte lagra den här typen av fordon här',
+        not_enough = 'Inte tillräckligt med pengar',
+        no_garage = 'Inget',
+        vehicle_occupied = 'Du kan inte lagra detta fordon eftersom det inte är tomt',
+        vehicle_not_tracked = 'Det gick inte att spåra fordonet',
+        no_spawn = 'Området är för trångt'
     },
     success = {
-        vehicle_parked = "Fordon har parkerats",
-    },
-    menu = {
-        header = {
-            house_car = "Husgarage %{value}",
-            public_car = "Offentligt Garage %{value}",
-            public_sea = "Offentlig Båthus %{value}",
-            public_air = "Offentlig Hangar %{value}",
-            job_car = "Arbetsgarage %{value}",
-            job_sea = "Arbetsbåthus %{value}",
-            job_air = "Arbetshangar %{value}",
-            gang_car = "Gänggarage %{value}",
-            gang_sea = "Gängbåthus %{value}",
-            gang_air = "Gänghangar %{value}",
-            depot_car = "Bilbeslag %{value}",
-            depot_sea = "Båtbeslag %{value}",
-            depot_air = "Helikopterbeslag %{value}",
-            vehicles = "Tillgängliga fordon",
-            depot = "%{value} [ $%{value2} ]",
-            garage = "%{value} [ %{value2} ]",
-        },
-        leave = {
-            car = "⬅ Lämna garage",
-            sea = "⬅ Lämna båthus",
-            air = "⬅ Lämna Hangar",
-        },
-        text = {
-            vehicles = "Visa dina parkerade fordon!",
-            depot = "Reg.plåt: %{value}<br>Bränsle: %{value2} | Motorhälsa: %{value3} | Karosshälsa: %{value4}",
-            garage = "Status: %{value}<br>Bränsle: %{value2} | Motorhälsa: %{value3} | Karosshälsa: %{value4}",
-        }
+        vehicle_parked = 'Fordon lagrat',
+        vehicle_tracked = 'Fordon spårat',
     },
     status = {
-        out = "Ute",
-        garaged = "Parkerad",
-        impound = "Beslagtaget av Polis",
+        out = 'Ute',
+        garaged = 'I garaget',
+        impound = 'Beslagtaget av polisen',
+        house = 'Hus',
     },
     info = {
-        car_e = "[E] Garage",
-        sea_e = "[E] Båthus",
-        air_e = "[E] Hangar",
-        park_e = "[E] Parkera Fordon",
-        house_garage = "Hus Garage",
+        car_e = 'E - Garage',
+        sea_e = 'E - Båthus',
+        air_e = 'E - Hangar',
+        rig_e = 'E - Plats för borrigg',
+        depot_e = 'E - Depå',
+        house_garage = 'E - Husgarage',
     }
 }
 

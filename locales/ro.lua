@@ -1,61 +1,32 @@
---[[
-Romanian base language translation for qb-garages
-Translation done by wanderrer (Martin Riggs#0807 on Discord)
-]]--
 local Translations = {
     error = {
-        no_vehicles = "Nu ai niciun vehicul parcat in aceasta locatie!",
-        not_impound = "Vehiculul tau nu a fost confiscat de stat",
-        not_owned = "Nu poti parca acest vehicul",
-        not_correct_type = "Acest tip de vehicul, nu poate fi parcat aici",
-        not_enough = "Nu ai suficienti bani",
-        no_garage = "Absolut nimic",
-        vehicle_occupied = "Nu poti parca acest vehicul, nu este gol :)",
+        no_vehicles = 'Nu există vehicule în această locație!',
+        not_depot = 'Vehiculul dvs. nu este în depozit',
+        not_owned = 'Acest vehicul nu poate fi stocat',
+        not_correct_type = 'Nu puteți stoca acest tip de vehicul aici',
+        not_enough = 'Nu aveți suficientă bani',
+        no_garage = 'Niciunul',
+        vehicle_occupied = 'Nu puteți stoca acest vehicul deoarece nu este gol',
+        vehicle_not_tracked = 'Nu s-a putut urmări vehiculul',
+        no_spawn = 'Zona este prea aglomerată'
     },
     success = {
-        vehicle_parked = "Vehiculul a fost parcat cu succes",
-    },
-    menu = {
-        header = {
-            house_car = "Garajul casei %{value}",
-            public_car = "Parcare publica %{value}",
-            public_sea = "Debarcader public %{value}",
-            public_air = "Hangar public %{value}",
-            job_car = "Garaj pentru %{value}",
-            job_sea = "Debarcader pentru %{value}",
-            job_air = "Hangar pentru %{value}",
-            gang_car = "Garaj pentru %{value}",
-            gang_sea = "Debarcader pentru %{value}",
-            gang_air = "Hangar pentru %{value}",
-            depot_car = "Depozit %{value}",
-            depot_sea = "Depozit %{value}",
-            depot_air = "Depozit %{value}",
-            vehicles = "Vehicule disponibile",
-            depot = "%{value} [ $%{value2} ]",
-            garage = "%{value} [ %{value2} ]",
-        },
-        leave = {
-            car = "⬅ Paraseste garajul",
-            sea = "⬅ Paraseste debarcaderul",
-            air = "⬅ Paraseste Hangarul",
-        },
-        text = {
-            vehicles = "Lista vehicule parcate!",
-            depot = "Numar: %{value}<br>Combustibil: %{value2} | Motor: %{value3} | Caroserie: %{value4}",
-            garage = "Stare: %{value}<br>Combustibil: %{value2} | Motor: %{value3} | Caroserie: %{value4}",
-        }
+        vehicle_parked = 'Vehiculul a fost depozitat',
+        vehicle_tracked = 'Vehiculul a fost urmărit',
     },
     status = {
-        out = "Undeva pe strazi",
-        garaged = "Parcat",
-        impound = "Confiscat de Stat",
+        out = 'Ieșit',
+        garaged = 'În garaj',
+        impound = 'Confiscat de poliție',
+        house = 'Casa',
     },
     info = {
-        car_e = "[E] Garaj",
-        sea_e = "[E] Debarcader",
-        air_e = "[E] Hangar",
-        park_e = "[E] Parcheaza vehicul",
-        house_garage = "Parcare domiciuliu",
+        car_e = 'E - Garaj',
+        sea_e = 'E - Hangar pentru bărci',
+        air_e = 'E - Hangar',
+        rig_e = 'E - Locul platformei de foraj',
+        depot_e = 'E - Depozit',
+        house_garage = 'E - Garaj de casă',
     }
 }
 
