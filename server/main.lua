@@ -7,7 +7,7 @@ AddEventHandler('onResourceStart', function(resource)
     if resource == GetCurrentResourceName() then
         Wait(100)
         if Config['AutoRespawn'] then
-            MySQL.prepare('UPDATE player_vehicles SET state = 1 WHERE state = 0', {})
+            MySQL.update('UPDATE player_vehicles SET state = 1 WHERE state = 0', {})
         end
     end
 end)
@@ -75,11 +75,11 @@ QBCore.Functions.CreateCallback('qb-garages:server:GetGarageVehicles', function(
     local vehicles
 
     if type == 'depot' then
-        vehicles = MySQL.prepare.await('SELECT * FROM player_vehicles WHERE citizenid = ? AND depotprice > 0', { citizenId })
+        vehicles = MySQL.rawExecute.await('SELECT * FROM player_vehicles WHERE citizenid = ? AND depotprice > 0', { citizenId })
     elseif Config.SharedGarages then
-        vehicles = MySQL.prepare.await('SELECT * FROM player_vehicles WHERE citizenid = ?', { citizenId })
+        vehicles = MySQL.rawExecute.await('SELECT * FROM player_vehicles WHERE citizenid = ?', { citizenId })
     else
-        vehicles = MySQL.prepare.await('SELECT * FROM player_vehicles WHERE citizenid = ? AND garage = ?', { citizenId, garage })
+        vehicles = MySQL.rawExecute.await('SELECT * FROM player_vehicles WHERE citizenid = ? AND garage = ?', { citizenId, garage })
     end
     if not vehicles then
         cb(nil)
@@ -99,7 +99,7 @@ QBCore.Functions.CreateCallback('qb-garages:server:spawnvehicle', function(sourc
     SetEntityHeading(veh, coords.w)
     SetVehicleNumberPlateText(veh, plate)
     local vehProps = {}
-    local result = MySQL.prepare.await('SELECT mods FROM player_vehicles WHERE plate = ?', { plate })
+    local result = MySQL.rawExecute.await('SELECT mods FROM player_vehicles WHERE plate = ?', { plate })
     if result and result[1] then vehProps = json.decode(result[1].mods) end
     local netId = NetworkGetNetworkIdFromEntity(veh)
     OutsideVehicles[plate] = { netID = netId, entity = veh }
@@ -137,11 +137,11 @@ end)
 -- Events
 
 RegisterNetEvent('qb-garages:server:updateVehicleStats', function(plate, fuel, engine, body)
-    MySQL.prepare('UPDATE player_vehicles SET fuel = ?, engine = ?, body = ? WHERE plate = ?', { fuel, engine, body, plate })
+    MySQL.update('UPDATE player_vehicles SET fuel = ?, engine = ?, body = ? WHERE plate = ?', { fuel, engine, body, plate })
 end)
 
 RegisterNetEvent('qb-garages:server:updateVehicleState', function(state, plate)
-    MySQL.prepare('UPDATE player_vehicles SET state = ?, depotprice = ? WHERE plate = ?', { state, 0, plate })
+    MySQL.update('UPDATE player_vehicles SET state = ?, depotprice = ? WHERE plate = ?', { state, 0, plate })
 end)
 
 RegisterNetEvent('qb-garages:server:UpdateOutsideVehicle', function(plate, vehicleNetID)
@@ -190,7 +190,7 @@ QBCore.Functions.CreateCallback('qb-garages:server:GetPlayerVehicles', function(
     local Player = QBCore.Functions.GetPlayer(source)
     local Vehicles = {}
 
-    MySQL.query('SELECT * FROM player_vehicles WHERE citizenid = ?', { Player.PlayerData.citizenid }, function(result)
+    MySQL.rawExecute('SELECT * FROM player_vehicles WHERE citizenid = ?', { Player.PlayerData.citizenid }, function(result)
         if result[1] then
             for _, v in pairs(result) do
                 local VehicleData = QBCore.Shared.Vehicles[v.vehicle]
