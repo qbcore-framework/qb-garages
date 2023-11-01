@@ -99,7 +99,7 @@ QBCore.Functions.CreateCallback('qb-garages:server:spawnvehicle', function(sourc
     SetEntityHeading(veh, coords.w)
     SetVehicleNumberPlateText(veh, plate)
     local vehProps = {}
-    local result = MySQL.prepare.await('SELECT mods FROM player_vehicles WHERE plate = ?', { plate })
+    local result = MySQL.rawExecute.await('SELECT mods FROM player_vehicles WHERE plate = ?', { plate })
     if result and result[1] then vehProps = json.decode(result[1].mods) end
     local netId = NetworkGetNetworkIdFromEntity(veh)
     OutsideVehicles[plate] = { netID = netId, entity = veh }
