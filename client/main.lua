@@ -58,6 +58,47 @@ local function OpenGarageMenu(data)
     end, data.indexgarage, data.type, data.category)
 end
 
+function OpenJobGarageMenu()
+    local vehicles = {}
+    local job = QBCore.Functions.GetPlayerData().job.name
+    local grade = QBCore.Functions.GetPlayerData().job.grade.level
+    for k, v in pairs(Config.JobVehiclesGarages) do
+        if k == job then
+            if v.vehicles[grade] == nil then
+                for yes, vehicle in pairs({}) do
+                    vehicles[#vehicles + 1] = {
+                    }
+                end
+            else
+                for yes, vehicle in pairs(v.vehicles[grade]) do
+                    vehicles[#vehicles + 1] = {
+                        vehicle = yes,
+                        vehicleLabel = vehicle,
+                        plate = Config.JobVehiclesGarages[job].platePrefix .. math.random(1000, 9999),
+                        state = 1,
+                        fuel = 100.0,
+                        engine = 1000.0,
+                        body = 1000.0,
+                        distance = 0,
+                        garage = Config.JobVehiclesGarages[job],
+                        type = 'job',
+                        index = nil,
+                        depotPrice = 0,
+                        balance = 0,
+                        playerjobadndgrade = QBCore.Functions.GetPlayerData().charinfo.firstname .. ' ' .. QBCore.Functions.GetPlayerData().charinfo.lastname .. ' - ' .. QBCore.Functions.GetPlayerData().job.grade.name
+                    }
+                end
+            end
+        end
+    end
+    SetNuiFocus(true, true)
+    SendNUIMessage({
+        action = 'VehicleListJobs',
+        garageLabel = Config.JobVehiclesGarages[job].label,
+        vehicles = vehicles,
+    })
+end
+
 local function DepositVehicle(veh, data)
     local plate = QBCore.Functions.GetPlate(veh)
     QBCore.Functions.TriggerCallback('qb-garages:server:canDeposit', function(canDeposit)
@@ -112,6 +153,44 @@ local function CreateZone(index, garage, zoneType)
     return zone
 end
 
+-- Threads and loops (job vehicles)
+CreateThread(function()
+    for k, v in pairs(Config.JobVehiclesGarages) do
+       for k2, v2 in pairs(v.takeVehicle) do
+        local boxZone = BoxZone:Create(vector3(v2.x, v2.y, v2.z), 6.0, 5.0, {
+            name = 'job_' .. k .. '_' .. k2,
+            debugPoly = true,
+            heading = v2.w,
+            minZ = v2.z - 2,
+            maxZ = v2.z + 2,
+        })
+        boxZone:onPlayerInOut(function(isPointInside)
+            if isPointInside and PlayerJob.name == k then
+                listenForKey = true
+                CreateThread(function()
+                    while listenForKey do
+                        Wait(0)
+                        if IsControlJustReleased(0, 38) then
+                            exports['qb-core']:KeyPressed(38)
+                            if IsPedInAnyVehicle(PlayerPedId(), false) then
+                                QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(PlayerPedId()))
+                            else
+                                OpenJobGarageMenu()
+                            end
+                        end
+                    end
+                end)
+                local displayText = '[E] - Job Garage'
+                exports['qb-core']:DrawText(displayText, 'left')
+            else
+                listenForKey = false
+                exports['qb-core']:HideText()
+            end
+        end)
+       end
+    end
+end)
+
 local function CreateBlipsZones()
     PlayerData = QBCore.Functions.GetPlayerData()
     PlayerGang = PlayerData.gang
@@ -137,7 +216,7 @@ local function CreateBlipsZones()
         end
     end
 
-    local comboZone = ComboZone:Create(garageZones, { name = 'garageCombo', debugPoly = false })
+    local comboZone = ComboZone:Create(garageZones, { name = 'garageCombo', debugPoly = true })
 
     comboZone:onPlayerInOut(function(isPointInside, _, zone)
         if isPointInside then
@@ -285,6 +364,40 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
             QBCore.Functions.Notify(Lang:t('error.not_depot'), 'error', 5000)
         end
     end, plate, type)
+end)
+
+-- Job Vehicles
+RegisterNetEvent('qb-garages:client:takeOutGarageJobs', function(data)
+    local vehicle = data.vehicle
+    local plate = data.plate
+    local job = QBCore.Functions.GetPlayerData().job.name
+    local curgar = 0
+    for k, v in pairs(Config.JobVehiclesGarages) do
+        for k2, v2 in pairs(v.takeVehicle) do
+            local ped = PlayerPedId()
+            local pos = GetEntityCoords(ped)
+            local dist = #(pos - vector3(v2.x, v2.y, v2.z))
+            if (dist < 5) then
+                curgar = k2
+            end
+        end
+    end
+    local location = Config.JobVehiclesGarages[job].takeVehicle[curgar]
+    QBCore.Functions.TriggerCallback('qb-garages:server:spawnvehicleJob', function(netId)
+        local veh = NetToVeh(netId)
+        exports[Config.FuelResource]:SetFuel(veh, 100.0)
+        TriggerEvent('vehiclekeys:client:SetOwner', QBCore.Functions.GetPlate(veh))
+        SetVehicleEngineOn(veh, true, true)
+        if job == 'bus' then
+            TriggerEvent('qb-busjob:client:DoBusNpc')
+        end
+    end, plate, vehicle, location, true)
+end)
+
+-- NUI Callbacks (Jobs)
+RegisterNUICallback('takeOutVehicleJobs', function(data, cb)
+    TriggerEvent('qb-garages:client:takeOutGarageJobs', data)
+    cb('ok')
 end)
 
 -- Housing calls
