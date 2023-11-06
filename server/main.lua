@@ -106,6 +106,14 @@ QBCore.Functions.CreateCallback('qb-garages:server:spawnvehicle', function(sourc
     cb(netId, vehProps)
 end)
 
+QBCore.Functions.CreateCallback('qb-garages:server:spawnvehicleJob', function(source, cb, plate, vehicle, coords, warp)
+    local veh = QBCore.Functions.SpawnVehicle(source, vehicle, coords, warp)
+    SetEntityHeading(veh, coords.w)
+    SetVehicleNumberPlateText(veh, plate)
+    local netId = NetworkGetNetworkIdFromEntity(veh)
+    cb(netId)
+end)
+
 -- Checks if a vehicle can be spawned based on its type and location.
 QBCore.Functions.CreateCallback('qb-garages:server:IsSpawnOk', function(_, cb, plate, type)
     if OutsideVehicles[plate] and DoesEntityExist(OutsideVehicles[plate].entity) then
@@ -220,7 +228,7 @@ QBCore.Functions.CreateCallback('qb-garages:server:GetPlayerVehicles', function(
                     fullname = VehicleData and VehicleData['name'] or 'Unknown Vehicle'
                 end
 
-                Vehicles[#Vehicles + 1] = {
+                Vehicles[#Vehicles] = {
                     fullname = fullname,
                     brand = VehicleData and VehicleData['brand'] or '',
                     model = VehicleData and VehicleData['name'] or '',
