@@ -238,3 +238,25 @@ QBCore.Functions.CreateCallback('qb-garages:server:GetPlayerVehicles', function(
         end
     end)
 end)
+
+local function getAllGarages()
+    local garages = {}
+    for k, v in pairs(Config.Garages) do
+        garages[#garages+1] = {
+            name = k,
+            label = v.label,
+            type = v.type,
+            takeVehicle = v.takeVehicle,
+            putVehicle = v.putVehicle,
+            spawnPoint = v.spawnPoint,
+            showBlip = v.showBlip,
+            blipName = v.blipName,
+            blipNumber = v.blipNumber,
+            blipColor = v.blipColor,
+            vehicle = v.vehicle
+        }
+    end
+    return garages
+end
+
+exports('getAllGarages', getAllGarages)
