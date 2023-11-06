@@ -14,6 +14,89 @@ Config.VehicleClass = {
     rig = { 10, 11, 17, 19, 20 }
 }
 
+Config.JobVehiclesGarages = {
+    police = {
+        label = 'Police Garage',
+        takeVehicle = {
+            [1] = vector4(443.41, -1021.34, 28.55, 87.02),
+            [2] = vector4(429.68, -1023.0, 28.81, 86.7),
+        },
+        type = 'job',
+        platePrefix = 'LSPD',
+        vehicles = {
+            [0] = {
+                ['police'] = 'Police Car 1',
+            },
+            [1] = {
+                ['police'] = 'Police Car 1',
+                ['police2'] = 'Police Car 2',
+            },
+            [2] = {
+                ['police'] = 'Police Car 1',
+                ['police2'] = 'Police Car 2',
+                ['police3'] = 'Police Car 3',
+            },
+            [3] = {
+                ['police'] = 'Police Car 1',
+                ['police2'] = 'Police Car 2',
+                ['police3'] = 'Police Car 3',
+                ['police4'] = 'Police Car 4',
+            },
+            [4] = {
+                ['police'] = 'Police Car 1',
+                ['police2'] = 'Police Car 2',
+                ['police3'] = 'Police Car 3',
+                ['police4'] = 'Police Car 4',
+                ['policeb'] = 'Police Car 5',
+            },
+        },
+        jobType = 'police',
+    },
+    ambulance = {
+        label = 'Ambulance Garage',
+        takeVehicle = {
+            [1] = vector4(361.54, -600.73, 28.66, 178.09),
+            [2] = vector4(382.44, -580.34, 28.64, 94.99),
+        },
+        type = 'job',
+        platePrefix = 'EMS',
+        vehicles = {
+            [0] = {
+                ['ambulance'] = 'Ambulance 1',
+            },
+        },
+        jobType = 'ambulance',
+    },
+    taxi = {
+        label = 'Taxi Garage',
+        takeVehicle = {
+            [1] = vector4(906.66, -175.63, 74.1, 236.58),
+        },
+        type = 'job',
+        platePrefix = 'TAXI',
+        vehicles = {
+            [0] = {
+                ['taxi'] = 'Taxi 1',
+            },
+        },
+        jobType = 'taxi',
+    },
+    bus = {
+        label = 'Bus Garage',
+        takeVehicle ={
+            [1] = vector4(463.71, -626.26, 28.47, 170.96),
+        },
+        type = 'job',
+        platePrefix = 'BUS',
+        vehicles = {
+            [0] = {
+                ['bus'] = 'Bus 1',
+            },
+        },
+        jobType = 'bus',
+    },
+}
+
 Config.Garages = {
     motelgarage = {
         label = 'Motel Parking',
