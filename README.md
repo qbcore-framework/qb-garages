@@ -20,7 +20,8 @@
 **Job Garages**
 * Allows jobs to have garage specific.
 * You can parks every vehicle that is owned by someone in job garages. 
-* You can take every vehicle from the job garages. 
+* You can take every vehicle from the job garages.
+* All jobs have the cars implemented in qb-garages without need another system of takeoutvehicle as it is now 
 
 **Depot Garages**
 * Allows depot cars to be retreived from here. Cops can do /depot [price] to send a car to the depot.
