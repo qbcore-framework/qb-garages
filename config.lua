@@ -15,16 +15,16 @@ Config.VehicleClass = {
 }
 
 Config.JobVehiclesGarages = {
-    police = {
-        label = 'Police Garage',
-        takeVehicle = {
+    police = { -- job
+        label = 'Police Garage', -- Garage label
+        takeVehicle = { -- Take out locations you can add as many as you want
             [1] = vector4(443.41, -1021.34, 28.55, 87.02),
             [2] = vector4(429.68, -1023.0, 28.81, 86.7),
         },
         type = 'job',
-        platePrefix = 'LSPD',
-        vehicles = {
-            [0] = {
+        platePrefix = 'LSPD', -- Plate number
+        vehicles = { -- Vehicles
+            [0] = { -- Grade level
                 ['police'] = 'Police Car 1',
             },
             [1] = {
