@@ -220,7 +220,7 @@ QBCore.Functions.CreateCallback('qb-garages:server:GetPlayerVehicles', function(
                     fullname = VehicleData and VehicleData['name'] or 'Unknown Vehicle'
                 end
 
-                Vehicles[#Vehicles] = {
+                Vehicles[#Vehicles + 1] = {
                     fullname = fullname,
                     brand = VehicleData and VehicleData['brand'] or '',
                     model = VehicleData and VehicleData['name'] or '',
