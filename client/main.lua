@@ -273,13 +273,14 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
         if spawn then
             local location = GetSpawnPoint(garage)
             QBCore.Functions.TriggerCallback('qb-garages:server:spawnvehicle', function(netId, properties)
+                while not DoesEntityExist(NetToVeh(netId)) do Wait(10) end
                 local veh = NetToVeh(netId)
                 QBCore.Functions.SetVehicleProperties(veh, properties)
                 exports[Config.FuelResource]:SetFuel(veh, vehicle.fuel)
                 TriggerServerEvent('qb-garages:server:updateVehicleState', 0, plate)
-                TriggerEvent('vehiclekeys:client:SetOwner', QBCore.Functions.GetPlate(veh))
+                TriggerEvent('vehiclekeys:client:SetOwner', plate)
                 if Config.VisuallyDamageCars then doCarDamage(veh, stats, properties) end
-                SetVehicleEngineOn(veh, true, true)
+                SetVehicleEngineOn(veh, true, true, false)
             end, plate, vehicle, location, true)
         else
             QBCore.Functions.Notify(Lang:t('error.not_depot'), 'error', 5000)
