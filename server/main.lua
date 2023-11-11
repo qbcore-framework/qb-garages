@@ -93,15 +93,40 @@ QBCore.Functions.CreateCallback('qb-garages:server:GetGarageVehicles', function(
     end
 end)
 
+-- Backwards Compat
+local vehicleTypes = { -- https://docs.fivem.net/natives/?_0xA273060E
+    motorcycles = 'bike',
+    boats = 'boat',
+    helicopters = 'heli',
+    planes = 'plane',
+    submarines = 'submarine',
+    trailer = 'trailer',
+    train = 'train'
+}
+
+local function GetVehicleTypeByModel(model)
+    local vehicleData = QBCore.Shared.Vehicles[model]
+    if not vehicleData then return 'automobile' end
+    local category = vehicleData.category
+    local vehicleType = vehicleTypes[category]
+    return vehicleType or 'automobile'
+end
+-- Backwards Compat
+
 -- Spawns a vehicle and returns its network ID and properties.
-QBCore.Functions.CreateCallback('qb-garages:server:spawnvehicle', function(source, cb, plate, vehicle, coords, warp)
-    local veh = QBCore.Functions.SpawnVehicle(source, vehicle, coords, warp)
-    SetEntityHeading(veh, coords.w)
-    SetVehicleNumberPlateText(veh, plate)
+QBCore.Functions.CreateCallback('qb-garages:server:spawnvehicle', function(source, cb, plate, vehicle, coords)
+    local netId
+    local vehType = QBCore.Shared.Vehicles[vehicle] and QBCore.Shared.Vehicles[vehicle].type or GetVehicleTypeByModel(vehicle)
+    local veh = CreateVehicleServerSetter(GetHashKey(vehicle), vehType, coords.x, coords.y, coords.z, coords.w)
+    while not DoesEntityExist(veh) do Wait(10) end
+    netId = NetworkGetNetworkIdFromEntity(veh)
+    while not netId do
+        netId = NetworkGetNetworkIdFromEntity(veh)
+        Wait(10)
+    end
     local vehProps = {}
     local result = MySQL.rawExecute.await('SELECT mods FROM player_vehicles WHERE plate = ?', { plate })
     if result and result[1] then vehProps = json.decode(result[1].mods) end
-    local netId = NetworkGetNetworkIdFromEntity(veh)
     OutsideVehicles[plate] = { netID = netId, entity = veh }
     cb(netId, vehProps)
 end)
@@ -242,7 +267,7 @@ end)
 local function getAllGarages()
     local garages = {}
     for k, v in pairs(Config.Garages) do
-        garages[#garages+1] = {
+        garages[#garages + 1] = {
             name = k,
             label = v.label,
             type = v.type,

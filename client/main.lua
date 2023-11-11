@@ -273,8 +273,10 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
         if spawn then
             local location = GetSpawnPoint(garage)
             QBCore.Functions.TriggerCallback('qb-garages:server:spawnvehicle', function(netId, properties)
-                while not DoesEntityExist(NetToVeh(netId)) do Wait(10) end
+                while not NetworkDoesNetworkIdExist(netId) do Wait(10) end
                 local veh = NetToVeh(netId)
+                if Config.Warp then TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1) end
+                SetVehicleNumberPlateText(veh, plate)
                 QBCore.Functions.SetVehicleProperties(veh, properties)
                 exports[Config.FuelResource]:SetFuel(veh, vehicle.fuel)
                 TriggerServerEvent('qb-garages:server:updateVehicleState', 0, plate)
