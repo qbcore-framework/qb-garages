@@ -115,20 +115,15 @@ end
 
 -- Spawns a vehicle and returns its network ID and properties.
 QBCore.Functions.CreateCallback('qb-garages:server:spawnvehicle', function(source, cb, plate, vehicle, coords)
-    local netId
     local vehType = QBCore.Shared.Vehicles[vehicle] and QBCore.Shared.Vehicles[vehicle].type or GetVehicleTypeByModel(vehicle)
     local veh = CreateVehicleServerSetter(GetHashKey(vehicle), vehType, coords.x, coords.y, coords.z, coords.w)
-    while not DoesEntityExist(veh) do Wait(10) end
-    netId = NetworkGetNetworkIdFromEntity(veh)
-    while not netId do
-        netId = NetworkGetNetworkIdFromEntity(veh)
-        Wait(10)
-    end
+    local netId = NetworkGetNetworkIdFromEntity(veh)
+    SetVehicleNumberPlateText(veh, plate)
     local vehProps = {}
     local result = MySQL.rawExecute.await('SELECT mods FROM player_vehicles WHERE plate = ?', { plate })
     if result and result[1] then vehProps = json.decode(result[1].mods) end
     OutsideVehicles[plate] = { netID = netId, entity = veh }
-    cb(netId, vehProps)
+    cb(netId, vehProps, plate)
 end)
 
 -- Checks if a vehicle can be spawned based on its type and location.

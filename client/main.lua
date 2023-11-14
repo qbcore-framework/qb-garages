@@ -263,31 +263,43 @@ RegisterNetEvent('qb-garages:client:trackVehicle', function(coords)
     SetNewWaypoint(coords.x, coords.y)
 end)
 
+local function CheckPlate(vehicle, plateToSet)
+    local vehiclePlate = promise.new()
+    CreateThread(function()
+        while true do
+            Wait(500)
+            if GetVehicleNumberPlateText(vehicle) == plateToSet then
+                vehiclePlate:resolve(true)
+                return
+            else
+                SetVehicleNumberPlateText(vehicle, plateToSet)
+            end
+        end
+    end)
+    return vehiclePlate
+end
+
 RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
-    local type = data.type
-    local vehicle = data.vehicle
-    local garage = data.garage
-    local plate = data.plate
-    local stats = data.stats
     QBCore.Functions.TriggerCallback('qb-garages:server:IsSpawnOk', function(spawn)
         if spawn then
-            local location = GetSpawnPoint(garage)
-            QBCore.Functions.TriggerCallback('qb-garages:server:spawnvehicle', function(netId, properties)
+            local location = GetSpawnPoint(data.garage)
+            if not location then return end
+            QBCore.Functions.TriggerCallback('qb-garages:server:spawnvehicle', function(netId, properties, vehPlate)
                 while not NetworkDoesNetworkIdExist(netId) do Wait(10) end
-                local veh = NetToVeh(netId)
-                if Config.Warp then TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1) end
-                SetVehicleNumberPlateText(veh, plate)
+                local veh = NetworkGetEntityFromNetworkId(netId)
+                Citizen.Await(CheckPlate(veh, vehPlate))
                 QBCore.Functions.SetVehicleProperties(veh, properties)
-                exports[Config.FuelResource]:SetFuel(veh, vehicle.fuel)
-                TriggerServerEvent('qb-garages:server:updateVehicleState', 0, plate)
-                TriggerEvent('vehiclekeys:client:SetOwner', plate)
-                if Config.VisuallyDamageCars then doCarDamage(veh, stats, properties) end
+                exports[Config.FuelResource]:SetFuel(veh, data.vehicle.fuel)
+                TriggerServerEvent('qb-garages:server:updateVehicleState', 0, vehPlate)
+                TriggerEvent('vehiclekeys:client:SetOwner', vehPlate)
+                if Config.Warp then TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1) end
+                if Config.VisuallyDamageCars then doCarDamage(veh, data.stats, properties) end
                 SetVehicleEngineOn(veh, true, true, false)
-            end, plate, vehicle, location, true)
+            end, data.plate, data.vehicle, location, true)
         else
             QBCore.Functions.Notify(Lang:t('error.not_depot'), 'error', 5000)
         end
-    end, plate, type)
+    end, data.plate, data.type)
 end)
 
 -- Housing calls
