@@ -182,18 +182,24 @@ end
 local function doCarDamage(currentVehicle, stats, props)
     local engine = stats.engine + 0.0
     local body = stats.body + 0.0
-    if not next(props) then return end
-    for k, v in pairs(props.doorStatus) do
-        if v then SetVehicleDoorBroken(currentVehicle, tonumber(k), true) end
-    end
-    for k, v in pairs(props.tireBurstState) do
-        if v then SetVehicleTyreBurst(currentVehicle, tonumber(k), true) end
-    end
-    for k, v in pairs(props.windowStatus) do
-        if not v then SmashVehicleWindow(currentVehicle, tonumber(k)) end
-    end
     SetVehicleEngineHealth(currentVehicle, engine)
     SetVehicleBodyHealth(currentVehicle, body)
+    if not next(props) then return end
+    if props.doorStatus then
+        for k, v in pairs(props.doorStatus) do
+            if v then SetVehicleDoorBroken(currentVehicle, tonumber(k), true) end
+        end
+    end
+    if props.tireBurstState then
+        for k, v in pairs(props.tireBurstState) do
+            if v then SetVehicleTyreBurst(currentVehicle, tonumber(k), true) end
+        end
+    end
+    if props.windowStatus then
+        for k, v in pairs(props.windowStatus) do
+            if not v then SmashVehicleWindow(currentVehicle, tonumber(k)) end
+        end
+    end
 end
 
 function GetSpawnPoint(garage)
