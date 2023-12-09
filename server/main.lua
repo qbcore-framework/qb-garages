@@ -8,6 +8,8 @@ AddEventHandler('onResourceStart', function(resource)
         Wait(100)
         if Config['AutoRespawn'] then
             MySQL.update('UPDATE player_vehicles SET state = 1 WHERE state = 0', {})
+        else
+            MySQL.update('UPDATE player_vehicles SET depotprice = 500 WHERE state = 0', {})
         end
     end
 end)
