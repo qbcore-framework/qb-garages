@@ -189,9 +189,8 @@ RegisterNetEvent('qb-garages:server:PayDepotPrice', function(data)
     local Player = QBCore.Functions.GetPlayer(src)
     local cashBalance = Player.PlayerData.money['cash']
     local bankBalance = Player.PlayerData.money['bank']
-    MySQL.scalar('SELECT depotprice FROM player_vehicles WHERE plate = ?', { data.plate }, function(result)
-        if result then
-            local depotPrice = result[1].depotprice
+    MySQL.scalar('SELECT depotprice FROM player_vehicles WHERE plate = ?', { data.plate }, function(depotPrice)
+        if depotPrice then
 
             if cashBalance >= depotPrice then
                 Player.Functions.RemoveMoney('cash', depotPrice, 'paid-depot')
