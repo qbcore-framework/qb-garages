@@ -318,6 +318,7 @@ local function CreateHouseZone(index, garage, zoneType)
     local houseZone = CircleZone:Create(garage.takeVehicle, 5.0, {
         name = zoneType .. '_' .. index,
         debugPoly = false,
+        useZ = true,
         data = {
             indexgarage = index,
             type = zoneType,
