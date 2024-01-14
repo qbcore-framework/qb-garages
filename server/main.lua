@@ -69,6 +69,11 @@ end
 
 -- Callbacks
 
+QBCore.Functions.CreateCallback('qb-garages:server:getHouseGarage', function(_, cb, house)
+    local houseInfo = MySQL.single.await('SELECT * FROM houselocations WHERE name = ?', { house })
+    cb(houseInfo)
+end)
+
 QBCore.Functions.CreateCallback('qb-garages:server:GetGarageVehicles', function(source, cb, garage, type, category)
     local Player = QBCore.Functions.GetPlayer(source)
     if not Player then return end
@@ -144,7 +149,7 @@ QBCore.Functions.CreateCallback('qb-garages:server:canDeposit', function(source,
         cb(false)
         return
     end
-    if type == 'house' and not exports['qb-houses']:hasKey(Player.PlayerData.license, Player.PlayerData.citizenid, Config.HouseGarages[garage].label) then
+    if type == 'house' and not exports['qb-houses']:hasKey(Player.PlayerData.license, Player.PlayerData.citizenid, Config.Garages[garage].houseName) then
         cb(false)
         return
     end
@@ -210,6 +215,12 @@ RegisterNetEvent('qb-garages:server:PayDepotPrice', function(data)
             end
         end
     end)
+end)
+
+-- House Garages
+
+RegisterNetEvent('qb-garages:server:syncGarage', function(updatedGarages)
+    Config.Garages = updatedGarages
 end)
 
 --Call from qb-phone

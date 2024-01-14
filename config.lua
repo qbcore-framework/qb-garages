@@ -2,7 +2,7 @@ Config = {}
 Config.AutoRespawn = true          -- true == stores cars in garage on restart | false == doesnt modify car states
 Config.VisuallyDamageCars = true   -- true == damage car on spawn | false == no damage on spawn
 Config.SharedGarages = false       -- true == take any car from any garage | false == only take car from garage stored in
-Config.ClassSystem = true          -- true == restrict vehicles by class | false == any vehicle class in any garage
+Config.ClassSystem = false         -- true == restrict vehicles by class | false == any vehicle class in any garage
 Config.FuelResource = 'LegacyFuel' -- supports any that has a GetFuel() and SetFuel() export
 Config.Warp = true                 -- true == warp player into vehicle | false == vehicle spawns without warping
 
