@@ -296,7 +296,7 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
                 local veh = NetworkGetEntityFromNetworkId(netId)
                 Citizen.Await(CheckPlate(veh, vehPlate))
                 QBCore.Functions.SetVehicleProperties(veh, properties)
-                exports[Config.FuelResource]:SetFuel(veh, data.vehicle.fuel)
+                exports[Config.FuelResource]:SetFuel(veh, data.stats.fuel)
                 TriggerServerEvent('qb-garages:server:updateVehicleState', 0, vehPlate)
                 TriggerEvent('vehiclekeys:client:SetOwner', vehPlate)
                 if Config.Warp then TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1) end
