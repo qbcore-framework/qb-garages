@@ -400,7 +400,7 @@ RegisterNetEvent('qb-garages:client:setHouseGarage', function(house, hasKey) -- 
                 houseName = house,
                 takeVehicle = vector3(garageCoords.x, garageCoords.y, garageCoords.z),
                 spawnPoint = {
-                    vector4(garageCoords.x, garageCoords.y, garageCoords.z, garageCoords.w)
+                    vector4(garageCoords.x, garageCoords.y, garageCoords.z, garageCoords.w or garageCoords.h)
                 },
                 label = garageInfo.label,
                 type = 'house',
