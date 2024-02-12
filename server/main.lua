@@ -133,6 +133,15 @@ QBCore.Functions.CreateCallback('qb-garages:server:spawnvehicle', function(sourc
     cb(netId, vehProps, plate)
 end)
 
+QBCore.Functions.CreateCallback("qb-garage:server:GetVehicleProperties", function(_, cb, plate)
+    local properties = {}
+    local result = MySQL.query.await('SELECT mods FROM player_vehicles WHERE plate = ?', {plate})
+    if result[1] then
+        properties = json.decode(result[1].mods)
+    end
+    cb(properties)
+end)
+
 -- Checks if a vehicle can be spawned based on its type and location.
 QBCore.Functions.CreateCallback('qb-garages:server:IsSpawnOk', function(_, cb, plate, type)
     if OutsideVehicles[plate] and DoesEntityExist(OutsideVehicles[plate].entity) then
