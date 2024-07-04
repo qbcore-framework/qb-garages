@@ -395,6 +395,7 @@ RegisterNetEvent('qb-garages:client:setHouseGarage', function(house, hasKey) -- 
         end
     else
         QBCore.Functions.TriggerCallback('qb-garages:server:getHouseGarage', function(garageInfo) -- create garage if not exist
+            if not garageInfo.garage then return end
             local garageCoords = json.decode(garageInfo.garage)
             Config.Garages[formattedHouseName] = {
                 houseName = house,
