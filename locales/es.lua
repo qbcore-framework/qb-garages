@@ -6,7 +6,7 @@ local Translations = {
         not_correct_type = 'No puedes guardar este tipo de vehículo aquí',
         not_enough = 'No hay suficiente dinero',
         no_garage = 'Ninguno',
-        vehicle_occupied = 'No puedes guardar este vehículo ya que no está vacío',
+        vehicle_occupied = 'No hay espacio disponible para sacar el vehículo',
         vehicle_not_tracked = 'No se pudo rastrear el vehículo',
         no_spawn = 'Área demasiado concurrida'
     },
