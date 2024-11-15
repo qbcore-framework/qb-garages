@@ -7,10 +7,6 @@ local listenForKey = false
 
 -- Functions
 
-local function round(num, numDecimalPlaces)
-    return tonumber(string.format('%.' .. (numDecimalPlaces or 0) .. 'f', num))
-end
-
 local function CheckPlayers(vehicle)
     for i = -1, 5, 1 do
         local seat = GetPedInVehicleSeat(vehicle, i)
@@ -27,8 +23,8 @@ local function OpenGarageMenu(data)
         if result == nil then return QBCore.Functions.Notify(Lang:t('error.no_vehicles'), 'error', 5000) end
         local formattedVehicles = {}
         for _, v in pairs(result) do
-            local enginePercent = round(v.engine, 0)
-            local bodyPercent = round(v.body, 0)
+            local enginePercent = QBCore.Shared.Round(v.engine, 0)
+            local bodyPercent = QBCore.Shared.Round(v.body, 0)
             local vname = nil
             pcall(function()
                 vname = QBCore.Shared.Vehicles[v.vehicle].name
