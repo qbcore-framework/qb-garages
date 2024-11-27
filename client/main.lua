@@ -203,7 +203,7 @@ function GetSpawnPoint(garage)
     local location = nil
     if #garage.spawnPoint > 1 then
         local maxTries = #garage.spawnPoint
-        for i = 1, maxTries do
+        for _ = 1, maxTries do
             local randomIndex = math.random(1, #garage.spawnPoint)
             local chosenSpawnPoint = garage.spawnPoint[randomIndex]
             local isOccupied = IsPositionOccupied(
