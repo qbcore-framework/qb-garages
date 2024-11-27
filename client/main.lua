@@ -7,10 +7,6 @@ local listenForKey = false
 
 -- Functions
 
-local function round(num, numDecimalPlaces)
-    return tonumber(string.format('%.' .. (numDecimalPlaces or 0) .. 'f', num))
-end
-
 local function CheckPlayers(vehicle)
     for i = -1, 5, 1 do
         local seat = GetPedInVehicleSeat(vehicle, i)
@@ -27,8 +23,8 @@ local function OpenGarageMenu(data)
         if result == nil then return QBCore.Functions.Notify(Lang:t('error.no_vehicles'), 'error', 5000) end
         local formattedVehicles = {}
         for _, v in pairs(result) do
-            local enginePercent = round(v.engine, 0)
-            local bodyPercent = round(v.body, 0)
+            local enginePercent = QBCore.Shared.Round(v.engine, 0)
+            local bodyPercent = QBCore.Shared.Round(v.body, 0)
             local vname = nil
             pcall(function()
                 vname = QBCore.Shared.Vehicles[v.vehicle].name
@@ -207,7 +203,7 @@ function GetSpawnPoint(garage)
     local location = nil
     if #garage.spawnPoint > 1 then
         local maxTries = #garage.spawnPoint
-        for i = 1, maxTries do
+        for _ = 1, maxTries do
             local randomIndex = math.random(1, #garage.spawnPoint)
             local chosenSpawnPoint = garage.spawnPoint[randomIndex]
             local isOccupied = IsPositionOccupied(
@@ -413,11 +409,11 @@ RegisterNetEvent('qb-garages:client:setHouseGarage', function(house, hasKey) -- 
 end)
 
 RegisterNetEvent('qb-garages:client:houseGarageConfig', function(houseGarages)
-    for _, garageConfig in pairs(houseGarages) do
+    for houseName, garageConfig in pairs(houseGarages) do
         local formattedHouseName = string.gsub(string.lower(garageConfig.label), ' ', '')
         if garageConfig.takeVehicle and garageConfig.takeVehicle.x and garageConfig.takeVehicle.y and garageConfig.takeVehicle.z and garageConfig.takeVehicle.w then
             Config.Garages[formattedHouseName] = {
-                houseName = house,
+                houseName = houseName,
                 takeVehicle = vector3(garageConfig.takeVehicle.x, garageConfig.takeVehicle.y, garageConfig.takeVehicle.z),
                 spawnPoint = {
                     vector4(garageConfig.takeVehicle.x, garageConfig.takeVehicle.y, garageConfig.takeVehicle.z, garageConfig.takeVehicle.w)
