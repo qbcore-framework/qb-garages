@@ -409,11 +409,11 @@ RegisterNetEvent('qb-garages:client:setHouseGarage', function(house, hasKey) -- 
 end)
 
 RegisterNetEvent('qb-garages:client:houseGarageConfig', function(houseGarages)
-    for _, garageConfig in pairs(houseGarages) do
+    for houseName, garageConfig in pairs(houseGarages) do
         local formattedHouseName = string.gsub(string.lower(garageConfig.label), ' ', '')
         if garageConfig.takeVehicle and garageConfig.takeVehicle.x and garageConfig.takeVehicle.y and garageConfig.takeVehicle.z and garageConfig.takeVehicle.w then
             Config.Garages[formattedHouseName] = {
-                houseName = house,
+                houseName = houseName,
                 takeVehicle = vector3(garageConfig.takeVehicle.x, garageConfig.takeVehicle.y, garageConfig.takeVehicle.z),
                 spawnPoint = {
                     vector4(garageConfig.takeVehicle.x, garageConfig.takeVehicle.y, garageConfig.takeVehicle.z, garageConfig.takeVehicle.w)
