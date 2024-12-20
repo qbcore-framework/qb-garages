@@ -14,6 +14,7 @@ local function CheckPlayers(vehicle)
             TaskLeaveVehicle(seat, vehicle, 0)
         end
     end
+    TriggerEvent('qb-vehiclekeys:client:RemoveKeys', QBCore.Functions.GetPlate(vehicle))
     Wait(1500)
     QBCore.Functions.DeleteVehicle(vehicle)
 end
