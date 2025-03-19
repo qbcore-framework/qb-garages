@@ -1,7 +1,140 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&display=swap");
+
+:root {
+    --md-dark-primary: #f44336;
+    --md-dark-on-primary: #ffffff;
+    --md-dark-primary-container: #ffdad6;
+    --md-dark-on-primary-container: #410002;
+    --md-dark-secondary: #d32f2f;
+    --md-dark-on-secondary: #ffffff;
+    --md-dark-secondary-container: #ffdad5;
+    --md-dark-on-secondary-container: #410001;
+    --md-dark-tertiary: #ff8a65;
+    --md-dark-on-tertiary: #ffffff;
+    --md-dark-tertiary-container: #ffdacc;
+    --md-dark-on-tertiary-container: #410002;
+    --md-dark-surface: #1c1b1f;
+    --md-dark-on-surface: #e6e1e5;
+    --md-dark-surface-container-lowest: #0f0d13;
+    --md-dark-surface-container-low: #1d1b20;
+    --md-dark-surface-container: #211f26;
+    --md-dark-surface-container-high: #2b2930;
+    --md-dark-surface-container-highest: #36343b;
+    --md-dark-error: #b3261e;
+    --md-dark-on-error: #ffffff;
+    --md-dark-error-container: #93000a;
+    --md-dark-on-error-container: #ffdad5;
+    --md-dark-outline: #79747e;
+    --md-dark-outline-variant: #49454f;
+    --md-dark-inverse-surface: #e6e1e5;
+    --md-dark-inverse-on-surface: #1c1b1f;
+    --md-dark-scrim: rgba(0, 0, 0, 0.6);
+    --md-dark-shadow: rgba(0, 0, 0, 0.15);
+    --md-dark-success: #9bd880;
+    --md-dark-on-success: #193800;
+    --md-dark-success-container: #275000;
+    --md-dark-on-success-container: #b6f397;
+    --md-dark-warning: #ffba47;
+    --md-dark-on-warning: #422b00;
+    --md-dark-warning-container: #5f3f00;
+    --md-dark-on-warning-container: #ffddb0;
+    --md-dark-info: #b3c5ff;
+    --md-dark-on-info: #002a77;
+    --md-dark-info-container: #003ea7;
+    --md-dark-on-info-container: #dae1ff;
+
+    /* System states */
+    --md-state-hover-light-opacity: 0.08;
+    --md-state-focus-light-opacity: 0.12;
+    --md-state-pressed-light-opacity: 0.12;
+    --md-state-dragged-light-opacity: 0.16;
+    --md-state-hover-dark-opacity: 0.08;
+    --md-state-focus-dark-opacity: 0.12;
+    --md-state-pressed-dark-opacity: 0.12;
+    --md-state-dragged-dark-opacity: 0.16;
+
+    /* Elevation */
+    --md-elevation-1: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+    --md-elevation-2: 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+    --md-elevation-3: 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+    --md-elevation-4: 0px 6px 10px 4px rgba(0, 0, 0, 0.15);
+    --md-elevation-5: 0px 8px 12px 6px rgba(0, 0, 0, 0.15);
+
+    /* Shapes */
+    --md-radius-small: 8px;
+    --md-radius-medium: 12px;
+    --md-radius-large: 16px;
+    --md-radius-extra-large: 28px;
+
+    /* Typography */
+    --md-typescale-display-large-size: 57px;
+    --md-typescale-display-medium-size: 45px;
+    --md-typescale-display-small-size: 36px;
+    --md-typescale-headline-large-size: 32px;
+    --md-typescale-headline-medium-size: 28px;
+    --md-typescale-headline-small-size: 24px;
+    --md-typescale-title-large-size: 22px;
+    --md-typescale-title-medium-size: 16px;
+    --md-typescale-title-small-size: 14px;
+    --md-typescale-body-large-size: 16px;
+    --md-typescale-body-medium-size: 14px;
+    --md-typescale-body-small-size: 12px;
+    --md-typescale-label-large-size: 14px;
+    --md-typescale-label-medium-size: 12px;
+    --md-typescale-label-small-size: 11px;
+
+    /* Font */
+    --font-primary: "Exo 2", sans-serif;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+
+    /* Use dark theme by default */
+    --md-primary: var(--md-dark-primary);
+    --md-on-primary: var(--md-dark-on-primary);
+    --md-primary-container: var(--md-dark-primary-container);
+    --md-on-primary-container: var(--md-dark-on-primary-container);
+    --md-secondary: var(--md-dark-secondary);
+    --md-on-secondary: var(--md-dark-on-secondary);
+    --md-secondary-container: var(--md-dark-secondary-container);
+    --md-on-secondary-container: var(--md-dark-on-secondary-container);
+    --md-tertiary: var(--md-dark-tertiary);
+    --md-on-tertiary: var(--md-dark-on-tertiary);
+    --md-tertiary-container: var(--md-dark-tertiary-container);
+    --md-on-tertiary-container: var(--md-dark-on-tertiary-container);
+    --md-surface: var(--md-dark-surface);
+    --md-on-surface: var(--md-dark-on-surface);
+    --md-surface-container-lowest: var(--md-dark-surface-container-lowest);
+    --md-surface-container-low: var(--md-dark-surface-container-low);
+    --md-surface-container: var(--md-dark-surface-container);
+    --md-surface-container-high: var(--md-dark-surface-container-high);
+    --md-surface-container-highest: var(--md-dark-surface-container-highest);
+    --md-error: var(--md-dark-error);
+    --md-on-error: var(--md-dark-on-error);
+    --md-error-container: var(--md-dark-error-container);
+    --md-on-error-container: var(--md-dark-on-error-container);
+    --md-outline: var(--md-dark-outline);
+    --md-outline-variant: var(--md-dark-outline-variant);
+    --md-inverse-surface: var(--md-dark-inverse-surface);
+    --md-inverse-on-surface: var(--md-dark-inverse-on-surface);
+    --md-scrim: var(--md-dark-scrim);
+    --md-shadow: var(--md-dark-shadow);
+    --md-success: var(--md-dark-success);
+    --md-on-success: var(--md-dark-on-success);
+    --md-success-container: var(--md-dark-success-container);
+    --md-on-success-container: var(--md-dark-on-success-container);
+    --md-warning: var(--md-dark-warning);
+    --md-on-warning: var(--md-dark-on-warning);
+    --md-warning-container: var(--md-dark-warning-container);
+    --md-on-warning-container: var(--md-dark-on-warning-container);
+    --md-info: var(--md-dark-info);
+    --md-on-info: var(--md-dark-on-info);
+    --md-info-container: var(--md-dark-info-container);
+    --md-on-info-container: var(--md-dark-on-info-container);
+}
 
 div {
-    font-family: "Roboto", sans-serif;
+    font-family: var(--font-primary);
 }
 
 ::-webkit-scrollbar {
@@ -10,14 +143,14 @@ div {
 
 ::-webkit-scrollbar-thumb {
     border-radius: 50px;
-    background: #dc143c;
+    background: var(--md-primary);
 }
 
 .container {
     margin: 0 auto;
     padding: 20px;
-    background-color: #1e1e1e;
-    border-radius: 10px;
+    background-color: var(--md-surface);
+    border-radius: var(--md-radius-medium);
     display: none;
     position: fixed;
     top: 50%;
@@ -26,6 +159,7 @@ div {
     max-height: 75vh;
     width: 40vw;
     overflow: hidden;
+    box-shadow: var(--md-elevation-3);
 }
 
 .header {
@@ -35,10 +169,11 @@ div {
 }
 
 .garage-header {
-    font-size: 18px;
+    font-size: var(--md-typescale-headline-small-size);
     margin-bottom: 20px;
     text-align: left;
-    color: #fafafa;
+    color: var(--md-on-surface);
+    font-weight: var(--font-weight-medium);
 }
 
 .garage-logo {
@@ -50,17 +185,17 @@ div {
     max-height: 60vh;
     overflow-y: auto;
     width: 100%;
-    border-radius: 5px;
+    border-radius: var(--md-radius-small);
 }
 
 .vehicle-item {
-    background-color: #2a2a2a;
+    background-color: var(--md-surface-container);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     margin-bottom: 10px;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: var(--md-radius-small);
 }
 
 .vehicle-info {
@@ -68,7 +203,7 @@ div {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    color: #fafafa;
+    color: var(--md-on-surface);
 }
 
 .plate,
@@ -76,10 +211,12 @@ div {
 .vehicle-name {
     margin: 0;
     flex: 1;
+    font-size: var(--md-typescale-body-medium-size);
 }
 
 .vehicle-name {
     text-align: left;
+    font-weight: var(--font-weight-medium);
 }
 
 .plate {
@@ -106,26 +243,29 @@ div {
 }
 
 .label {
-    color: #ffffff;
+    color: var(--md-on-surface);
     margin-bottom: 5px;
+    font-size: var(--md-typescale-label-medium-size);
 }
 
 .progress-bar {
     width: 100%;
-    background-color: #3c3c3c;
-    border-radius: 5px;
+    background-color: var(--md-surface-container-high);
+    border-radius: var(--md-radius-small);
     height: 20px;
     overflow: hidden;
     position: relative;
 }
 
 .progress-text {
-    font-size: 14px;
+    font-size: var(--md-typescale-label-medium-size);
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #ffffff;
+    color: var(--md-on-surface);
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+    font-weight: var(--font-weight-medium);
 }
 
 .progress-bar span {
@@ -134,15 +274,15 @@ div {
 }
 
 .progress-bar span.bar-green {
-    background-color: #4caf50;
+    background-color: var(--md-success);
 }
 
 .progress-bar span.bar-yellow {
-    background-color: #ffc107;
+    background-color: var(--md-warning);
 }
 
 .progress-bar span.bar-red {
-    background-color: #e53935;
+    background-color: var(--md-error);
 }
 
 .finance-drive-container {
@@ -153,34 +293,38 @@ div {
 }
 
 .finance-info {
-    color: #ffffff;
-    font-size: 13.3px;
-    background-color: #388e3c;
+    color: var(--md-on-success-container);
+    font-size: var(--md-typescale-label-medium-size);
+    background-color: var(--md-success-container);
     margin-top: 10px;
     text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--md-elevation-1);
     border: none;
-    border-radius: 5px;
+    border-radius: var(--md-radius-small);
     padding: 4px 8px;
 }
 
 .drive-btn {
-    font-family: "Roboto", sans-serif;
-    color: #ffffff;
-    background-color: #388e3c;
+    font-family: var(--font-primary);
+    color: var(--md-on-success-container);
+    background-color: var(--md-success-container);
     margin-top: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--md-elevation-1);
     border: none;
-    border-radius: 5px;
+    border-radius: var(--md-radius-small);
     padding: 4px 8px;
     cursor: pointer;
+    font-size: var(--md-typescale-label-large-size);
+    font-weight: var(--font-weight-medium);
 }
 
 .drive-btn:hover {
-    background-color: #4caf50;
+    background-color: var(--md-success);
+    color: var(--md-on-success);
 }
 
 .drive-btn:disabled {
-    background-color: #222;
+    background-color: var(--md-surface-container-highest);
+    color: var(--md-outline);
     cursor: not-allowed;
 }

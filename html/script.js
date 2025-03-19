@@ -240,10 +240,17 @@ function populateVehicleList(garageLabel, vehicles) {
 
             if (percentage >= 75) {
                 progress.classList.add("bar-green");
+                if (percentage > 45) {
+                    progressText.style.color = "var(--md-on-success)";
+                }
             } else if (percentage >= 50) {
                 progress.classList.add("bar-yellow");
+                if (percentage > 45) {
+                    progressText.style.color = "var(--md-on-warning)";
+                }
             } else {
                 progress.classList.add("bar-red");
+                // Keep default text color for low percentages
             }
 
             progressBar.appendChild(progressText);
