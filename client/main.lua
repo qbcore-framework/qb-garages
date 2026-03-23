@@ -7,6 +7,13 @@ local listenForKey = false
 
 -- Functions
 
+RegisterNetEvent('QBCore:Client:UpdateObject', function()
+    QBCore = exports['qb-core']:GetCoreObject()
+    PlayerData = QBCore.Functions.GetPlayerData()
+    PlayerGang = PlayerData.gang
+    PlayerJob = PlayerData.job
+end)
+
 local function CheckPlayers(vehicle)
     for i = -1, 5, 1 do
         local seat = GetPedInVehicleSeat(vehicle, i)
