@@ -451,7 +451,7 @@ end)
 
 -- Handlers
 
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     CreateBlipsZones()
 end)
 
