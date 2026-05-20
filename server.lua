@@ -1,4 +1,5 @@
-local QBCore = exports['qb-core']:GetCoreObject()
+local QBCore = exports['qb-core']:GetCoreObject({ 'Functions' })
+local sharedVehicles = exports['qb-core']:GetShared('Vehicles')
 local OutsideVehicles = {}
 
 -- Handler
@@ -55,7 +56,7 @@ local function filterVehiclesByCategory(vehicles, category)
     local categorySet = arrayToSet(category)
 
     for _, vehicle in pairs(vehicles) do
-        local vehicleData = QBCore.Shared.Vehicles[vehicle.vehicle]
+        local vehicleData = sharedVehicles[vehicle.vehicle]
         local vehicleCategoryString = vehicleData and vehicleData.category or 'compacts'
         local vehicleCategoryNumber = vehicleClasses[vehicleCategoryString]
 
@@ -75,7 +76,7 @@ QBCore.Functions.CreateCallback('qb-garages:server:getHouseGarage', function(_, 
 end)
 
 QBCore.Functions.CreateCallback('qb-garages:server:GetGarageVehicles', function(source, cb, garage, type, category)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = exports['qb-core']:GetPlayer(source)
     if not Player then return end
     local citizenId = Player.PlayerData.citizenid
 
@@ -112,7 +113,7 @@ local vehicleTypes = { -- https://docs.fivem.net/natives/?_0xA273060E
 }
 
 local function GetVehicleTypeByModel(model)
-    local vehicleData = QBCore.Shared.Vehicles[model]
+    local vehicleData = sharedVehicles[model]
     if not vehicleData then return 'automobile' end
     local category = vehicleData.category
     local vehicleType = vehicleTypes[category]
@@ -122,8 +123,8 @@ end
 
 -- Spawns a vehicle and returns its network ID and properties.
 QBCore.Functions.CreateCallback('qb-garages:server:spawnvehicle', function(source, cb, plate, vehicle, coords)
-    local vehType = QBCore.Shared.Vehicles[vehicle] and QBCore.Shared.Vehicles[vehicle].type or GetVehicleTypeByModel(vehicle)
-    local hash = type(vehicle) == "number" and vehicle or type(vehicle) == "string" and GetHashKey(vehicle) or nil
+    local vehType = sharedVehicles[vehicle] and sharedVehicles[vehicle].type or GetVehicleTypeByModel(vehicle)
+    local hash = type(vehicle) == 'number' and vehicle or type(vehicle) == 'string' and GetHashKey(vehicle) or nil
     if not vehicle then return end
     local veh = CreateVehicleServerSetter(hash, vehType, coords.x, coords.y, coords.z, coords.w)
     local netId = NetworkGetNetworkIdFromEntity(veh)
@@ -145,7 +146,7 @@ QBCore.Functions.CreateCallback('qb-garages:server:IsSpawnOk', function(_, cb, p
 end)
 
 QBCore.Functions.CreateCallback('qb-garages:server:canDeposit', function(source, cb, plate, type, garage, state)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = exports['qb-core']:GetPlayer(source)
     local isOwned = MySQL.scalar.await('SELECT citizenid FROM player_vehicles WHERE plate = ? LIMIT 1', { plate })
     if isOwned ~= Player.PlayerData.citizenid then
         cb(false)
@@ -167,14 +168,14 @@ end)
 
 RegisterNetEvent('qb-garages:server:updateVehicleStats', function(plate, fuel, engine, body)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local Player = exports['qb-core']:GetPlayer(src)
     if not Player then return end
     MySQL.update('UPDATE player_vehicles SET fuel = ?, engine = ?, body = ? WHERE plate = ? AND citizenid = ?', { fuel, engine, body, plate, Player.PlayerData.citizenid })
 end)
 
 RegisterNetEvent('qb-garages:server:updateVehicleState', function(state, plate)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local Player = exports['qb-core']:GetPlayer(src)
     if not Player then return end
     MySQL.update('UPDATE player_vehicles SET state = ?, depotprice = ? WHERE plate = ? AND citizenid = ?', { state, 0, plate, Player.PlayerData.citizenid })
 end)
@@ -199,7 +200,7 @@ end)
 
 RegisterNetEvent('qb-garages:server:PayDepotPrice', function(data)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local Player = exports['qb-core']:GetPlayer(src)
     local cashBalance = Player.PlayerData.money['cash']
     local bankBalance = Player.PlayerData.money['bank']
     MySQL.scalar('SELECT depotprice FROM player_vehicles WHERE plate = ?', { data.plate }, function(result)
@@ -207,10 +208,10 @@ RegisterNetEvent('qb-garages:server:PayDepotPrice', function(data)
             local depotPrice = result
 
             if cashBalance >= depotPrice then
-                Player.Functions.RemoveMoney('cash', depotPrice, 'paid-depot')
+                Player.RemoveMoney('cash', depotPrice, 'paid-depot')
                 TriggerClientEvent('qb-garages:client:takeOutGarage', src, data)
             elseif bankBalance >= depotPrice then
-                Player.Functions.RemoveMoney('bank', depotPrice, 'paid-depot')
+                Player.RemoveMoney('bank', depotPrice, 'paid-depot')
                 TriggerClientEvent('qb-garages:client:takeOutGarage', src, data)
             else
                 TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_enough'), 'error')
@@ -228,13 +229,13 @@ end)
 --Call from qb-phone
 
 QBCore.Functions.CreateCallback('qb-garages:server:GetPlayerVehicles', function(source, cb)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = exports['qb-core']:GetPlayer(source)
     local Vehicles = {}
 
     MySQL.rawExecute('SELECT * FROM player_vehicles WHERE citizenid = ?', { Player.PlayerData.citizenid }, function(result)
         if result[1] then
             for _, v in pairs(result) do
-                local VehicleData = QBCore.Shared.Vehicles[v.vehicle]
+                local VehicleData = sharedVehicles[v.vehicle]
 
                 local VehicleGarage = Lang:t('error.no_garage')
                 if v.garage ~= nil then

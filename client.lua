@@ -1,4 +1,4 @@
-local QBCore = exports['qb-core']:GetCoreObject()
+local QBCore = exports['qb-core']:GetCoreObject({ 'Functions', 'Shared' })
 local PlayerData = {}
 local PlayerGang = {}
 local PlayerJob = {}
@@ -8,7 +8,7 @@ local listenForKey = false
 -- Functions
 
 RegisterNetEvent('QBCore:Client:UpdateObject', function()
-    QBCore = exports['qb-core']:GetCoreObject()
+    QBCore = exports['qb-core']:GetCoreObject({ 'Functions', 'Shared' })
     PlayerData = QBCore.Functions.GetPlayerData()
     PlayerGang = PlayerData.gang
     PlayerJob = PlayerData.job
@@ -460,10 +460,15 @@ AddEventHandler('onResourceStart', function(res)
     CreateBlipsZones()
 end)
 
-RegisterNetEvent('QBCore:Client:OnGangUpdate', function(gang)
-    PlayerGang = gang
-end)
-
-RegisterNetEvent('QBCore:Client:OnJobUpdate', function(job)
-    PlayerJob = job
+RegisterNetEvent('QBCore:Client:OnPlayerUpdated', function(key, val)
+    if key == 'job' then
+        local job = val
+        PlayerJob = job
+    elseif key == 'gang' then
+        local gang = val
+        PlayerGang = gang
+    elseif key == 'all' then
+        PlayerJob = val.job
+        PlayerGang = val.gang
+    end
 end)
